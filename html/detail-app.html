@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title>新闻专题详情页</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<link href="../css/common.css" type="text/css" rel="stylesheet"/>
+	<link href="../css/newslist.css" type="text/css" rel="stylesheet"/>
+	<style type="text/css"></style>
+
+	<script type="text/javascript" src="../js/zepto.js"></script>
+	<script type="text/javascript" src="../js/ejs.js"></script>
+</head>
+<body>
+	<script type="text/javascript" src="../js/data/detail.js"></script>
+	<div class="wrapper"></div>
+	
+
+	<script id="article" type="text/html">
+	
+			<section class="article part" data-name="正文">
+				<h1>{%=data.title%}</h1>
+				<div class="article-info">
+					{%if (data.source){%}
+						<cite class="source">{%=data.source%}</cite>
+					{%}%}
+					{%if (data.time){%}
+					<time>{%=data.time%}</time> 
+					{%}%}
+				</div>
+
+				{% data.content.forEach(function(item){ %}
+					{%if(item.type == 'txt'){%}
+					<div class="block mod">
+						<p>{%=item.value%}</p>
+					</div>
+					{%}%}
+				{%})%}
+			</section>
+
+	</script>
+
+	<script>
+		$(function(){
+			ejs.open = "{%";
+			ejs.close = "%}";
+
+			var article = $('#article').html();
+			var cont = dataDetailNews.data;
+			console.log(cont);
+			var html = ejs.render(article, { data: cont });
+
+			
+			$('.wrapper').html(html);
+		});
+
+
+	</script>
+
+
+
+
+	<!--
+	<script type="text/html" id="tpl-article">
+		{% if(locals.banner && banner._img) { %}
+			<div class="banner {%=banner.desc ? 'has-desc' : 'no-desc'%}">
+				<img src="{%=banner._img.url%}" class="image" width="{%=banner._img.width%}" height="{%=banner._img.height%}">
+				{% if(banner.desc) { %}
+					<h2 class="banner-desc">{%=banner.desc%}</h2>
+				{% } %}
+			</div>
+		{% } %}
+		{% if(locals.summary) { %}
+			<div class="summary">
+				<span>导语：</span> {%=summary%}
+			</div>
+		{% } %}
+		{% if($.isArray(locals.topicdata) && topicdata.length) { %}
+		{% $.each(topicdata, function(k, v){ %}
+			{% if(v._newsList) { %}
+			<div class="topic">
+				{% if(k != 0 ) { %}
+					<h2 class="topic-title">{%=v.columnName || ''%}</h2>
+				{% } %}
+				<ul class="items {%=k==0 ? 'items-toutiao' : 'items-normal'%}">
+					{%-v._newsList%}
+				</ul>
+			</div>
+			{% } %}
+		{% }) %}
+		{% } %}
+		{% if(locals._keywords) { %}
+			<a class="keywords" href="{%=_keywords%}">点击查看更多</a>
+		{% } %}
+	</script>
+   
+
+   
+	<script>
+		$ContentRender.renderArticle();
+	</script> -->
+</body>
+</html>

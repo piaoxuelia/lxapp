@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title>新闻专题详情页</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<link href="../css/common.css" type="text/css" rel="stylesheet"/>
+	<link href="../css/newslist.css" type="text/css" rel="stylesheet"/>
+	<style type="text/css"></style>
+
+	<script type="text/javascript" src="../js/zepto.js"></script>
+	<script type="text/javascript" src="../js/touch.js"></script>
+	<script type="text/javascript" src="../js/utils.js"></script>
+	<script type="text/javascript" src="../js/ejs.js"></script>
+
+	<!--<script id="article-tmpl" type="text/html" src="temp/article.html"></script>-->
+	<script id="article-tmpl" type="text/html">
+		<section class="article part" data-name="正文">
+			{% if(typeof title != 'undefined'){ %}
+				<h1>{%=title%}</h1>
+			{% } %}
+
+			{% if(typeof editor_name != 'undefined') { %}
+				{% // 有小编信息 %}
+				<div class="editor-info">
+					{% if(time) { %}<time>{%=time%}</time> {%}%}
+					<img class="editor-avatar" src="{%=editor_pic%}" width="42" height="42" />
+					<div class="editor-name">{%=editor_name%}</div>
+					{% if(locals.editor_desc) { %}
+						<div class="editor-desc">{%=editor_desc%}</div>
+					{% } %}
+				</div>
+			{% } else { %}
+				{% if(typeof source != 'undefined'){ %}
+					<div class="article-info">
+						{% if(source) { %}<cite class="source">{%=source%}</cite>{% } %}
+						{% if(time) { %}<time>{%=time%}</time> {%}%}
+						<span class="readCount" data-fmt="{0} 阅读" style="display:none;"></span>
+					</div>
+				{% } %}
+			{% } %}
+
+			{% //正文内容 %}
+			{% var contentLen = content.length, openTag = false; %}
+			{% content.forEach(function(d, i){ %}
+
+				{% /* 2014-12-04 看点2.0.1，对于文本和图片实现自动分块处理 */ %}
+				{% if (openTag && d.type != 'txt' && d.type != 'img') { %}
+					{% openTag = false; %}
+					</div>
+				{% } else if (!openTag && (d.type == 'txt' || d.type == 'img')) { %}
+					{% openTag = true; %}
+					<div class="block mod">
+				{% } %}
+				
+				{%  if(d.type == 'txt' && d.value){  -%}
+					{% if(d.noPTag){ %}
+						{%-d.value%}
+					{% }else{ %}
+						<p class="{%=d.cssClass%}">{%-d.value%}</p>
+					{% } %}
+				{%  } else if(d.type == 'img'){  -%}
+					<div class="photo-mod">
+						<div class="photo-wrap">
+							<img class="photo lazy native-call" data-native="news.showFullImage" 
+							data-param1="{%=d.originalValue%}" 
+							data-src="{%=d.value%}" 
+							width="{%=d.width%}" 
+							height="{%=d.height%}"/>
+						</div>
+						{% if(d.title) { %}
+						<div class="photo-desc {% if(d.descAlignCenter) { %}center{% } %}">{%= d.title %}</div>
+						{% } %}
+					</div>
+				{%  } else if(d.type == 'html'){  -%}
+					{%-d.value%}
+				{%  } -%}
+				
+				{% if (i === contentLen - 1 && openTag && (d.type == 'txt' || d.type == 'img')) { %}
+					{% openTag = false; %}
+					</div>
+				{% } %}
+			{% }); -%}
+
+		</section>
+	</script>
+	
+	<script id="share-buttons-tmpl" type="text/html" >
+		<section class="share-buttons-wrap part" data-name="分享模块">
+			<div class="share-buttons">
+				<h2 class="title">分享</h2>
+				<ul>
+					<li class="button circle">
+						<a class="native-call" href="javascript:;" data-native="news.share" data-param1="circle"><img src="../images/share-circle.png" /></a>
+						<span>朋友圈</span>
+					</li>
+					<li class="button weixin">
+						<a class="native-call" href="javascript:;" data-native="news.share" data-param1="weixin"><img src="../images/share-weixin.png"/></a>
+						<span>微信</span>
+					</li>
+					
+					<li class="button weibo">
+						<a class="native-call" href="javascript:;" data-native="news.share" data-param1="weibo"><img src="../images/share-weibo.png" /></a>
+						<span>微博</span>
+					</li>
+
+					<li class="button copy">
+						<a class="native-call" href="javascript:;" data-native="news.share" data-param1="copy"><img src="../images/share-copy.png" /></a>
+						<span>复制链接</span>
+					</li>
+					
+				</ul>
+			</div>
+
+	</script>
+
+	<script id="comments-tmpl" type="text/html" >
+		<section class="comments part {% if(typeof more != 'undefined' && !window.$wap) { %} has-more {% } %}" data-name="评论">
+			{% if(typeof title != 'undefined'){ %}
+			<h2 class="title">{%=title%}</h2>
+			{% } else { %}
+			<h2 class="title">热门评论</h2>
+			{% } %}
+
+			{% if(_comments.length > 0){ //有评论%}
+				<!-- comment-items-begin -->
+				<ul class="comment-list">
+					{% _comments.forEach(function(item){ %}
+						{% if(!item.text || item.text.length == 0) return; %}
+					<li>
+						{% if(item.avatarUrl) {%}
+						<img class="avatar" src="{%=item.avatarUrl%}" />
+						{% } else { %}
+						<img class="avatar" src="../images/icon-default-avatar.png" />
+						{% } %}
+						<div class="info-text">
+							<div class="info">
+								<a class="thumbup native-call" href="javascript:;" data-native="news.likeThisComment" data-param1="{%=item.cid%}">
+									<img src="../images/icon-thumbup.png" />
+								</a>
+								<a class="thumbup-active" style="display:none;" href="javascript:;">
+									<img src="../images/icon-thumbup-active.png" />
+								</a>
+								<span class="liked">{%=item.liked%}</span>
+								<span class="username">{%=item.username%}</span>
+							</div>
+							<div class="text">
+								{%=item.text%}
+							</div>
+							<div class="time">
+								{%=item.time%}
+							</div>
+						</div>
+					</li>
+					{% }); %}
+				</ul>
+				<!-- comment-items-end -->
+			{% } else { //没有评论%}
+				<ul class="comment-list" style="display:none;"></ul>
+				<div class="no-comments native-call" data-native="news.comment">
+					{% if(window.$wap) { %}
+						还没评论呢...
+					{% } else { %}
+						还没评论呢，你来吧
+					{% } %}
+				</div>
+			{% } %}
+
+			{% if(typeof more != 'undefined' && !window.$wap){ %}
+				<a class="more-comments native-call" 
+				data-native="news.showComments"
+				href="javascript:;">{%=more%}</a>
+			{% } %}
+		</section>
+	</script>
+</head>
+<body>
+	<script type="text/javascript" src="../js/nativeApi.js"></script>
+	<script type="text/javascript" src="../js/contentRender.js"></script>
+	<script type="text/javascript" src="../js/data/detail.js"></script>
+	<div class="wrapper">
+		<div class="banner-step2">
+			<span class="banner-step2-tag">环球事件</span>
+			<span class="banner-step2-tag">新闻咨询</span>
+			<i class="banner-step2-rt"><span>已被12个子频道转推</span><span class="banner-arr-rt"></span></i>
+		</div>
+	</div>
+	<script>
+		$(function(){
+			var cont = dataDetailNews.data;
+			var comm = commData.data;
+			$ContentRender.renderArticle(cont);
+			$ContentRender.renderShareButtons({});
+			$ContentRender.renderComments(comm);
+			$ContentRender.lazyLoadImage();
+			$ContentRender.done();
+		});
+	</script>
+
+
+</body>
+</html>
