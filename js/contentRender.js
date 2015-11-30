@@ -1,8 +1,4 @@
-/**
- * Content Render for 看点 App
- * wangweihua@360.cn
- * 2014-7
- */
+
 (function(g) {
 	var $cr = {},
 		$renderedSections = [],
@@ -103,7 +99,7 @@
 			feeds = typeof preprocess == 'function' ? preprocess(data) : data,
 			html = '',
 			dom, errmsg;
-	
+		console.log(feeds)
 		wrapper = wrapper || $('.wrapper').last();
 
 		if (feeds == null) return html;
@@ -179,9 +175,7 @@
 			$datum.mod[tmplId.replace(/^#|\-tmpl/g, '')] = feeds;
 		}
 		try {
-			html = ejs.compile(tmpl)(feeds, {
-				compileDebug: true
-			});
+			html = ejs.compile(tmpl)(feeds, {ompileDebug: true});
 		} catch (e) {
 			if (g.$debug === true) {
 				e.message = 'error while compiling ' + tmplId + ':' + e.message;
@@ -222,6 +216,23 @@
 		'headimg': 'part'
 	};
 
+
+	$cr.renderGrayBar = function(data,hasViewOriginButton,clearExistContent){
+		if (g.$debug === true) console.log('$ContentRender.renderGrayBar(' + JSON.stringify(data) + ');');
+		return render.call(this, '#grayBar-tmpl', data, clearExistContent, function(data) {
+			hasViewOriginButton = typeof hasViewOriginButton == 'undefined' ? true : !!hasViewOriginButton;
+			var feeds = {
+					// 避免污染源数据
+					tagData: $.extend(true, [], data.transmit_data)
+				};
+				
+				feeds.transmit_num = data.transmit_num ? data.transmit_num : "";
+				return feeds;
+		});
+	}
+
+
+
 	// var sharedDocTitle = '【深度】';
 
 	/**
@@ -249,6 +260,7 @@
 				i, dat, match, ratio;
 			//正文的数据需要预先处理的比较多
 			//每次增加新的字段都需要在下面加上
+
 			if (data.time && (isNaN(data.time) || data.time > 0)) {
 				feeds.time = $utils.formatDate(data.time);
 			} else {

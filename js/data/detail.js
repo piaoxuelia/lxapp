@@ -217,6 +217,7 @@ var dataDetailNews = {
 		"wapurl": "http:\/\/m.sohu.com\/n\/427839277\/",
 		"source": "\u641c\u72d0",
 		"n_t": 1000,
+		"transmit_num": "5",
 		"transmit_data": [{
 			"sub_id": "34",
 			"name": "d1111d",

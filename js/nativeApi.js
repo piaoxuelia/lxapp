@@ -1,10 +1,7 @@
 /**
  * Android Native Interface related
- * wangweihua@360.cn
- * 2014-7
  */
 (function(g) {
-
 	if (g.FastClick) FastClick.attach(document.body);
 
 	var api = g.$nativeApi = {},
@@ -22,11 +19,13 @@
 		var parts = path.split('.'),
 			part, len = parts.length,
 			prev;
+			/*tryget("g.$nativeApi", "news.likeThisComment")*/
+
 		for (var t = o, i = 0; i < len; ++i) {
 			part = parts[i];
 			if (part in t) {
-				prev = t;
-				t = t[parts[i]];
+				prev = t;/* prev = g.$nativeApi */ /* prev = g.$nativeApi["news"] */
+				t = t[parts[i]]; /* t =  g.$nativeApi[news]*//* t =  g.$nativeApi.news["likeThisComment"]*/
 			} else {
 				return {
 					obj: null,
@@ -38,6 +37,8 @@
 			obj: prev,
 			prop: t
 		};
+
+		/*{obj:g.$nativeApi["news"],prop:g.$nativeApi.news["likeThisComment"]}*/
 	}
 
 	function navigateToUrl(url) {
@@ -127,6 +128,7 @@
 		path = path.replace(/\(.*$/, '')
 
 		function f() {
+
 			var ret, x = tryget(g, path),
 				isSimulator = false;
 			if (x.prop == null) {
@@ -134,6 +136,7 @@
 				if (x) isSimulator = true;
 			}
 			if (x.prop && x.obj) {
+
 				console.log('//调用Native接口 ' + path + "参数:\n" + JSON.stringify(arguments));
 				if (typeof x.prop == 'function') {
 					x.prop.before = before;
@@ -144,6 +147,7 @@
 					//如果实在安卓客户端，就必须用x.obj
 					//否则会出现NPMethod called on non-NPObject错误
 					ret = x.prop.apply(isSimulator ? this : x.obj, arguments);
+
 				} else {
 					ret = x.prop;
 				}
@@ -174,6 +178,9 @@
 	 * 新闻
 	 */
 	$_news.showComments = __('$_news.OnClickCmtMore()');
+	
+	$_news.recommend = __('$_news.OnClickRecommend()');
+
 	$_news.comment = __('$_news.comment()');
 	//点击查看原文, 查看原文的接口移除 v3.0.1
 	$_news.showFullText = __('$_news.OnClickText()');
@@ -210,11 +217,12 @@
 	//分享
 	$_news.share = __('$_news.OnClickShare()');
 
+
 	$_news.searchTag = __('$_news.OnSearchTag()');
 
 	//下一篇
 	$_news.next = __('$_news.OnClickNextNews()');
-	//上一篇
+
 	$_news.prev = __('$_news.OnClickPrevNews()');
 
 	// 性能日志，文章主题渲染完毕
@@ -361,7 +369,6 @@
 	});
 
 	var wrapper = $('.wrapper');
-
 	wrapper.delegate('.native-call', 'click', function(e) {
 		e.preventDefault();
 		e.stopPropagation();
@@ -369,21 +376,26 @@
 		var self = $(this);
 		if (self.attr('disabled')) return;
 
-		var fname = self.attr('data-native'),
-			args = prepareParams(self, fname),
-			x = tryget(api, fname),
+		var fname = self.attr('data-native'),/* news.likeThisComment */
+			args = prepareParams(self, fname),/*["news", "likeThisComment"]*/
+			x = tryget(api, fname),/*tryget("g.$nativeApi", "news.likeThisComment")*/
 			isCallNative = true,
 			isCallAfter,
 			tmp;
+
+			/*x={obj:g.$nativeApi["news"],prop:g.$nativeApi.news["likeThisComment"]}*/
+		
 		if (x.prop && x.prop.before) {
 			isCallNative = x.prop.before.call(self);
 		}
 		if (isCallNative && x.prop) {
 			isCallAfter = x.prop.apply(self, args);
+
 			if (isCallAfter !== false && x.prop.after) {
 				x.prop.after.call(self);
 			}
 		}
+
 		return false;
 	}).delegate('.pseudo-a', 'click', function(e) {
 		if (e.target !== this) return;
@@ -416,6 +428,7 @@
 			ret.push(extra.height);
 			if (p2) ret.push(p2);
 		}
+
 		return ret;
 	}
 
