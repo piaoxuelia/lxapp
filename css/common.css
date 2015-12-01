@@ -110,10 +110,10 @@ hr { display: none; }
 .drip { display: inline-block; background: url(../images/icon-drip.png) no-repeat; background-size: 36px 44px; width: 36px; height: 44px; font-size: 12px; text-align: center; text-decoration: none; color: white; }
 
 /* 页面元素 */
-.wrapper { padding-top: 1px; margin-top: -1px; margin-bottom: 60px; }
+.wrapper { padding-top: 1px; margin-top: -1px; margin-bottom: 60px; padding-left:16px; padding-right:16px; }
 .wrapper.joke .article.part p, .wrapper.gif .article.part p { color: rgba(0, 0, 0, 0.6); }
 
-section { padding: 0 16px; }
+section { padding: 0}
 
 /* 字体大小调整 */
 .small .article.part { font-size: 14.11765px; }

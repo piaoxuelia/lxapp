@@ -19,7 +19,7 @@
 			{%})%}
 
 			{%if(transmit_num){%}
-			<i class="grayBar-rt"><span>已被{%=transmit_num%}个自频道转推</span><span class="banner-arr-rt"></span></i>
+			<a class="grayBar-rt native-call" data-native="news.recommend" href="javascript:;"><span>已被{%=transmit_num%}个自频道转推</span><span class="banner-arr-rt"></span></a>
 			{%}%}
 		</div>
 	</script>
@@ -137,11 +137,13 @@
 					{% _comments.forEach(function(item){ %}
 						{% if(!item.text || item.text.length == 0) return; %}
 					<li>
-						{% if(item.avatarUrl) {%}
-						<img class="avatar" src="{%=item.avatarUrl%}" />
-						{% } else { %}
-						<img class="avatar" src="../images/icon-default-avatar.png" />
-						{% } %}
+						<a class="native-call" href="javascript:;" data-native="news.commUser" data-param1="{%=item.cid%}">
+							{% if(item.avatarUrl) {%}
+							<img class="avatar" src="{%=item.avatarUrl%}" />
+							{% } else { %}
+							<img class="avatar" src="../images/icon-default-avatar.png" />
+							{% } %}
+						</a>
 						<div class="info-text">
 							<div class="info">
 								<a class="thumbup native-call" href="javascript:;" data-native="news.likeThisComment" data-param1="{%=item.cid%}">
@@ -187,6 +189,9 @@
 	<div class="wrapper"></div>
 	<script type="text/javascript" src="../js/nativeApi.js"></script>
 	<script type="text/javascript" src="../js/contentRender.js"></script>
-	<script type="text/javascript" src="../js/data/detail.js"></script>
+	<script>
+	</script>
+
+
 </body>
 </html>

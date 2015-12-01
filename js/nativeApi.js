@@ -214,6 +214,9 @@
 	//点击查看更多评论
 	$_news.seeMore = __('$_news.OnClickCmtMore()');
 
+	//点击查看评论人信息
+	$_news.commUser = __('$_news.OnClickCommUser()');
+
 	//分享
 	$_news.share = __('$_news.OnClickShare()');
 
