@@ -36,6 +36,7 @@ module.exports = function(grunt) {
         }]
     }
   },
+  /* html-compress */
   htmlmin:{
     dist: {   // Target
        options: { // Target options
@@ -46,9 +47,36 @@ module.exports = function(grunt) {
         'output/html/news-detail.html': 'html/news-detail.html'
        }
     }
-    
-    
   },
+  clean: {
+    build: {
+      src: ["output/css/*.map", "!output/css/*.css"]
+    }
+  },
+  sass: {
+    dist:{
+      options: {    // Target options 
+        style: 'expanded'
+      },
+      /*files:{
+        'output/css/layout.css':'css/layout.scss'
+      },*/
+      files: [{
+            expand: true,
+          compass:true,
+            cwd: 'css',
+            src: ['*.scss'],
+            dest: 'output/css/',
+            ext: '.css'
+          }]
+    }
+
+  },
+  jshint: {
+     ignore_warning: {
+       src: ['**/*.js','**/**/.js'],
+     },
+   },
   concat: {
     options: {
       banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
@@ -58,33 +86,20 @@ module.exports = function(grunt) {
       dest: 'output/css/detail.css'
     }
   },
-  imagemin: {                          // Task \\
-    static: {                          // Target
-         options: {                       // Target options
-           optimizationLevel: 3,
-           svgoPlugins: [{ removeViewBox: false }]
-         },
-         files: {                         // Dictionary of files
-           'output/images/share-circle.png': 'images/share-circle.png', // 'destination': 'source'
-         }
-    },
-    dynamic: {                         // Another target 
-      files: [{
-      expand: true,                  // Enable dynamic expansion 
-      cwd: 'images/',                   // Src matches are relative to this path 
-      src: ['*.{png,gif}'],   // Actual patterns to match 
-      dest: 'output/images/'                  // Destination path prefix 
-      }]
-    }
-  }
   });
   // Load the plugin that provides the "uglify" task.
+  grunt.loadNpmTasks('grunt-contrib-sass');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-htmlmin');
-  grunt.loadNpmTasks('grunt-contrib-imagemin');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+
+  
   
   // Default task(s)
-  grunt.registerTask('default', ['uglify','cssmin','htmlmin','imagemin','concat']);
+  grunt.registerTask('default', ['uglify','cssmin','htmlmin','jshint']);
+  grunt.registerTask('s', ['sass']);
+  grunt.registerTask('d', ['clean']);
 };

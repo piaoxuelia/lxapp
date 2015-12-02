@@ -110,11 +110,13 @@
 					{% _comments.forEach(function(item){ %}
 						{% if(!item.text || item.text.length == 0) return; %}
 					<li>
-						{% if(item.avatarUrl) {%}
-						<img class="avatar" src="{%=item.avatarUrl%}" />
-						{% } else { %}
-						<img class="avatar" src="../images/icon-default-avatar.png" />
-						{% } %}
+						<a class="native-call" href="javascript:;" data-native="news.commUser" data-param1="{%=item.cid%}">
+							{% if(item.avatarUrl) {%}
+							<img class="avatar" src="{%=item.avatarUrl%}" />
+							{% } else { %}
+							<img class="avatar" src="../images/icon-default-avatar.png" />
+							{% } %}
+						</a>
 						<div class="info-text">
 							<div class="info">
 								<a class="thumbup native-call" href="javascript:;" data-native="news.likeThisComment" data-param1="{%=item.cid%}">
@@ -153,24 +155,4 @@
 				data-native="news.showComments"
 				href="javascript:;">{%=more%}</a>
 			{% } %}
-		</section></script></head><body><div class="wrapper"></div><script type="text/javascript" src="../js/nativeApi.js"></script><script type="text/javascript" src="../js/contentRender.js"></script><script type="text/javascript" src="../js/data/detail.js"></script><script>$(function(){
-			var cont = dataDetailNews.data;
-			var comm = commData.data;
-			$ContentRender.renderGrayBar(cont);
-			$ContentRender.renderArticle(cont);
-			$ContentRender.renderShareButtons({});
-			$ContentRender.renderComments(comm);
-			$ContentRender.lazyLoadImage();
-			$ContentRender.done();
-
-			/*$.ajax({
-				url:"http://zm.kandian.360.cn/index.php?c=index&a=trans&from=h5&m=3fe50e8cb21355700f042010505ea2985d532773&id=1665613463555970&fmt=json&url=http://news.sohu.com/20151124/n427839277.shtml",
-				data:'',
-				type:"get",
-				dataType: "jsonp",
-				success:function(data){
-					console.log("ajax")
-					console.log(data);
-				}
-			})*/
-		});</script></body></html>
+		</section></script></head><body><div class="wrapper"></div><script type="text/javascript" src="../js/nativeApi.js"></script><script type="text/javascript" src="../js/contentRender.js"></script></body></html>
