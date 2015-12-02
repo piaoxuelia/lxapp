@@ -257,7 +257,19 @@ var commData = {
 			"uname": "%E7%94%A8%E6%88%B75749135938",
 			"uavatar": "http%3A%2F%2Ftp3.sinaimg.cn%2F5749135938%2F180%2F0%2F1",
 			"chain": []
-		}],
+		},
+		{	"comment_id": 1566986,
+					"comment": "中央这么重视民族工作，这么重视脱贫工作，就是要更好维护民族地区团结稳定，更好加快民族地区发展，更好凝聚各民族智慧和力量，各民族一起来实现中华民族伟大复兴的中国梦",
+					"layer": 4,
+					"create_time": "2015-11-06 11:16:30",
+					"support": 0,
+					"against": 0,
+					"uid": "5749135938",
+					"uid_type": "weibo",
+					"uname": "%E7%94%A8%E6%88%B75749135938",
+					"uavatar": "http%3A%2F%2Ftp3.sinaimg.cn%2F5749135938%2F180%2F0%2F1",
+					"chain": []
+				}],
 		"comments": [{
 			"comment_id": 1315006,
 			"comment": "%E6%98%A8%E5%A4%A9%E4%B8%8D%E5%B0%B1%E5%BC%80%E5%A7%8B%E4%BA%86%E5%90%97",
