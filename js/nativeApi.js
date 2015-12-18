@@ -99,11 +99,11 @@
 		g.$nativeSimulator.$_baike.OnClickBaike = navigateToUrl;
 	}
 
-	if (!g.$_video) {
+	/*if (!g.$_video) {
 		g.$nativeSimulator.$_video.OnClickVideo = function(videoUrl) {
 			location.href = $utils.extractVideoUrl(videoUrl);
 		};
-	}
+	}*/
 
 	if (!g.$_timeline) {
 		g.$nativeSimulator.$_timeline.showFullText = navigateToUrl;
@@ -217,6 +217,7 @@
 	//点击查看评论人信息
 	$_news.commUser = __('$_news.OnClickCommUser()');
 
+
 	//分享
 	$_news.share = __('$_news.OnClickShare()');
 
@@ -266,6 +267,7 @@
 	// 小编相关文章的评论是纯展示，没有点击事件
 	// $_related.viewEditorArticleComment = __('$_related.OnClickEditorArticleComment(String url)');
 
+	$_related.viewHotArticel = __('$_related.OnClickHotArticle(String url)');
 	/**
 	 * 音乐
 	 */
@@ -342,34 +344,7 @@
 		$_dingyue.showSubscribe();
 	});
 
-	/**
-	 * 时间轴
-	 * 这段代码应该放在contentRender.js里
-	 */
-	var lastTapTime = 0;
-	$wrapper.delegate('ul.timeline .item', 'tap', function(e) {
-		var t = new Date() - lastTapTime;
-		lastTapTime = new Date();
-		if (t < 200) return;
-
-		e.stopPropagation();
-		var cur = $('.timeline').find('.cur'),
-			self = $(this).closest('li'),
-			p = self.find('p'),
-			duration = 200;
-
-		if (self[0] == cur.closest('li')[0]) {
-			p.removeClass('cur').slideToggle(duration);
-		} else {
-			if (cur.length) {
-				cur.removeClass('cur').slideUp(0, function() {
-					p.addClass('cur').slideToggle(duration);
-				});
-			} else {
-				p.addClass('cur').slideToggle(duration);
-			}
-		}
-	});
+	
 
 	var wrapper = $('.wrapper');
 	wrapper.delegate('.native-call', 'click', function(e) {

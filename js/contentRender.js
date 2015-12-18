@@ -10,7 +10,7 @@
 	g.$pageHPadding = 16; //正文水平左右padding
 	g.$isWeixin = navigator.userAgent.toLowerCase().indexOf('micromessenger') > 0;
 	g.$is360Browser = navigator.userAgent.indexOf("360") >= 0;
-	g.$isKandianInstalled = location.search.indexOf('isappinstalled') > 0;
+	g.$isShixianInstalled = location.search.indexOf('isappinstalled') > 0;
 	g.$datum = {
 		mod: {}
 	};
@@ -64,11 +64,11 @@
 			$('<link>').attr({
 				'type': 'text/css',
 				'rel': 'stylesheet',
-				'href': '/styles/magnific-popup.css'
+				'href': '../css/magnific-popup.css'
 			}).appendTo('head');
 			$('<script>').attr({
 				'id': scriptId,
-				'src': '/scripts/libs/jquery.magnific-popup.js'
+				'src': '../js/libs/jquery.magnific-popup.js'
 			}).on('load', callback).appendTo('body');
 		}
 	}
@@ -203,7 +203,7 @@
 	 */
 	var supportedArticleParts = {
 		'dajiasou': 'mod',
-		'kandian': 'mod',
+		'shixian': 'mod',
 		'wiki': 'mod',
 		'weibo': 'mod',
 		'music': 'mod',
@@ -280,7 +280,7 @@
 				feeds.title = $utils.unescape(data.title);
 				document.title = feeds.title;
 				//准备微信分享数据
-				// if (g.$key && g.$key.indexOf('kandian.so.com') >= 0) {
+				// if (g.$key && g.$key.indexOf('shixian.so.com') >= 0) {
 				// 	$ContentRender.weixinShareData.title = sharedDocTitle + feeds.title.replace(sharedDocTitle, '');
 				// }
 			}
@@ -399,26 +399,11 @@
 		}
 
 		//正文内可横向的滚动图集
-		$('.mod .cont').each(function(i, e) {
-			var iscroll = new IScroll(e, {
-				eventPassthrough: true,
-				scrollX: true,
-				scrollY: false,
-				preventDefault: false,
-				mouseWheel: true,
-				snap: true
-			});
-			iscroll.on('scrollEnd', function() {
-				//update page indicator
-				var curPageIndex = this.currentPage.pageX,
-					dots = $(this.wrapper).find('.dots-indicator').children().removeClass('current');
-				$(dots[curPageIndex]).addClass('current');
-			});
-			if ((g.$wap || g.$pc) && $(e).hasClass('gallery')) {
-				initGalleryMagnificPopup($(e));
-			}
-			wrapper.trigger('onCreateIScroll', [iscroll, 'in_article']);
-		});
+	
+		if(window.$wap){
+			initGalleryMagnificPopup($('.mod .gallery'));
+		}
+	
 
 		return result;
 	};
@@ -500,8 +485,8 @@
 				item.transUrl = transUrls[i];
 				item.items = item.imgurl.split('|');
 				item.data = JSON.stringify(item);
-				var itemPerPage = 3,
-					imgWidth = item.imgWidth = Math.floor((w - 10) / itemPerPage),
+				var itemPerPage = 1,betweenGap = 0;
+					imgWidth = item.imgWidth = Math.floor((w - betweenGap) / itemPerPage),
 					n = item.items.length;
 				item.imgHeight = Math.floor(imgWidth * 3 / 4);
 				item.itemPerPage = itemPerPage;
@@ -580,7 +565,7 @@
 		} else if (type == 'dajiasou') { // 大家都在搜
 			// TODO:
 			data.items = data.content.split('\n');
-		} else if (type == 'kandian') { // 看点
+		} else if (type == 'shixian') { 
 			var fixSequence = function(str) {
 				// 处理 十 以内
 				var hash = {
@@ -626,6 +611,66 @@
 		//忽略这些无意义的p标签 多是copy&paste从网页带过来的
 		return v == '<p style="white-space: normal;"></p>' || v == '<p style="white-space: normal;"><br/></p>';
 	}
+
+	/**
+	 * $ContentRender.renderRecommendArticelList(data, clearExistContent)
+	 * 渲染推荐新闻列表
+	 */
+	$cr.renderRecommendArtices = function(data, clearExistContent) {
+		if (g.$debug === true) console.log('$ContentRender.renderRecommendArtices(' + JSON.stringify(data) + ');');
+		var wrapper = $('.wrapper'),
+			contentWidth = wrapper.width() - 2 * $pageHPadding;
+		return render.call(this, '#recommend-articles-tmpl', data, clearExistContent, function(data) {
+			if (data.related && data.related.length > 0) {
+				data.related.forEach(function(item, index) {
+					if (item.pdate) item.elapse = $utils.elapse(item.pdate);
+					item.source = item.src;
+					if (item.imgurl) {
+						item.imgurl = item.imgurl.split('|')[0];
+						item.width = Math.floor((contentWidth-3)/2);
+						item.height = contentWidth / 3;
+						item.img = $utils.dmfd(item.imgurl, item.width, item.height);
+
+					} else {
+						item.img = item.imgurl;
+					}
+				});
+			}
+			return data;
+		});
+	};
+
+
+
+	/**
+	 * $ContentRender.renderhotArtices(data, clearExistContent)
+	 * 渲染热门推荐新闻列表
+	 */
+
+	 $cr.renderhotArtices = function(data, clearExistContent) {
+	 	if (g.$debug === true) console.log('$ContentRender.renderhotArtices(' + JSON.stringify(data) + ');');
+	 	var wrapper = $('.wrapper'),
+	 		contentWidth = wrapper.width() - 2 * $pageHPadding;
+	 	return render.call(this, '#hot-articles-tmpl', data, clearExistContent, function(data) {
+	 		if (data.hotNewsList && data.hotNewsList.length > 0) {
+	 			data.hotNewsList.forEach(function(item, index) {
+	 				if (item.pdate) item.elapse = $utils.elapse(item.pdate);
+	 				item.source = item.src;
+	 				if (item.imgurl) {
+	 					item.imgurl = item.imgurl.split('|')[0];
+	 					item.width =110;
+	 					item.height = 82;
+	 					item.img = $utils.dmfd(item.imgurl, item.width, item.height);
+
+	 				} else {
+	 					item.img = item.imgurl;
+	 				}
+	 			});
+	 		}
+	 		return data;
+	 	});
+	 };
+
 
 	/**
 	 * $ContentRender.renderComments(data)
@@ -712,7 +757,7 @@
 	 * 播放音乐
 	 */
 	$cr.playMusic = function() {
-		// 3.0.1 的新的 music 播放逻辑 不能兼容老版本，先保留空
+		
 	};
 
 	/**
@@ -724,36 +769,6 @@
 					 .removeClass('playing').addClass('stop');
 	};
 
-	/**
-	 * $ContentRender.renderTimeline(data)
-	 * 渲染时间轴
-	 */
-	$cr.renderTimeline = function(data, clearExistContent) {
-		data.items = data.time_lines;
-		return render.call(this, '#timeline-tmpl', data, clearExistContent, function(data) {
-			var i = 0,
-				len = data.items.length,
-				d;
-			for (; i < len; ++i) {
-				d = data.items[i];
-				d.time = $utils.formatDate(d.pdate, {
-					format: "{year}.{month,2,0}.{date,2,0}"
-				});
-			}
-			return data;
-		});
-	};
-
-	/**
-	 * $ContentRender.renderVoteSimple(data, hasPageButton, clearExistContent)
-	 * 渲染简单投票
-	 */
-	$cr.renderVoteSimple = function(data, hasPageButton, clearExistContent) {
-		return render.call(this, '#vote-simple-tmpl', data, clearExistContent, function(data) {
-			data.hasPageButton = !!hasPageButton;
-			return data;
-		});
-	};
 
 	/**
 	 * $ContentRender.renderShareButtons(data, hasPageButton, clearExistContent)
@@ -765,156 +780,6 @@
 		} else {
 			return $.noop;
 		}
-	};
-        
-	/**
-	 * $ContentRender.renderDingyue(data, clearExistContent)
-	 * 渲染订阅按钮服务
-	 */
-	$cr.renderDingyue = function(data, clearExistContent) {
-		if (g.$debug === true) console.log('$ContentRender.renderDingyue(' + JSON.stringify(data) + ');');
-		return render.call(this, '#mod-dingyue-tmpl', data, clearExistContent, function(data){
-			//处理图片
-			var contentWidth = $('.wrapper').width() - 2 * $pageHPadding;
-			if(data.subscribeData.icon){
-				var match = data.subscribeData.icon.match(/size=(\d+).*?(\d+)/);
-				var ratio = 0.13;
-				data.subscribeData._width = parseInt(contentWidth * ratio) ;
-				data.subscribeData._height = parseInt(contentWidth * ratio);
-				data.subscribeData._img = $utils.dmfd(data.subscribeData.icon, data.subscribeData._width, data.subscribeData._height, true);	
-			}
-
-			//判断是否是分享出去的页面
-			if((g.$wap || g.$isWeixin)) {
-				data.subscribeData._share = 1;
-			}else{
-				data.subscribeData._share = 0;
-			}
-			return data;
-		});
-	};
-
-	$cr.dingyueSuccess = function(){
-		if (g.$debug === true) console.log('$ContentRender.dingyueSuccess();');
-		
-		var sub_button = $('.dingyue_button button');
-		sub_button.addClass('subscribed');
-		sub_button.text("已订阅");
-		sub_button.data('success', true);
-	}
-
-	/**
-	 * $ContentRender.renderSeparator(across)
-	 * @param {Boolean} across 是否通栏
-	 * 渲染分隔符
-	 */
-	$cr.renderSeparator = function(across) {
-		if (g.$debug === true) console.log('$ContentRender.renderSeparator();');
-		var html = across === true ? '<div class="separator"></div>' : '<div class="separator2"></div>';
-		$('.wrapper').last().append(html);
-	};
-
-	$cr.renderGap = function() {
-		$('.wrapper').last().append('<div class="gap"></div>');
-	};
-
-	/**
-	 * $ContentRender.renderRecommendArticelList(data, clearExistContent)
-	 * 渲染推荐新闻列表
-	 */
-	// REMOVE: 暂时不移除
-	$cr.renderRecommendArtices = function(data, clearExistContent) {
-		if (g.$debug === true) console.log('$ContentRender.renderRecommendArtices(' + JSON.stringify(data) + ');');
-		var wrapper = $('.wrapper'),
-			contentWidth = wrapper.width() - 2 * $pageHPadding;
-		return render.call(this, '#recommend-articles-tmpl', data, clearExistContent, function(data) {
-			if (data.related && data.related.length > 0) {
-				data.related.forEach(function(item, index) {
-					if (item.pdate) item.elapse = $utils.elapse(item.pdate);
-					item.source = item.src;
-					if (item.imgurl) {
-						item.imgurl = item.imgurl.split('|')[0];
-						item.width = contentWidth;
-						item.height = contentWidth / 2;
-						item.img = $utils.dmfd(item.imgurl, contentWidth, item.height);
-					} else {
-						item.img = item.imgurl;
-					}
-					if (index != data.related.length - 1) {
-						item.separator = true;
-					}
-				});
-			}
-			data.style = "";
-			var lastSection = $("section:last");
-			if (lastSection.attr('class').indexOf('comments') >= 0 && lastSection.is(':visible')) {
-				data.style = "margin-top: 60px;";
-			}
-			return data;
-		});
-	};
-
-	/**
-	 * $ContentRender.renderEditorArticleList(data, clearExistContent)
-	 * 渲染小编最新的3篇
-	 */
-	$cr.renderEditorArticleList = function(data, clearExistContent) {
-		if (g.$debug === true) console.log('$ContentRender.renderEditorArticleList(' + JSON.stringify(data) + ');');
-		if (!($.isArray(data) && data.length)) {
-			return;
-		}
-		var wrapper = $('.wrapper'),
-			contentWidth = wrapper.width() - 2 * $pageHPadding;
-		return render.call(this, '#editor-article-list-tmpl', data, clearExistContent, function(data) {
-			data.forEach(function(item, index) {
-				if (item.pdate) item.elapse = $utils.elapse(item.pdate);
-				item.source = item.src;
-				if (item.imgurl) {
-					item.imgurl = item.imgurl.split('|')[0];
-					item.width = Math.floor(contentWidth / 3.3);
-					item.height = Math.floor(item.width * 3 / 4);
-					item.img = $utils.dmfd(item.imgurl, item.width, item.height);
-				}
-			});
-			return data;
-		});
-	};
-
-	/**
-	 * $ContentRender.renderAd(data, clearExistContent)
-	 * 渲染 meidav 广告
-	 */
-	$cr.renderAd = function(data, clearExistContent) {
-		if (g.$debug === true) console.log('$ContentRender.renderAd(' + JSON.stringify(data) + ');');
-		if (!($.isArray(data) && data.length)) {
-			return;
-		}
-		var wrapper = $('.wrapper'),
-			contentWidth = wrapper.width() - 2 * $pageHPadding;
-		return render.call(this, '#news-detail-ad-tmpl', data, clearExistContent, function(data) {
-			$.each(data, function(k, v){
-				if(v.contentimg) {
-					v._imgWidth = Math.floor(contentWidth / 3.3);
-					v._imgHeight = Math.floor(v._imgWidth * 3 / 4);
-				}
-				v._title = v.title || '';
-				if(v.desc) {
-					v._title += ', ' + v.desc;
-				}
-			});
-			return data;
-		});
-	};
-
-	/**
-	 * $cr.renderThirdPartyZhushou
-	 * 渲染与手机助手合作的相关页面
-	 */
-	$cr.renderThirdPartyZhushou = function(data, clearExistContent, returnHtml, wrapper) {
-		return render.call(this, '#third-party-zhushou-tmpl', data, clearExistContent, function(data) {
-			// 处理数据
-			return data;
-		}, returnHtml, wrapper);
 	};
 
 	// REMOVE: 相关模块，保留时间轴
@@ -1136,42 +1001,4 @@
 
 	// $($cr.lazyLoadImage);
 	g.$ContentRender = $cr;
-
-	/**
-	 * 微信JS SDK升级导致分享代码已失效，by zhangdaiping 2015-03-23
-	 * 分享到微信或朋友圈
-	 */
-	$ContentRender.weixinShareData = {};
-	/*
-	$ContentRender.weixinShareData = {
-		img_url: "http://p2.qhimg.com/d/inn/d17e3af7/512.png",
-		img_width: "512",
-		img_height: "512",
-		link: null,
-		title: null,
-		_found_img_url: false,
-		_found_first_text: false
-	};
-
-	if ($isWeixin) {
-		document.addEventListener('WeixinJSBridgeReady', function() {
-			// 发送给好友
-			WeixinJSBridge.on('menu:share:appmessage', function(argv) {
-				var d = $ContentRender.weixinShareData;
-				if (d.title) {
-					d.link = g.$url || location.href;
-					WeixinJSBridge.invoke('sendAppMessage', d);
-				}
-			});
-			// 分享到朋友圈
-			WeixinJSBridge.on('menu:share:timeline', function(argv) {
-				var d = $ContentRender.weixinShareData;
-				if (d.title) {
-					d.link = g.$url || location.href;
-					WeixinJSBridge.invoke('shareTimeline', d);
-				}
-			});
-		}, false);
-	}
-	*/
 })(this);

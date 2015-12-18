@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>图集新闻详情页</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+    <link wap href="../css/photoswipe.css?v=669367" type="text/css" rel="stylesheet">
+    <script wap type="text/javascript" src="../js/libs/zepto.js?v=46566d"></script>
+    <script wap type="text/javascript" src="../js/libs/photoswipe.js?v=bb2c53"></script>
+    <script wap type="text/javascript" src="../js/utils.js?v=364a4d"></script>
+    <style>html,body{margin:0;padding:0;border:0;height:100%}body{font-family:'STHeiti','Microsoft Yahei', sans-serif;line-height:1.5;font-size:0;background:#000;padding:0;color:#fff;position:relative;word-wrap:break-word;overflow:hidden}body:before{content:'';display:inline-block;height:100%;width:0;vertical-align:middle}body .msg-box{display:inline-block;width:100%;font-size:16px;vertical-align:middle;text-align:center}img{border:0;max-width:100%}a{text-decoration:none;-webkit-tap-highlight-color:transparent}.pswp{font-size:16px}
+    	.sx-download-bar{
+    		height: 40px;
+    		border-top: 1px solid #e5e5e5;
+    		background: #fff url(http://p7.qhimg.com/d/inn/032c38a5/download-bar-h5.png) no-repeat 15px 50%;
+    		background-size: 115px auto;
+    		position: fixed;
+    		bottom: 0;
+    		width: 100%;
+    		z-index: 1999;
+    	}
+    	.sx-btn-download{
+    		display: block;
+    		color: #fff;
+    		font-size: 16px;
+    		background-color: #ec4346;
+    		line-height: 30px;
+    		height: 30px;
+    		padding:0 15px;
+    		border-radius: 3px;
+    		position: absolute;
+    		right: 15px;
+    		top: 5px
+
+    	}
+</style>
+</head>
+<body>
+    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="pswp__bg"></div>
+        <div class="pswp__scroll-wrap">
+            <div class="pswp__container">
+                <div class="pswp__item"></div>
+                <div class="pswp__item"></div>
+                <div class="pswp__item"></div>
+            </div>
+            <div class="pswp__ui pswp__ui--hidden">
+                <div class="pswp__top-bar">
+                    <div class="pswp__counter"></div>
+                    <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                    <button class="pswp__button pswp__button--share" title="Share"></button>
+                    <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                    <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                    <div class="pswp__preloader">
+                        <div class="pswp__preloader__icn">
+                          <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                    <div class="pswp__share-tooltip"></div> 
+                </div>
+                <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+                </button>
+                <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+                </button>
+                <div class="pswp__caption">
+                    <div class="pswp__caption__center"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="msg-box"></div>
+    <div class="sx-download-bar">
+    	<a href="#" class="sx-btn-download">下载</a>
+    </div>
+
+	<script wap type="text/javascript" src="../js/gallery.js"></script>
+	<script type="text/javascript" src="../js/data/detail-n.js"></script>
+    <script wap>
+    	console.log(galleryData)
+        $ContentRender.renderArticle(galleryData.data);
+    </script>
+    <script wap src="http://s0.qhimg.com/monitor/;monitor/0ddb3eeb.js"></script>
+    <!--<script wap>monitor.setProject("360_kandian").setUrl("http://h5.kandian.360.cn/kandian/index.h5.detail.tuji.html").getTrack();</script>-->
+</body>
+</html>
