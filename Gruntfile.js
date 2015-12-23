@@ -12,8 +12,8 @@ module.exports = function(grunt) {
 				files: [{
 						expand:true,
 						cwd:'js',//js目录下
-						src:['**/*.js','!data/*.js'],//所有js文件
-						dest: '../output/js'//输出到此目录下
+						src:['**/*.js','!data/*.js','!**/*only.js','!wap/*.js','!video/*.js'],//所有js文件
+						dest: '../output/android/js'//输出到此目录下
 					}]
 			},
 			buildTest:{
@@ -35,7 +35,7 @@ module.exports = function(grunt) {
 						expand:true,
 						cwd:'css',//js目录下
 						src:'**/*.css',//所有js文件
-						dest: '../output/css'//输出到此目录下
+						dest: '../output/android/css'//输出到此目录下
 					}]
 			},
 			buildTest:{
@@ -56,7 +56,7 @@ module.exports = function(grunt) {
 					minifyJS:true //html中压缩js
 				},
 				files: {
-					'../output/html/news-detail.html': 'html/news-detail.html'
+					'../output/android/html/news-detail.html': 'html/news-detail.html'
 				}
 			},
 			distTest: {
@@ -88,7 +88,7 @@ module.exports = function(grunt) {
 		replace: {
 		  regexReplace: {
 			/*src: ['output/html/*.html'],*/
-			src: ['../output/html/news-detail.html'],
+			src: ['../output/android/html/news-detail.html'],
 			overwrite: true,                 // overwrite matched source files 
 			replacements: [ {
 			  from:/\<script\s+deletecur[^\<]+\<\/script\>/ig,//去掉带有deletecur的script标签
@@ -109,7 +109,7 @@ module.exports = function(grunt) {
 				expand: true,
 				cwd: 'images/',
 				src: '**',
-				dest: '../output/images/',
+				dest: '../output/android/images/',
 				filter: 'isFile',
 			},
 			test: {
