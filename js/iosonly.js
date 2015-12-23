@@ -90,19 +90,15 @@ var iosOnly = (function () {
     };
 
     IO.bineReatedEventHandler = function () {
-        // 小编相关推荐外部链接
-        $('#p-more a').click(function (e) {
+        // 相关推荐外部链接
+        $('.recommend-articles li').click(function (e) {
             e.preventDefault();
-            var url = this.href;
-            var nid = $(this).data('nid');
-            var m = $(this).data('m');
+            var url = $(this).data('zm');
             sendMessageToApp({
                 handle: 'link',
                 type: '0001',
                 data: {
-                    url: url,
-                    nid: nid,
-                    m: m
+                    url: url
                 }
             });
         });
@@ -141,16 +137,15 @@ connectWebViewJavascriptBridge(function(bridge) {
   bridge.init(function(message, responseCallback) {});
 
   bridge.registerHandler('JavascriptHandler', function(data, responseCallback) {
-    renderArticle(data);
-    renderShareButtons(data);
+   
+    $ContentRender.renderArticle(data);
     iosOnly.initialize(bridge);
   });
 
   bridge.registerHandler('JavascriptRelatedHandler', function(data, responseCallback) {
-        renderNews({
-            related: data
-        });
-        iosOnly.bineReatedEventHandler();
+    $ContentRender.renderGrayBar(data);
+    $ContentRender.renderRecommendArtices(data);
+    iosOnly.bineReatedEventHandler();
   });  
 
 

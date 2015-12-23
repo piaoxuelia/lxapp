@@ -8,13 +8,17 @@
 	<link href="../css/newslist.css" type="text/css" rel="stylesheet"/>
 	<style type="text/css"></style>
 	<script type="text/javascript" src="../js/libs/zepto.js"></script>
+
 	<script type="text/javascript" src="../js/libs/fastclick.js"></script>
 	<script type="text/javascript" src="../js/libs/fx.js"></script>
 	<script type="text/javascript" src="../js/libs/slidefx.js"></script>
+
 	<script type="text/javascript" src="../js/libs/touch.js"></script>
 	<script type="text/javascript" src="../js/libs/selector.js"></script>
+
 	<script type="text/javascript" src="../js/utils.js"></script>
 	<script type="text/javascript" src="../js/libs/ejs.js"></script>
+
 	<script type="text/javascript" src="../js/libs/rng.js"></script>
 	<script type="text/javascript" src="../js/libs/md5.js"></script>
 
@@ -60,7 +64,7 @@
 			{% var contentLen = content.length, openTag = false; %}
 			{% content.forEach(function(d, i){ %}
 
-				{% /* 2014-12-04 看点2.0.1，对于文本和图片实现自动分块处理 */ %}
+				{% /* 对于文本和图片实现自动分块处理 */ %}
 				{% if (openTag && d.type != 'txt' && d.type != 'img') { %}
 					{% openTag = false; %}
 					</div>
@@ -311,10 +315,16 @@
 	</script>
 </head>
 <body>
+	<div class="wrapper">
+		<div id="sx-graybar"></div>
+		<div id="sx-article"></div>
+		<div id="sx-recommond"></div>
+		<div id="sx-hot"></div>
+		<div id="sx-comments"></div>
+	</div>
 
-	<div class="wrapper"></div>
-	<div class="pop"></div>
-	<style type="text/css">
+	<div wap class="pop"></div>
+	<style wap type="text/css">
 		.pop-fixed{
 			position: fixed;
 			width: 100%;
@@ -351,12 +361,14 @@
 
 		}
 	</style>
-	<div class="sx-download-bar">
+	<div wap class="sx-download-bar">
     	<a href="#" class="sx-btn-download">下载</a>
     </div>
 	<script type="text/javascript" src="../js/nativeApi.js"></script>
 	<script type="text/javascript" src="../js/contentRender.js"></script>
-	<script type="text/javascript" src="../js/waponly.js"></script>
+
+	<!--<script type="text/javascript" src="../js/waponly.js"></script>-->
+
 	<script deletecur type="text/javascript" src="../js/data/detail-n.js"></script>
 	<script deletecur>
 		$(function(){

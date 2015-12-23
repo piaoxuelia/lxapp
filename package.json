@@ -4,7 +4,7 @@
   "description": "app",
   "license": "MIT",
   "devDependencies": {
-    "grunt": "~0.4.1",
+    "grunt": "^0.4.5",
     "grunt-contrib-clean": "latest",
     "grunt-contrib-concat": "latest",
     "grunt-contrib-copy": "latest",
@@ -18,7 +18,8 @@
     "grunt-strip": "latest"
   },
   "dependencies": {
-    "express": "3.x"
+    "clean-css": "latest",
+    "express": "latest"
   },
   "repository": {
     "type": "git",

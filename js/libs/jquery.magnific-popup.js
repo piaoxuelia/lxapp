@@ -152,11 +152,12 @@ MagnificPopup.prototype = {
 	open: function(data) {
 
 		if(!_body) {
-			_body = $(document.body);
+			//_body = $(document.body);
 			_body = $('.pop');
-			_body.addClass('pop-fixed');
-			$('.wrapper').addClass('forbid');
 		}
+		_body.addClass('pop-fixed');
+		$('.wrapper').addClass('forbid');
+		$("body").css("overflow","hidden");
 
 		var i, items, item;
 
@@ -311,6 +312,7 @@ MagnificPopup.prototype = {
 				if(e.keyCode === 27) {
 					mfp.close();
 					$('.pop').removeClass('pop-fixed')
+					$("body").css("overflow","");
 				}
 			});
 		}
@@ -418,6 +420,7 @@ MagnificPopup.prototype = {
 		}
 		$('.pop').removeClass('pop-fixed');
 		$('.wrapper').removeClass('forbid');
+		$("body").css("overflow","");
 	},
 
 	/**

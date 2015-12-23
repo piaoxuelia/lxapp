@@ -228,7 +228,7 @@
 				
 				feeds.transmit_num = data.transmit_num ? data.transmit_num : "";
 				return feeds;
-		});
+		},"",$('#sx-graybar'));
 	}
 
 
@@ -387,7 +387,7 @@
 				}
 			}
 			return feeds;
-		});
+		},"",$('#sx-article'));
 
 		/*
 		 * 2014-12-04 看点2.0.1版，将头图从正文中抽取出来，
@@ -637,7 +637,7 @@
 				});
 			}
 			return data;
-		});
+		},'',$('#sx-recommond'));
 	};
 
 
@@ -668,7 +668,7 @@
 	 			});
 	 		}
 	 		return data;
-	 	});
+	 	},'',$('#sx-hot'));
 	 };
 
 
@@ -712,7 +712,7 @@
 				item.avatarUrl = decodeURIComponent(item.uavatar) || null;
 			});
 			return data;
-		}, returnHtml);
+		}, returnHtml,$('#sx-comments'));
 	};
 
 	/**

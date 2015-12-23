@@ -13,7 +13,7 @@ module.exports = function(grunt) {
 						expand:true,
 						cwd:'js',//js目录下
 						src:['**/*.js','!data/*.js'],//所有js文件
-						dest: 'output/js'//输出到此目录下
+						dest: '../output/js'//输出到此目录下
 					}]
 			},
 			buildTest:{
@@ -35,7 +35,7 @@ module.exports = function(grunt) {
 						expand:true,
 						cwd:'css',//js目录下
 						src:'**/*.css',//所有js文件
-						dest: 'output/css'//输出到此目录下
+						dest: '../output/css'//输出到此目录下
 					}]
 			},
 			buildTest:{
@@ -56,7 +56,7 @@ module.exports = function(grunt) {
 					minifyJS:true //html中压缩js
 				},
 				files: {
-					'output/html/news-detail.html': 'html/news-detail.html'
+					'../output/html/news-detail.html': 'html/news-detail.html'
 				}
 			},
 			distTest: {
@@ -88,7 +88,7 @@ module.exports = function(grunt) {
 		replace: {
 		  regexReplace: {
 			/*src: ['output/html/*.html'],*/
-			src: ['output/html/news-detail.html'],
+			src: ['../output/html/news-detail.html'],
 			overwrite: true,                 // overwrite matched source files 
 			replacements: [ {
 			  from:/\<script\s+deletecur[^\<]+\<\/script\>/ig,//去掉带有deletecur的script标签
@@ -109,7 +109,7 @@ module.exports = function(grunt) {
 				expand: true,
 				cwd: 'images/',
 				src: '**',
-				dest: 'output/images/',
+				dest: '../output/images/',
 				filter: 'isFile',
 			},
 			test: {
@@ -123,7 +123,7 @@ module.exports = function(grunt) {
 	});
 
 	// Load the plugin that provides the "uglify" task.
-	grunt.loadNpmTasks('grunt-contrib-sass');
+	//grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-htmlmin');
