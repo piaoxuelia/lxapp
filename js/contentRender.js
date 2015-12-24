@@ -68,7 +68,7 @@
 			}).appendTo('head');
 			$('<script>').attr({
 				'id': scriptId,
-				'src': '../js/libs/jquery.magnific-popup.js'
+				'src': '../js/wap/jquery.magnific-popup.js'
 			}).on('load', callback).appendTo('body');
 		}
 	}
@@ -251,7 +251,7 @@
 		hasViewOriginButton = typeof hasViewOriginButton == 'undefined' ? true : !!hasViewOriginButton;
 
 		var headImgHtml;
-
+		var videoHtml = [];
 		var result = render.call(this, '#article-tmpl', data, clearExistContent, function(data) {
 			var feeds = {
 					// 避免污染源数据
@@ -261,6 +261,7 @@
 			//正文的数据需要预先处理的比较多
 			//每次增加新的字段都需要在下面加上
 
+			
 			if (data.time && (isNaN(data.time) || data.time > 0)) {
 				feeds.time = $utils.formatDate(data.time);
 			} else {
@@ -370,10 +371,13 @@
 							}
 							dat.value = $utils.dmfd(dat.value, dat.width, dat.height, true);
 						}
-						headImgHtml = renderArticleParts(typename ? (typename + '-' + dat.type) : dat.type, json);
+						headImgHtml = renderArticleParts(typename ? (typename + '-' + dat.type) : dat.type, json);						
 						feeds.content.splice(i, 1);
 						i--;
-					} else {
+					} else if (dat.type == 'video') {
+						videoHtml.push(renderArticleParts(typename ? (typename + '-' + dat.type) : dat.type, json));
+						feeds.content.splice(i, 1);
+					} else{
 						if(json.showeditor == 1) {
 							json._editorData = {
 								editor_pic: feeds.editor_pic,
@@ -390,10 +394,13 @@
 		},"",$('#sx-article'));
 
 		/*
-		 * 2014-12-04 看点2.0.1版，将头图从正文中抽取出来，
-		 * 	- 头图提到页面顶部显示；
-		 *	- 大家都在搜，提到标题下面正文上面显示；
+		 * 	- 视频提到最上面
 		 */
+		if (videoHtml.length) {
+			videoHtml.forEach(function(item){
+				wrapper.find('#video').append(item);
+			})
+		}
 		if (headImgHtml) {
 			wrapper.find('.article').prepend(headImgHtml);
 		}
@@ -627,7 +634,7 @@
 					item.source = item.src;
 					if (item.imgurl) {
 						item.imgurl = item.imgurl.split('|')[0];
-						item.width = Math.floor((contentWidth-3)/2);
+						item.width = Math.floor((contentWidth-15)/2);
 						item.height = contentWidth / 3;
 						item.img = $utils.dmfd(item.imgurl, item.width, item.height);
 

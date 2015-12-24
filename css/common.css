@@ -29,6 +29,8 @@ body{
 }
 h1, h2, h3, h4, h5, h6{
 	font-weight: normal;
+	margin: 0;
+	padding: 0
 }
 
 p img{
@@ -84,6 +86,9 @@ hr{
 }
 section:last-child{
 	border-bottom: none;
+}
+.article.part  .block.mod:last-child{
+	margin-bottom: 0;
 }
 .center{
 	text-align: center;
@@ -146,7 +151,7 @@ section:last-child{
 /* 通栏按钮 */
 .cross-column-button{
 	display: block;
-	color: rgba(0, 0, 0, 0.54);
+	color: #999;
 	text-decoration: none;
 	background: #f2f2f2;
 	line-height: 3;
@@ -332,14 +337,16 @@ section:last-child{
 }
 
 .part h2{
-	font-size: 0.9375em;
-}
+	font-size: 1em;
+}	
 
 .part h2.title{
-	overflow: hidden;
+	overflow: hidden;	
 	text-align: left;
-	color: rgba(0, 0, 0, 0.54);
-	margin-top: 0;
+	color: #333;
+	padding-top: 18px;
+	border-top: 1px solid #e5e5e5;
+	padding-bottom: 15px;
 }
 
 .part .photo[src=''], .part .photo:not([src]){
@@ -347,10 +354,10 @@ section:last-child{
 	background: url(../images/img-placeholder.png) no-repeat center center #e9e9e9;
 	background-size: 30%;
 }
-
-.part .photo-desc{
-	color: rgba(0, 0, 0, 0.54);
-	font-size: 0.75em;
+	
+.part .photo-desc{		
+	color: #999;
+	font-size: 0.75em;	
 	margin: 0.25em 0em 0.25em;
 	text-align: left;
 }
@@ -363,7 +370,9 @@ section:last-child{
 	background: url(../images/img-placeholder-error.png) no-repeat center center #e9e9e9;
 	background-size: 30%;
 }
-
+.photo-mod{
+	margin-bottom: 20px;
+}
 .circle-button{
 	border-radius: 50%;
 	width: 36px;
@@ -424,10 +433,10 @@ section:last-child{
 }
 .article.part h1{
 	font-size: 1.25em;
-	margin: 5px 0 5px 0;
+	padding: 25px;
 	font-weight: bold;
-	text-align: left;
-	color: rgba(0, 0, 0, 0.87);
+	text-align: center;
+	color: #333;
 }
 .article.part h2{
 	font-size: 1.125em;
@@ -442,13 +451,13 @@ section:last-child{
 	font-style: normal;
 }
 .article.part .article-info{
-	color: rgba(0, 0, 0, 0.54);
+	color: #999;
 	font-size: 0.75em;
-	margin-bottom: 2em;
-	text-align: left;
+	margin-bottom: 30px;
+	text-align: center;
 }
 .article.part .editor-info{
-	color: rgba(0, 0, 0, 0.54);
+	color: #999;
 	font-size: 0.75em;
 	line-height: 2.08333em;
 	margin-bottom: 1em;
@@ -484,7 +493,7 @@ section:last-child{
 .article.part p{
 	line-height: 1.6;
 	text-align: justify;
-	margin: 0.88235em 0em;
+	margin: 0 0 15px 0;
 	color: rgba(0, 0, 0, 0.87);
 }
 .article.part p a{
@@ -545,8 +554,7 @@ section:last-child{
 	margin-top: 0.41667em;
 }
 .article.part .mod{
-	margin: 0.9375em 0em;
-	padding: 13px 0;
+	margin: 0 0 25px 0;
 	overflow: hidden;
 	position: relative;
 }
@@ -610,10 +618,7 @@ section:last-child{
 .article.part .mod p:last-child{
 	margin-bottom: 0;
 }
-/* .article.part .gallery.mod .gallery-wrap .gallery, .article.part .weibo.mod .weibo-item .gallery, .article.part .video.mod .photo{
-	margin-left: -6px;
-	margin-right: -6px;
-} */
+
 .article.part .block.mod{
 	background: none;
 	padding: 0;
@@ -697,7 +702,7 @@ section:last-child{
 .share-buttons-wrap.part .share-buttons ul li span{
 	display: block;
 	font-size: 12px;
-	color: rgba(0, 0, 0, 0.54);
+	color: #999;
 }
 
 
@@ -728,7 +733,7 @@ section:last-child{
 }
 .comments.part .comment-list li .time{
 	font-size: 0.75em;
-	color: rgba(0, 0, 0, 0.54);
+	color: #999;
 	margin-top: 0.75em;
 }
 .comments.part .comment-list li .info:after{
@@ -738,7 +743,7 @@ section:last-child{
 }
 .comments.part .comment-list li .info .liked, .comments.part .comment-list li .info .thumbup, .comments.part .comment-list li .info .thumbup-active{
 	font-size: 0.75em;
-	color: rgba(0, 0, 0, 0.54);
+	color: #999;
 	float: right;
 }
 .comments.part .comment-list li .info .thumbup, .comments.part .comment-list li .info .thumbup-active{
@@ -777,7 +782,7 @@ section:last-child{
 	}
 }
 .comments.part .no-comments{
-	color: rgba(0, 0, 0, 0.54);
+	color: #999;
 	background: url(../images/icon-no-comments.png) no-repeat center center;
 	background-size: 62px 62px;
 	height: 135px;
@@ -788,7 +793,15 @@ section:last-child{
 	display: inline-block;
 	font-size: 12px;
 }
-
+.comments.part h2{
+	background: #ff1a4c;
+	padding:2px 15px;
+	margin-left: -16px;
+	border-top: none;
+	margin-bottom: 15px;
+	display: inline-block;
+	color: #fff;
+}
 .comments-compose.part{
 	margin-top: 1em;
 	padding-top: 0;
@@ -1001,13 +1014,12 @@ section:last-child{
 	-webkit-flex:1;
 	flex:1;
 	width: 1px;
-	background: #fafafa;
 	margin-bottom: 6px;
 	position: relative;
 	padding-bottom: 28px;
 }
 .recommend-articles.part ul li:first-child{
-	margin-right: 3px
+	margin-right: 15px
 }
 .recommend-articles.part li .time-tips{
 	font-size: 12px;
@@ -1021,7 +1033,6 @@ section:last-child{
 	text-decoration: none;
 	color: #333;
 	display: block;
-	padding:0 7px;
 }
 .recommend-articles.part li b{
 	font-weight: normal;
@@ -1056,10 +1067,12 @@ section:last-child{
 .hot-articles.part .articles-list li{
 	height: 82px;
 	background:#fafafa;
-	margin-bottom: 4px;
+	padding:10px;
+	margin-bottom: 10px;
 }
 .hot-articles.part .articles-list .txts{
-	  padding: 8px 10px 0 10px;
+	 margin-top: -3px;
+	 padding-right: 10px;
 }
 .hot-articles.part .articles-list p{
 	line-height: 1.2;
@@ -1091,13 +1104,10 @@ section:last-child{
 }
 
 
-.article.part .gallery.mod{
-	padding-top: 10px;
-}
 .article.part .gallery.mod h3{
 	font-size: 0.75em;
 	margin: 0;
-	color: rgba(0, 0, 0, 0.54);
+	color: #999;
 	overflow: hidden;
 	text-align: center;
 }
@@ -1183,7 +1193,7 @@ section:last-child{
 	font-size: 0.9375em;
 	padding: 0.66667em 0em;
 	text-align: justify;
-	color: rgba(0, 0, 0, 0.54);
+	color: #999;
 }
 .article.part .wiki.mod a h4, .article.part .further-reading a h4{
 	color: rgba(0, 0, 0, 0.87);
@@ -1210,7 +1220,7 @@ section:last-child{
 	margin-right: 0.75em;
 }
 .article.part .weibo.mod .weibo-info .date{
-	color: rgba(0, 0, 0, 0.54);
+	color: #999;
 	font-size: 12px;
 }
 .article.part .weibo.mod .weibo-info .username{
@@ -1261,7 +1271,7 @@ section:last-child{
 }
 .article.part .weibo.mod .stat{
 	font-size: 0.75em;
-	color: rgba(0, 0, 0, 0.54);
+	color: #999;
 	text-align: left;
 }
 .article.part .weibo.mod .stat span{
@@ -1270,15 +1280,15 @@ section:last-child{
 .article.part .weibo.mod .stat span:first-child{
 	border-right: 1px solid rgba(0, 0, 0, 0.12);
 }
-.article.part .video.mod{
-	padding-top: 10px;
-	padding-bottom: 10px;
-}
 .article.part .video.mod h4{
 	font-size: 0.75em;
-	color: rgba(0, 0, 0, 0.54);
+	color: #999;
 	text-align: center;
 	margin-top: 0.5em;
+}
+.article.part .video .photo a{
+	display: block;
+	position: relative;
 }
 .article.part .video.mod .photo{
 	margin-top: 10px;
@@ -1291,9 +1301,10 @@ section:last-child{
 	left: 50%;
 	top: 50%;
 	position: absolute;
-	width: 40px;
-	height: 40px;
+	width: 45px;
+	height: 45px;
 	-webkit-transform: translate3d(-50%, -50%, 0);
+	z-index: 1;
 }
 .article.part .video.mod .snapshot{
 	display: block;
@@ -1302,4 +1313,5 @@ section:last-child{
 .article.part .video.mod a:active .snapshot{
 	opacity: 1;
 }
+
 

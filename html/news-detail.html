@@ -19,8 +19,8 @@
 	<script type="text/javascript" src="../js/utils.js"></script>
 	<script type="text/javascript" src="../js/libs/ejs.js"></script>
 	<!--wapStart-->
-	<script  wap type="text/javascript" src="../js/libs/rng.js"></script>
-	<script wap type="text/javascript" src="../js/libs/md5.js"></script>
+	<script  wap type="text/javascript" src="../js/wap/rng.js"></script>
+	<script wap type="text/javascript" src="../js/wap/md5.js"></script>
 	<!--wapEnd-->
 	<script id="grayBar-tmpl" type="text/html">
 		<div class="grayBar">
@@ -59,7 +59,7 @@
 					</div>
 				{% } %}
 			{% } %}
-
+			<div id="video"></div>
 			{% //正文内容 %}
 			{% var contentLen = content.length, openTag = false; %}
 			{% content.forEach(function(d, i){ %}
@@ -126,7 +126,7 @@
 
 								data-mfp-src="{%=item.originalPhotos[i]%}">
 									<img class="lazy" data-src="{%=url%}" width="100%" height=""/>
-									<span class="pages">{%=item.allqimg%}P</span>
+									<span class="pages">{%=item.allqimg%}/P</span>
 									<span class="galleryflag"><span>
 								</a>
 							
@@ -147,7 +147,6 @@
 				<div class="photo" width="100%">
 					<a href="javascript:;"
 						class="native-call"
-						style="position:relative;display:block;" 
 						data-native="video.play" 
 						data-param1="{%=item.url%}">
 						<img class="snapshot lazy" data-src="{%=item.imgurl%}" width="100%" height=""/>
@@ -370,7 +369,7 @@
 	<script type="text/javascript" src="../js/contentRender.js"></script>
 
 	<!--wapStart-->
-	<script type="text/javascript" src="../js/waponly.js"></script>
+	<script type="text/javascript" src="../js/wap/waponly.js"></script>
 	<!--wapEnd-->
 
 	<!--iosStart-->

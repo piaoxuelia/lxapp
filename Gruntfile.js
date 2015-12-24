@@ -16,6 +16,14 @@ module.exports = function(grunt) {
 						dest: '../output/android/js'//输出到此目录下
 					}]
 			},
+			buildToDev:{
+				files: [{
+						expand:true,
+						cwd:'js',//js目录下
+						src:['**/*.js','!data/*.js','!**/*only.js','!wap/*.js','!video/*.js'],//所有js文件
+						dest: '../output/dev/js'//输出到此目录下
+					}]
+			},
 			buildTest:{
 				files: [{
 						expand:true,
@@ -38,6 +46,14 @@ module.exports = function(grunt) {
 						dest: '../output/android/css'//输出到此目录下
 					}]
 			},
+			buildToDev:{
+				files: [{
+						expand:true,
+						cwd:'css',//js目录下
+						src:'**/*.css',//所有js文件
+						dest: '../output/dev/css'//输出到此目录下
+					}]
+			},
 			buildTest:{
 				files: [{
 						expand:true,
@@ -51,13 +67,26 @@ module.exports = function(grunt) {
 		htmlmin:{
 			dist: {// Target
 				options: {// Target options
-					removeComments: true,
+					removeComments: false,
 					collapseWhitespace: true,
 					minifyJS:true //html中压缩js
 				},
 				files: {
 					'../output/android/html/news-detail.html': 'html/news-detail.html'
 				}
+			},
+			distToDev:{// Target
+				options: {// Target options
+					removeComments: false,
+					collapseWhitespace: true,
+					minifyJS:true //html中压缩js
+				},
+				files: [{
+					'../output/dev/html/news-detail.html': 'html/news-detail.html'
+				},
+					{'../output/dev/html/news-detail-nodata.html': 'html/news-detail-nodata.html'
+
+				}]
 			},
 			distTest: {
 				options: {// Target options
@@ -90,8 +119,12 @@ module.exports = function(grunt) {
 			/*src: ['output/html/*.html'],*/
 			src: ['../output/android/html/news-detail.html'],
 			overwrite: true,                 // overwrite matched source files 
-			replacements: [ {
+			replacements: [ /*{
 			  from:/\<script\s+deletecur[^\<]+\<\/script\>/ig,//去掉带有deletecur的script标签
+			  to: ''
+			},*/{
+			  // from:/\<\!--wapStart--\>([\s\S]*)\<\!--wapEnd--\>/gi,
+			  from:/\<\!--wapStart--\>((?!wapEnd)[\s\S])*\<\!--wapEnd--\>/gi,
 			  to: ''
 			}]
 		  }
@@ -110,6 +143,13 @@ module.exports = function(grunt) {
 				cwd: 'images/',
 				src: '**',
 				dest: '../output/android/images/',
+				filter: 'isFile',
+			},
+			copyToDev: {
+				expand: true,
+				cwd: 'images/',
+				src: '**',
+				dest: '../output/dev/images/',
 				filter: 'isFile',
 			},
 			test: {
@@ -133,7 +173,7 @@ module.exports = function(grunt) {
 	
 	
 	// Default task(s)
-	grunt.registerTask('default', ['uglify','cssmin','htmlmin','replace','copy']);
+	grunt.registerTask('default', ['uglify','cssmin','htmlmin','copy','replace']);
 	grunt.registerTask('wt', ['watch']);
 	grunt.registerTask('cp', ['copy']);
 };
