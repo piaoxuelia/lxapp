@@ -20,8 +20,16 @@ module.exports = function(grunt) {
 				files: [{
 						expand:true,
 						cwd:'js',//js目录下
-						src:['**/*.js','!data/*.js','!**/*only.js','!wap/*.js','!video/*.js'],//所有js文件
+						src:['**/*.js','!**/iosonly.js','!video/*.js'],//所有js文件
 						dest: '../output/dev/js'//输出到此目录下
+					}]
+			},
+			buildToShare:{
+				files: [{
+						expand:true,
+						cwd:'js',//js目录下
+						src:['**/*.js','!**/iosonly.js'],//所有js文件
+						dest: '../output/share/static/js'//输出到此目录下
 					}]
 			},
 			buildTest:{
@@ -49,10 +57,21 @@ module.exports = function(grunt) {
 			buildToDev:{
 				files: [{
 						expand:true,
-						cwd:'css',//js目录下
-						src:'**/*.css',//所有js文件
+						cwd:'css',
+						src:'**/*.css',
 						dest: '../output/dev/css'//输出到此目录下
 					}]
+			},
+			buildToShare:{
+				files: [{
+						expand:true,
+						cwd:'css',
+						src: ['*.css', '!common.css','!common-wap.css'],
+						dest: '../output/share/static/css'//输出到此目录下
+					},{
+						'../output/share/static/css/common.css': 'css/common-wap.css'
+					}
+					]
 			},
 			buildTest:{
 				files: [{
@@ -88,6 +107,18 @@ module.exports = function(grunt) {
 
 				}]
 			},
+			distToShare:{// Target
+				options: {// Target options
+					removeComments: false,
+					collapseWhitespace: true,
+					minifyJS:true //html中压缩js
+				},
+				files: [
+				{'../output/share/news-detail.html': 'html/news-detail.html'},
+				{'../output/share/gallary-detail.html': 'html/gallary-detail.html'},
+				{'../output/share/video-detail.html': 'html/video-detail.html'}
+					]
+			},
 			distTest: {
 				options: {// Target options
 					removeComments: true,
@@ -115,6 +146,28 @@ module.exports = function(grunt) {
 
 		},
 		replace: {
+		  regexReplaceShare: {
+			/*src: ['output/html/*.html'],*/
+			src: ['../output/share/news-detail.html','../output/share/gallary-detail.html','../output/share/video-detail.html'],
+			overwrite: true,                 // overwrite matched source files 
+			replacements: [ {
+			  from:/\.\.\//ig,//去掉带有deletecur的script标签
+			  to: 'static/'
+			},{
+			  
+			  from:/\<\!--iosStart--\>((?!iosEnd)[\s\S])*\<\!--iosEnd--\>/gi,
+			  to: ''
+			}]
+		  },
+		  regexReplaceShare1: {
+			/*src: ['output/html/*.html'],*/
+			src: ['../output/share/static/css/*.css','../output/share/*.html'],
+			overwrite: true,
+			replacements: [ {
+			  from:/images\//ig,
+			  to: 'img/'
+			}]
+		  },
 		  regexReplace: {
 			/*src: ['output/html/*.html'],*/
 			src: ['../output/android/html/news-detail.html'],
@@ -128,6 +181,7 @@ module.exports = function(grunt) {
 			  to: ''
 			}]
 		  }
+
 		},
 		watch: {
 			configFiles: {
@@ -150,6 +204,13 @@ module.exports = function(grunt) {
 				cwd: 'images/',
 				src: '**',
 				dest: '../output/dev/images/',
+				filter: 'isFile',
+			},
+			copyToDev: {
+				expand: true,
+				cwd: 'images/',
+				src: '**',
+				dest: '../output/share/static/img/',
 				filter: 'isFile',
 			},
 			test: {

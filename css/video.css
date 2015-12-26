@@ -1,9 +1,5 @@
 @charset "UTF-8";
-@font-face{
-	font-family: "fzLantingHei";
-	src: url(../font/FZLTHJW.TTF) format('truetype');
-	font-weight: 300
-}
+
 html, body{
 	margin: 0;
 	padding: 0;
@@ -11,7 +7,7 @@ html, body{
 	min-height: 100%;
 }
 body, button{
-	font-family: 'fzLantingHei','STHeiti','Microsoft Yahei', sans-serif;
+	font-family:'STHeiti','Microsoft Yahei', sans-serif;
 }
 html{
 	font-size: 100px;
@@ -163,7 +159,7 @@ section:last-child{
 
 .part .photo[src=''], .part .photo:not([src]){
 	text-align: center;
-	background: url(../images/img-placeholder.png) no-repeat center center #e9e9e9;
+	background: url(../img/img-placeholder.png) no-repeat center center #e9e9e9;
 	background-size: 30%;
 }
 
@@ -225,7 +221,7 @@ section:last-child{
 }
 .comments.part .comment-list li .time{
 	font-size: 0.75em;
-	color: rgba(0, 0, 0, 0.54);
+	color: #999;
 	margin-top: 0.75em;
 }
 .comments.part .comment-list li .info:after{
@@ -235,7 +231,7 @@ section:last-child{
 }
 .comments.part .comment-list li .info .liked, .comments.part .comment-list li .info .thumbup, .comments.part .comment-list li .info .thumbup-active{
 	font-size: 0.75em;
-	color: rgba(0, 0, 0, 0.54);
+	color: #999;
 	float: right;
 }
 .comments.part .comment-list li .info .thumbup, .comments.part .comment-list li .info .thumbup-active{
@@ -274,7 +270,7 @@ section:last-child{
 	}
 }
 .comments.part .no-comments{
-	color: rgba(0, 0, 0, 0.54);
+	color: #999;
 	background: url(../images/icon-no-comments.png) no-repeat center center;
 	background-size: 62px 62px;
 	height: 135px;
@@ -285,7 +281,15 @@ section:last-child{
 	display: inline-block;
 	font-size: 12px;
 }
-
+.comments.part h2{
+	background: #ff1a4c;
+	padding:2px 15px;
+	margin-left: -16px;
+	border-top: none;
+	margin-bottom: 15px;
+	display: inline-block;
+	color: #fff;
+}
 .comments-compose.part{
 	margin-top: 1em;
 	padding-top: 0;
@@ -312,7 +316,7 @@ section:last-child{
 	position: relative;
 	width: 20px;
 	height: 20px;
-	background: url(../images/icon-thumbup.png);
+	background: url(../img/icon-thumbup.png);
 }
 
 @-webkit-keyframes beat{

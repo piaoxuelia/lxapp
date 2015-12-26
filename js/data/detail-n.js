@@ -118,7 +118,7 @@ var relatedNews = {
             "keywords": "",
             "m": "24d96bb837e6dbcc1652985f66c3afe1bacd36e3",
             "zm": "http:\/\/zm.kandian.360.cn\/index.php?c=index&a=index&m=24d96bb837e6dbcc1652985f66c3afe1bacd36e3&id=1912641830267390&fmt=json&url=http:\/\/kandian.so.com\/url\/b0734c1d06bd6eb317154288439faa40.html",
-            "imgurl": "http:\/\/p35.qhimg.com\/dmfd\/__70\/t014c37700b0821bed2.webp?size=400x200&zoom_out=70",
+            "album_pic": "http:\/\/p35.qhimg.com\/dmfd\/__70\/t014c37700b0821bed2.webp?size=400x200&zoom_out=70",
             "v_t": 2,
             "cmt_cnt": 0,
             "h5url": "http:\/\/zm.kandian.360.cn\/index.php?c=html&a=kandian&m=24d96bb837e6dbcc1652985f66c3afe1bacd36e3&id=1912641830267390&src=kandian&url=http:\/\/kandian.so.com\/url\/b0734c1d06bd6eb317154288439faa40.html"
@@ -150,7 +150,7 @@ var relatedNews = {
             "keywords": "",
             "m": "7839bd5a199beeffa0b00e69d914d3103e15d2c8",
             "zm": "http:\/\/zm.kandian.360.cn\/index.php?c=index&a=index&m=7839bd5a199beeffa0b00e69d914d3103e15d2c8&id=1227525574539932&fmt=json&url=http:\/\/kandian.so.com\/url\/6c92c1bbdc5f7b6340ff839ad84dbe8e.html",
-            "imgurl": "http:\/\/p34.qhimg.com\/dmfd\/__70\/t01bbc52c4d1fbf305f.webp?size=400x200&zoom_out=70",
+            "album_pic": "http:\/\/p34.qhimg.com\/dmfd\/__70\/t01bbc52c4d1fbf305f.webp?size=400x200&zoom_out=70",
             "v_t": 2,
             "cmt_cnt": 0,
             "h5url": "http:\/\/zm.kandian.360.cn\/index.php?c=html&a=kandian&m=7839bd5a199beeffa0b00e69d914d3103e15d2c8&id=1227525574539932&src=kandian&url=http:\/\/kandian.so.com\/url\/6c92c1bbdc5f7b6340ff839ad84dbe8e.html"
@@ -182,7 +182,7 @@ var relatedNews = {
             "keywords": "",
             "m": "97a0f1f44f59491807124e88bf0e2b01bb9701a3",
             "zm": "http:\/\/zm.kandian.360.cn\/index.php?c=index&a=index&m=97a0f1f44f59491807124e88bf0e2b01bb9701a3&id=1144574356366564&fmt=json&url=http:\/\/kandian.so.com\/url\/8c62eeab52a1aa9f35a30716379ffe1f.html",
-            "imgurl": "http:\/\/p31.qhimg.com\/dmfd\/__70\/t014f0d090f39c4598e.webp?size=587x293&zoom_out=70",
+            "album_pic": "http:\/\/p31.qhimg.com\/dmfd\/__70\/t014f0d090f39c4598e.webp?size=587x293&zoom_out=70",
             "v_t": 2,
             "cmt_cnt": 0,
             "h5url": "http:\/\/zm.kandian.360.cn\/index.php?c=html&a=kandian&m=97a0f1f44f59491807124e88bf0e2b01bb9701a3&id=1144574356366564&src=kandian&url=http:\/\/kandian.so.com\/url\/8c62eeab52a1aa9f35a30716379ffe1f.html"
@@ -214,7 +214,7 @@ var relatedNews = {
             "keywords": "",
             "m": "24d96bb837e6dbcc1652985f66c3afe1bacd36e3",
             "zm": "http:\/\/zm.kandian.360.cn\/index.php?c=index&a=index&m=24d96bb837e6dbcc1652985f66c3afe1bacd36e3&id=1912641830267390&fmt=json&url=http:\/\/kandian.so.com\/url\/b0734c1d06bd6eb317154288439faa40.html",
-            "imgurl": "http:\/\/p35.qhimg.com\/dmfd\/__70\/t014c37700b0821bed2.webp?size=400x200&zoom_out=70",
+            "album_pic": "http:\/\/p35.qhimg.com\/dmfd\/__70\/t014c37700b0821bed2.webp?size=400x200&zoom_out=70",
             "v_t": 2,
             "cmt_cnt": 0,
             "h5url": "http:\/\/zm.kandian.360.cn\/index.php?c=html&a=kandian&m=24d96bb837e6dbcc1652985f66c3afe1bacd36e3&id=1912641830267390&src=kandian&url=http:\/\/kandian.so.com\/url\/b0734c1d06bd6eb317154288439faa40.html"
@@ -261,7 +261,7 @@ var hotNews = {
             "keywords": "",
             "m": "7839bd5a199beeffa0b00e69d914d3103e15d2c8",
             "zm": "http:\/\/zm.kandian.360.cn\/index.php?c=index&a=index&m=7839bd5a199beeffa0b00e69d914d3103e15d2c8&id=1227525574539932&fmt=json&url=http:\/\/kandian.so.com\/url\/6c92c1bbdc5f7b6340ff839ad84dbe8e.html",
-            "imgurl": "http:\/\/p34.qhimg.com\/dmfd\/__70\/t01bbc52c4d1fbf305f.webp?size=400x200&zoom_out=70",
+            "album_pic": "http:\/\/p34.qhimg.com\/dmfd\/__70\/t01bbc52c4d1fbf305f.webp?size=400x200&zoom_out=70",
             "v_t": 2,
             "cmt_cnt": 0,
             "h5url": "http:\/\/zm.kandian.360.cn\/index.php?c=html&a=kandian&m=7839bd5a199beeffa0b00e69d914d3103e15d2c8&id=1227525574539932&src=kandian&url=http:\/\/kandian.so.com\/url\/6c92c1bbdc5f7b6340ff839ad84dbe8e.html"
@@ -293,7 +293,7 @@ var hotNews = {
             "keywords": "",
             "m": "97a0f1f44f59491807124e88bf0e2b01bb9701a3",
             "zm": "http:\/\/zm.kandian.360.cn\/index.php?c=index&a=index&m=97a0f1f44f59491807124e88bf0e2b01bb9701a3&id=1144574356366564&fmt=json&url=http:\/\/kandian.so.com\/url\/8c62eeab52a1aa9f35a30716379ffe1f.html",
-            "imgurl": "http:\/\/p31.qhimg.com\/dmfd\/__70\/t014f0d090f39c4598e.webp?size=587x293&zoom_out=70",
+            "album_pic": "http:\/\/p31.qhimg.com\/dmfd\/__70\/t014f0d090f39c4598e.webp?size=587x293&zoom_out=70",
             "v_t": 2,
             "cmt_cnt": 0,
             "h5url": "http:\/\/zm.kandian.360.cn\/index.php?c=html&a=kandian&m=97a0f1f44f59491807124e88bf0e2b01bb9701a3&id=1144574356366564&src=kandian&url=http:\/\/kandian.so.com\/url\/8c62eeab52a1aa9f35a30716379ffe1f.html"
@@ -325,7 +325,7 @@ var hotNews = {
             "keywords": "",
             "m": "24d96bb837e6dbcc1652985f66c3afe1bacd36e3",
             "zm": "http:\/\/zm.kandian.360.cn\/index.php?c=index&a=index&m=24d96bb837e6dbcc1652985f66c3afe1bacd36e3&id=1912641830267390&fmt=json&url=http:\/\/kandian.so.com\/url\/b0734c1d06bd6eb317154288439faa40.html",
-            "imgurl": "http:\/\/p35.qhimg.com\/dmfd\/__70\/t014c37700b0821bed2.webp?size=400x200&zoom_out=70",
+            "album_pic": "http:\/\/p35.qhimg.com\/dmfd\/__70\/t014c37700b0821bed2.webp?size=400x200&zoom_out=70",
             "v_t": 2,
             "cmt_cnt": 0,
             "h5url": "http:\/\/zm.kandian.360.cn\/index.php?c=html&a=kandian&m=24d96bb837e6dbcc1652985f66c3afe1bacd36e3&id=1912641830267390&src=kandian&url=http:\/\/kandian.so.com\/url\/b0734c1d06bd6eb317154288439faa40.html"

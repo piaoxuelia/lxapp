@@ -1,9 +1,4 @@
 @charset "UTF-8";
-@font-face{
-	font-family: "fzLantingHei";
-	src: url(../font/FZLTHJW.TTF) format('truetype');
-	font-weight: 300
-}
 html, body{
 	margin: 0;
 	padding: 0;
@@ -11,7 +6,7 @@ html, body{
 	min-height: 100%;
 }
 body, button{
-	font-family: 'fzLantingHei','STHeiti','Microsoft Yahei', sans-serif;
+	font-family: 'STHeiti','Microsoft Yahei', sans-serif;
 }
 html{
 	font-size: 100px;

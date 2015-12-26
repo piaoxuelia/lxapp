@@ -64,11 +64,11 @@
 			$('<link>').attr({
 				'type': 'text/css',
 				'rel': 'stylesheet',
-				'href': '../css/magnific-popup.css'
+				'href': 'http://s0.qhimg.com/!51b589d0/magnific-popup.css'
 			}).appendTo('head');
 			$('<script>').attr({
 				'id': scriptId,
-				'src': '../js/wap/jquery.magnific-popup.js'
+				'src': 'http://s9.qhimg.com/!1a5e34b7/jquery.magnific-popup.js'
 			}).on('load', callback).appendTo('body');
 		}
 	}
@@ -632,8 +632,8 @@
 				data.related.forEach(function(item, index) {
 					if (item.pdate) item.elapse = $utils.elapse(item.pdate);
 					item.source = item.src;
-					if (item.imgurl) {
-						item.imgurl = item.imgurl.split('|')[0];
+					if (item.album_pic) {
+						item.imgurl = item.album_pic.split('|')[0];
 						item.width = Math.floor((contentWidth-15)/2);
 						item.height = contentWidth / 3;
 						item.img = $utils.dmfd(item.imgurl, item.width, item.height);
@@ -663,8 +663,8 @@
 	 			data.hotNewsList.forEach(function(item, index) {
 	 				if (item.pdate) item.elapse = $utils.elapse(item.pdate);
 	 				item.source = item.src;
-	 				if (item.imgurl) {
-	 					item.imgurl = item.imgurl.split('|')[0];
+	 				if (item.album_pic) {
+	 					item.imgurl = item.album_pic.split('|')[0];
 	 					item.width =110;
 	 					item.height = 82;
 	 					item.img = $utils.dmfd(item.imgurl, item.width, item.height);

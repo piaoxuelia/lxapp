@@ -129,13 +129,8 @@
 <body>
 	<div class="wrapper">
 		<section class="video part fullColumn" data-name="视频">
-			<!-- <object id="qihoo_player" name="qihoo_player" width="100%" height="100%" type="application/x-shockwave-flash" data="http://jia.360.cn/player/flash/QihooPlayer.swf?ver=201511251750">
-			    <param name="allowfullscreen" value="true">
-			    <param name="wmode" value="#000">
-			    <param name="allowscriptaccess" value="always">
-			    <param name="flashvars" value="sn=36020174749&poster=http%3A%2F%2Fq.jia.360.cn%2Fpublic%2FviewImage%3FimgKey%3D0e76bc7e9314c11df2810d46a03d221200c2bf6f-5-740-415.jpg%26sn%3D36020174749&autostart=true&ctrbarhide=true&buffertime=3&channel=10092">
-			</object> -->
 		</section>
+		<div id="sx-comments"></div>
 	</div>
 		<style type="text/css">
 			/* download bar in wap */
@@ -170,37 +165,80 @@
 	<script type="text/javascript" src="../js/nativeApi.js"></script>
 	
 	<script type="text/javascript" src="../js/contentRender.js"></script>
-	<script type="text/javascript" src="../js/libs/md5.js"></script>
-	<script type="text/javascript" src="../js/libs/rng.js"></script>
-	<script type="text/javascript" src="../js/waponly.js"></script>
+	<script type="text/javascript" src="../js/wap/md5.js"></script>
+	<script type="text/javascript" src="../js/wap/rng.js"></script>
+	<script type="text/javascript" src="../js/wap/waponly.js"></script>
 	<script deletecur type="text/javascript" src="../js/data/detail-n.js"></script>
 	<script deletecur>
 		$(function(){
 			window.$wap = true;
-			var cont = dataDetailNews.data;
 			var comm = commData.data;
-			var related = relatedNews.data;
-			var hotNewsData = hotNews.data;
 			
 			$ContentRender.renderComments(comm);
-			/*热门推荐*/
-			$ContentRender.renderhotArtices(hotNewsData);
 			$ContentRender.lazyLoadImage();
 			$ContentRender.done();
 
+			var videoData={
+			    "id": "1", 
+			    "video_channel_name": "BTV1", 
+			    "video_source_type": "1", 
+			    "video_name": "BTV北京卫视高清", 
+			    "video_column_name": "人生相对论", 
+			    "video_desc": "BTV北京卫视高清", 
+			    "video_icon": "http://p1.qhimg.com/t0111f629f9f65a7618.png?size=76x76", 
+			    "video_img": "http://p0.qhimg.com/t01ce967727122c109c.jpg?size=640x480", 
+			    "video_islive": "1", 
+			    "video_relate_id": "0", 
+			    "video_key": "lianxian_video_1", 
+			    "tag": "BTV1", 
+			    "video_stream": [
+			        {
+			            "stream_vbt": "标清", 
+			            "stream_type": 5, 
+			            "stream_url": "http://video.kandian.360.cn/approve/live?channel=BTV1&type=iphone"
+			        }, 
+			        {
+			            "stream_vbt": "高清", 
+			            "stream_type": 5, 
+			            "stream_url": "http://video.kandian.360.cn/approve/live?channel=BTV1&type=ipad"
+			        }, 
+			        {
+			            "stream_vbt": "超高清", 
+			            "stream_type": 5, 
+			            "stream_url": "http://video.kandian.360.cn/approve/live?channel=BTV1&type=iptv"
+			        }
+			    ]
+			}
+			if(videoData && videoData.video_stream){
 
-
+				function getVideoMid(){
+					if(localStorage.videoMid){
+						return localStorage.videoMid;
+					}else{
+						localStorage.videoMid = getRondom(10);
+					}
+				}
+				function getRondom(sum){
+						var character = "";
+						for(var i = 0; i <= sum; i++){
+							character += String.fromCharCode(Math.floor( Math.random() * 26) + "A".charCodeAt(0));
+						}
+						return character;
+				}
+			
 				var _data_1 = {
-					bid:"live_huajiao",
-					channel:"live_huajiao_v2", //必填 用来区分那个渠道
-					sn:"_LC_21139454145042825446109",//必填 用来获取视频地址
+					bid:"news",
+					channel:"live_news", //必填 用来区分那个渠道
+					sn:videoData.video_stream[0].stream_url,//必填 用来获取视频地址
 					sid:new Date().getTime()	+	Math.random(), //每次会话生成一个唯一的sid
-					mid:"test",//播放器的载体机器是什么
-					vtype:"liveplay", //liveplay 直播， replay点播
+					mid:getVideoMid(),//播放器的载体机器是什么
+					vtype:"replay", //liveplay 直播， replay点播
 					controls:true //控制条 true 有  false 无
 				}
+			}
 
 			window._new_video_1 = new	H5_video(_data_1,$(".video"));
+			
 			$(_new_video_1).bind("backUrlError",function(evt){
 				console.log("backUrlError");
 			});
