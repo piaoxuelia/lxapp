@@ -53,7 +53,7 @@ module.exports = function(grunt) {
 						expand:true,
 						cwd:'js',
 						src:'**/*.js',
-						dest: 'testOutput/js'
+						dest: '../output/testOutput/js'
 					}]
 			},
 			buildToWapTest:{ //看wap页有模拟数据的效果 
@@ -119,7 +119,7 @@ module.exports = function(grunt) {
 						expand:true,
 						cwd:'css',
 						src:'**/*.css',
-						dest: 'testOutput/css'
+						dest: '../output/testOutput/css'
 					}]
 			},
 			buildToWapTest:{ //看wap页有模拟数据的效果 
@@ -196,7 +196,7 @@ module.exports = function(grunt) {
 					collapseWhitespace: true
 				},
 				files: {// Dictionary of files
-					'testOutput/html/news-detail.html': 'html/news-detail.html'
+					'../output/testOutput/html/news-detail.html': 'html/news-detail.html'
 				}
 			},
 			distToWapTest: {
