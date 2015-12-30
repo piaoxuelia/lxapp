@@ -264,6 +264,8 @@
 	$_related.viewRelatedArticel = __('$_related.OnClickRelated(String url)');
 	// 查看小编最新 3 条新闻
 	$_related.viewEditorArticle = __('$_related.OnClickEditorArticle(String url)');
+
+	$_related.OnHitLog = __('$_related.OnHitLog(String json)');
 	// 小编相关文章的评论是纯展示，没有点击事件
 	// $_related.viewEditorArticleComment = __('$_related.OnClickEditorArticleComment(String url)');
 
@@ -274,7 +276,6 @@
 	$_music.play = __('$_music.play');
 	$_music.stop = __('$_music.stop');
 
-	//$wrapper.on('done', function() {
 	$wrapper.delegate('.music .play-button', 'click', function() {
 		var self = $(this),
 			img = self.find('img'),
@@ -295,7 +296,7 @@
 			self.removeClass('playing').addClass('stop')
 		}
 	});
-	//});
+	
 
 
 	/**
@@ -355,7 +356,7 @@
 		if (self.attr('disabled')) return;
 
 		var fname = self.attr('data-native'),/* news.likeThisComment */
-			args = prepareParams(self, fname),/*["news", "likeThisComment"]*/
+			args = prepareParams(self, fname, e),/*["news", "likeThisComment"]*/
 			x = tryget(api, fname),/*tryget("g.$nativeApi", "news.likeThisComment")*/
 			isCallNative = true,
 			isCallAfter,
@@ -382,7 +383,7 @@
 		if (href) location.href = href;
 	});
 
-	function prepareParams(node, fname) {
+	function prepareParams(node, fname, e) {
 		var p1 = node.attr('data-param1'),
 			p2 = node.attr('data-param2'),
 			ret, extra;
@@ -405,6 +406,31 @@
 			ret.push(extra.width);
 			ret.push(extra.height);
 			if (p2) ret.push(p2);
+		}
+
+		if(fname == 'related.viewRelatedArticel' || fname == 'related.viewHotArticel'){
+
+			var pixelRatio = devicePixelRatio||webkitDevicePixelRatio||mozDevicePixelRatio||1;
+
+			var screenX = e.clientX,
+				screenY = e.clientY,
+				rtObj = {},
+				curIndex = node.index();
+
+			if (pixelRatio != 1) {
+	            screenX = screenX * pixelRatio ;
+	            screenY = screenY * pixelRatio ;
+	        }
+	        rtObj.screenPos = screenX+","+screenY;
+	        rtObj.clickNews = {};
+
+			if(fname == 'related.viewRelatedArticel'){
+				rtObj.clickNews = window.detListData.related[curIndex];
+			}else{
+				rtObj.clickNews = window.detListData.hotNewsList[curIndex];
+			}
+		 	ret = [JSON.stringify(rtObj)];
+
 		}
 
 		return ret;
@@ -453,4 +479,124 @@
 			showAd();
 		}
 	});
+
+
+	
+
+	// 滚动停止时将用户操作信息传递打点
+
+	wrapper.on('domDone',function(){
+
+		//获取屏幕百分百
+		function getPagePercent(){
+			var winHeight = $(window).height(),
+				scrollTop = $(window).scrollTop(),
+				docHeight = $(document).height(),
+				percent = Math.floor((winHeight + scrollTop)/docHeight*100);
+			return percent;
+		}
+
+		//调取native方法，并传值
+		function postIfoToNative(fnName,arg){
+			var args = [arg],
+				x = tryget(api, fnName),
+				isCallNative = true,
+				isCallAfter,
+				tmp;
+			
+			if (x.prop && x.prop.before) {
+				isCallNative = x.prop.before;
+			}
+			if (isCallNative && x.prop) {
+				isCallAfter = x.prop.apply(this, args);
+
+				if (isCallAfter !== false && x.prop.after) {
+					x.prop.after;
+				}
+			}
+		}
+
+		// 记录滑动次数swipeNum
+		var startPosY = 0,
+			swipeNum = 0,
+			$body = $('body');
+
+		$body.on('touchstart',function(e){
+			startPosY = e.targetTouches[0].clientY;
+		});
+		$body.on('touchend',function(e){
+			endPosY = e.changedTouches[0].clientY;
+			if(Math.abs(endPosY - startPosY )>30){
+				swipeNum ++;
+			}
+		});
+
+		//获取滑动停止时元素是否在当前视窗
+		function elementInViewport(el) {
+			var rect = el.getBoundingClientRect(),
+				winHeight = $(window).height(),
+				curTop = rect.top,
+				curBottom = curTop + rect.height,
+				triggerHeight = Math.min(rect.height / 2, winHeight / 3);
+
+			return !(curTop > (winHeight - triggerHeight) || curBottom < triggerHeight);
+		}
+
+		// 获取相关新闻或热门推荐在本视窗的列表，并将其放入向native回传的列表
+		function getCurWinDataList(listName){
+
+			if(listName == "recommend-articles"){
+				var showedRelatedList = [],
+					listItem = $('.recommend-articles li');
+					listlen = listItem.length;
+				for(var i = 0; i < listlen; i++) {
+					if(elementInViewport(listItem[i])) {
+						if( window.detListData){
+							showedRelatedList.push(window.detListData.related[i]);
+						}
+					}
+				}
+
+				return showedRelatedList;
+
+			}else{
+				var showedHotList = [],
+					listItem = $('.hot-articles li');
+					listlen = listItem.length;
+
+				for(var i = 0; i < listlen; i++) {
+					if(elementInViewport(listItem[i])) {
+						if( window.detListData){
+							showedHotList.push(window.detListData.hotNewsList[i]);
+						}
+					}
+				}
+				return showedHotList;
+			}
+		}
+
+		
+		var scrollEndTimer = null;
+
+		// 滚动停止时向native传值 
+		$(window).scroll(function(){
+		    if (scrollEndTimer){
+		    	clearTimeout(scrollEndTimer);
+		    }
+		    scrollEndTimer = setTimeout(function(){
+
+		    	var userData = {
+					percent:getPagePercent(), // 当前位置相对整个页面的百分比
+					slidingCnt:swipeNum, // 用户滑动屏幕的次数
+					showedRelatedList:getCurWinDataList('recommend-articles'),// 相关新闻在当前视窗的数据列表
+					showedHotList:getCurWinDataList('hot-articles') // 热门推荐在当前视窗的数据列表
+				}
+
+				//调取native方法，并传值
+				postIfoToNative('related.OnHitLog',JSON.stringify(userData))
+
+		    },100);
+		});
+	})
+	
 })(this)

@@ -11,35 +11,60 @@ module.exports = function(grunt) {
 			build:{
 				files: [{
 						expand:true,
-						cwd:'js',//js目录下
-						src:['**/*.js','!data/*.js','!**/*only.js','!wap/*.js','!video/*.js'],//所有js文件
-						dest: '../output/android/js'//输出到此目录下
+						cwd:'js',
+						src:['**/*.js','!data/*.js','!**/*only.js','!wap/*.js','!video/*.js'],
+						dest: '../output/android/js'
 					}]
 			},
 			buildToDev:{
 				files: [{
 						expand:true,
-						cwd:'js',//js目录下
-						src:['**/*.js','!**/iosonly.js','!video/*.js'],//所有js文件
-						dest: '../output/dev/js'//输出到此目录下
+						cwd:'js',
+						src:['**/*.js','!**/iosonly.js','!video/*.js'],
+						dest: '../output/dev/js'
+					}]
+			},
+			buildToIOS:{
+				files: [{
+						expand:true,
+						cwd:'js',
+						src:['**/*.js','!data/*.js','!wap/*.js','!video/*.js'],
+						dest: '../output/ios/js'
+					}]
+			},
+			buildToIOSPro:{
+				files: [{
+						expand:true,
+						cwd:'js',
+						src:['**/*.js','!data/*.js','!wap/*.js','!video/*.js'],
+						dest: '../lianxian_app_ios/LIANXIAN/Resources/h5/js'
 					}]
 			},
 			buildToShare:{
 				files: [{
 						expand:true,
-						cwd:'js',//js目录下
-						src:['**/*.js','!**/iosonly.js'],//所有js文件
-						dest: '../output/share/static/js'//输出到此目录下
+						cwd:'js',
+						src:['**/*.js','!**/iosonly.js'],
+						dest: '../output/share/static/js'
 					}]
 			},
 			buildTest:{
 				files: [{
 						expand:true,
-						cwd:'js',//js目录下
-						src:'**/*.js',//所有js文件
-						dest: 'testOutput/js'//输出到此目录下
+						cwd:'js',
+						src:'**/*.js',
+						dest: 'testOutput/js'
+					}]
+			},
+			buildToWapTest:{ //看wap页有模拟数据的效果 
+				files: [{
+						expand:true,
+						cwd:'js',
+						src:['**/*.js','!**/iosonly.js'],
+						dest: '../output/wapPageMoni/js'
 					}]
 			}
+
 		},
 		/* css-compress */
 		cssmin: {
@@ -49,9 +74,9 @@ module.exports = function(grunt) {
 			build:{
 				files: [{
 						expand:true,
-						cwd:'css',//js目录下
-						src:'**/*.css',//所有js文件
-						dest: '../output/android/css'//输出到此目录下
+						cwd:'css',
+						src:'**/*.css',
+						dest: '../output/android/css'
 					}]
 			},
 			buildToDev:{
@@ -59,7 +84,23 @@ module.exports = function(grunt) {
 						expand:true,
 						cwd:'css',
 						src:'**/*.css',
-						dest: '../output/dev/css'//输出到此目录下
+						dest: '../output/dev/css'
+					}]
+			},
+			buildToIOS:{
+				files: [{
+						expand:true,
+						cwd:'css',
+						src:'common.css',
+						dest: '../output/ios/css'
+					}]
+			},
+			buildToIOSPro:{
+				files: [{
+						expand:true,
+						cwd:'css',
+						src:'common.css',
+						dest: '../lianxian_app_ios/LIANXIAN/Resources/h5/css'
 					}]
 			},
 			buildToShare:{
@@ -67,7 +108,7 @@ module.exports = function(grunt) {
 						expand:true,
 						cwd:'css',
 						src: ['*.css', '!common.css','!common-wap.css'],
-						dest: '../output/share/static/css'//输出到此目录下
+						dest: '../output/share/static/css'
 					},{
 						'../output/share/static/css/common.css': 'css/common-wap.css'
 					}
@@ -76,11 +117,21 @@ module.exports = function(grunt) {
 			buildTest:{
 				files: [{
 						expand:true,
-						cwd:'css',//js目录下
-						src:'**/*.css',//所有js文件
-						dest: 'testOutput/css'//输出到此目录下
+						cwd:'css',
+						src:'**/*.css',
+						dest: 'testOutput/css'
+					}]
+			},
+			buildToWapTest:{ //看wap页有模拟数据的效果 
+				files: [{
+						expand:true,
+						cwd:'css',
+						src:['**/*.css'],
+						dest: '../output/wapPageMoni/css'
 					}]
 			}
+			
+
 		},
 		/* html-compress */
 		htmlmin:{
@@ -107,6 +158,26 @@ module.exports = function(grunt) {
 
 				}]
 			},
+			distToIOS:{// Target
+				options: {// Target options
+					removeComments: false,
+					collapseWhitespace: true,
+					minifyJS:true //html中压缩js
+				},
+				files: [{
+					'../output/ios/html/news-detail.html': 'html/news-detail.html'
+				}]
+			},
+			distToIOSPro:{// Target
+				options: {// Target options
+					removeComments: false,
+					collapseWhitespace: true,
+					minifyJS:true //html中压缩js
+				},
+				files: [{
+					'../lianxian_app_ios/LIANXIAN/Resources/h5/html/news-detail.html': 'html/news-detail.html'
+				}]
+			},
 			distToShare:{// Target
 				options: {// Target options
 					removeComments: false,
@@ -127,6 +198,17 @@ module.exports = function(grunt) {
 				files: {// Dictionary of files
 					'testOutput/html/news-detail.html': 'html/news-detail.html'
 				}
+			},
+			distToWapTest: {
+				options: {// Target options
+					removeComments: true,
+					collapseWhitespace: true
+				},
+				files: [
+						{'../output/wapPageMoni/html/news-detail.html': 'html/news-detail.html'},
+						{'../output/wapPageMoni/html/gallary-detail.html': 'html/gallary-detail.html'},
+						{'../output/wapPageMoni/html/video-detail.html': 'html/video-detail.html'}
+					]
 			}
 		},
 		sass: {
@@ -147,8 +229,11 @@ module.exports = function(grunt) {
 		},
 		replace: {
 		  regexReplaceShare: {
-			/*src: ['output/html/*.html'],*/
-			src: ['../output/share/news-detail.html','../output/share/gallary-detail.html','../output/share/video-detail.html'],
+			src: [
+				'../output/share/news-detail.html',
+				'../output/share/gallary-detail.html',
+				'../output/share/video-detail.html'
+			],
 			overwrite: true,                 // overwrite matched source files 
 			replacements: [ {
 			  from:/\.\.\//ig,//去掉带有deletecur的script标签
@@ -156,6 +241,50 @@ module.exports = function(grunt) {
 			},{
 			  
 			  from:/\<\!--iosStart--\>((?!iosEnd)[\s\S])*\<\!--iosEnd--\>/gi,
+			  to: ''
+			}]
+		  },
+		  regexReplaceWapTest: {
+			src: [
+				'../output/wapPageMoni/html/news-detail.html',
+				'../output/wapPageMoni/html/gallary-detail.html',
+				'../output/wapPageMoni/html/video-detail.html'
+			],
+			overwrite: true,                 // overwrite matched source files 
+			replacements: [{
+			  from:/\<\!--iosStart--\>((?!iosEnd)[\s\S])*\<\!--iosEnd--\>/gi,
+			  to: ''
+			}]
+		  },
+		  regexReplaceIOS: {
+			src: [
+				'../output/ios/html/news-detail.html'
+			],
+			overwrite: true,                 // overwrite matched source files 
+			replacements: [{
+			  from:/\<\!--wapStart--\>((?!wapEnd)[\s\S])*\<\!--wapEnd--\>/gi,
+			  to: ''
+			},
+			{
+			  from:/\<\!--iosNotStart--\>((?!iosNotEnd)[\s\S])*\<\!--iosNotEnd--\>/gi,
+			  to: ''
+			}]
+		  },
+		  regexReplaceIOSPro: {
+			src: [
+				'../lianxian_app_ios/LIANXIAN/Resources/h5/html/news-detail.html'
+			],
+			overwrite: true,                 // overwrite matched source files 
+			replacements: [{
+			  from:/\<\!--wapStart--\>((?!wapEnd)[\s\S])*\<\!--wapEnd--\>/gi,
+			  to: ''
+			},
+			{
+			  from:/\<\!--iosNotStart--\>((?!iosNotEnd)[\s\S])*\<\!--iosNotEnd--\>/gi,
+			  to: ''
+			},
+			{
+			  from:/\<\!--moniDataStart--\>((?!moniDataEnd)[\s\S])*\<\!--moniDataEnd--\>/gi,
 			  to: ''
 			}]
 		  },
@@ -179,32 +308,30 @@ module.exports = function(grunt) {
 			  // from:/\<\!--wapStart--\>([\s\S]*)\<\!--wapEnd--\>/gi,
 			  from:/\<\!--wapStart--\>((?!wapEnd)[\s\S])*\<\!--wapEnd--\>/gi,
 			  to: ''
+			},
+			{
+			  from:/\<\!--moniDataStart--\>((?!moniDataEnd)[\s\S])*\<\!--moniDataEnd--\>/gi,
+			  to: ''
 			}]
 		  }
 
 		},
 		watch: {
-			configFiles: {
-				files: [ 'Gruntfile.js', '**/*.*' ],
-				options: {
-				  reload: true
-				}
-			  }
+		    files: ['css/*','html/*','js/*','js/**/','images/*'],
+		    tasks: ['default'],
+		    options: {
+		      livereload: true,
+		    },
 		},
-		copy:{
-			main: {
-				expand: true,
-				cwd: 'images/',
-				src: '**',
-				dest: '../output/android/images/',
-				filter: 'isFile',
-			},
-			copyToDev: {
-				expand: true,
-				cwd: 'images/',
-				src: '**',
-				dest: '../output/dev/images/',
-				filter: 'isFile',
+		copy:{ // 图片拷贝
+			main:{
+				files: [
+			      {expand: true, src: ['images/*'], dest: '../output/android/'},
+			      {expand: true, src: ['images/*'], dest: '../output/wapPageMoni/'},
+			      {expand: true, src: ['images/*'], dest: '../output/dev/'},
+			      {expand: true, src: ['images/*'], dest: '../output/ios/'},
+			      {expand: true, src: ['images/*'], dest: '../lianxian_app_ios/LIANXIAN/Resources/h5/'}
+			    ],
 			},
 			copyToDev: {
 				expand: true,
@@ -213,13 +340,6 @@ module.exports = function(grunt) {
 				dest: '../output/share/static/img/',
 				filter: 'isFile',
 			},
-			test: {
-				expand: true,
-				cwd: 'images/',
-				src: '**',
-				dest: 'testOutput/images/',
-				filter: 'isFile',
-			}
 		}
 	});
 
@@ -235,6 +355,5 @@ module.exports = function(grunt) {
 	
 	// Default task(s)
 	grunt.registerTask('default', ['uglify','cssmin','htmlmin','copy','replace']);
-	grunt.registerTask('wt', ['watch']);
-	grunt.registerTask('cp', ['copy']);
+	grunt.registerTask('wc', ['watch']);
 };

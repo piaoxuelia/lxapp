@@ -73,15 +73,7 @@
 		}
 	}
 
-	/**
-	 * 将正文中插入模块的数据设置到native中
-	 */
-	function setDataForNative(key, value) {
-		if (typeof $_news != 'undefined' && typeof $_news.setData == 'function') {
-			console.log("//setData(" + key + "," + value + ")");
-			$_news.setData(key, value || '');
-		}
-	}
+
 
 	/**
 	 * render
@@ -566,12 +558,6 @@
 				data.items[0].summary = $utils.unescape(data.items[0].summary);
 				data.items[0].imgshow = $utils.dmt(url, w, 150, true);
 			}
-		} else if (type == 'headimg') { // 头图
-			data.url = $utils.dmfd(data.url, w, (w / 2.4).toFixed(0), true); //UI designed width/height ratio
-			setDataForNative('headimg', data.url);
-		} else if (type == 'dajiasou') { // 大家都在搜
-			// TODO:
-			data.items = data.content.split('\n');
 		} else if (type == 'shixian') { 
 			var fixSequence = function(str) {
 				// 处理 十 以内
@@ -624,6 +610,7 @@
 	 * 渲染推荐新闻列表
 	 */
 	$cr.renderRecommendArtices = function(data, clearExistContent) {
+		 window.detListData = data;
 		if (g.$debug === true) console.log('$ContentRender.renderRecommendArtices(' + JSON.stringify(data) + ');');
 		var wrapper = $('.wrapper'),
 			contentWidth = wrapper.width() - 2 * $pageHPadding;
@@ -655,6 +642,7 @@
 	 */
 
 	 $cr.renderhotArtices = function(data, clearExistContent) {
+	 	window.detListData = data;
 	 	if (g.$debug === true) console.log('$ContentRender.renderhotArtices(' + JSON.stringify(data) + ');');
 	 	var wrapper = $('.wrapper'),
 	 		contentWidth = wrapper.width() - 2 * $pageHPadding;
@@ -838,11 +826,15 @@
 	$cr.done = function() {
 		if (g.$debug === true) console.log('$ContentRender.done();');
 		var wrapper = $('.wrapper');
-		wrapper.trigger('done');
+
+		//安卓dom加载完成要绑定一些打点信息，在domdDone后执行
+		wrapper.trigger('domDone');
+
 		wrapper.data('done', true);
 		// TODO: 在小米 3 上测试，右侧导航已经移除， $winHeight 在 右侧导航的逻辑里声明
 		// $winHeight = $win.height(); // 有些手机(小米3)上需要在这里重新计算一下
 		console.log('//渲染完成,总耗时' + $totalRenderTime + 'ms!');
+
 	};
 
 	/**
@@ -896,7 +888,7 @@
 					el.src = src;
 					$(el).removeClass('lazy');
 				}
-				$nativeApi.news.articleImgLoaded(el.src);
+				//$nativeApi.news.articleImgLoaded(el.src);
 				fn && fn();
 			};
 			img.onerror = function() {
@@ -1008,4 +1000,7 @@
 
 	// $($cr.lazyLoadImage);
 	g.$ContentRender = $cr;
+
+
+
 })(this);

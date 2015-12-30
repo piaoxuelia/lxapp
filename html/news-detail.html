@@ -4,8 +4,8 @@
 	<meta charset="utf-8">
 	<title>新闻详情页</title>
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+
 	<link href="../css/common.css" type="text/css" rel="stylesheet"/>
-	<style type="text/css"></style>
 	<script type="text/javascript" src="../js/libs/zepto.js"></script>
 
 	<script type="text/javascript" src="../js/libs/fastclick.js"></script>
@@ -167,6 +167,7 @@
 
 			<h2 class="title">相关阅读</h2>
 			<ul class="articles-list">
+
 				{% related.forEach(function(item,i){ %}
 				{% if(i % 2 == 0 && i != 0){%}
 					</ul>
@@ -189,8 +190,11 @@
 						{% } %}
 					</div>
 				</li>
-				
 				{% }); %}
+
+				{% if(related.length%2 == 1){ %}
+					<li></li>
+				{% } %}
 			</ul>
 		</section>
 	</script>
@@ -273,13 +277,13 @@
 						</a>
 						<div class="info-text">
 							<div class="info">
+								<span class="liked">{%=item.liked%}</span>
 								<a class="thumbup native-call" href="javascript:;" data-native="news.likeThisComment" data-param1="{%=item.cid%}">
 									<img src="../images/icon-thumbup.png" />
 								</a>
 								<a class="thumbup-active" style="display:none;" href="javascript:;">
 									<img src="../images/icon-thumbup-active.png" />
 								</a>
-								<span class="liked">{%=item.liked%}</span>
 								<span class="username">{%=item.username%}</span>
 							</div>
 							<div class="text">
@@ -364,22 +368,22 @@
     </div>
     <!--wapEnd-->
 
+	<!--iosNotStart-->
 	<script type="text/javascript" src="../js/nativeApi.js"></script>
+	<!--iosNotEnd-->
+
 	<script type="text/javascript" src="../js/contentRender.js"></script>
 
 	<!--wapStart-->
-	<script type="text/javascript" src="../js/wap/waponly.js"></script>
+	<!--<script type="text/javascript" src="../js/wap/waponly.js"></script>-->
 	<!--wapEnd-->
+	
 
-	<!--iosStart-->
-	<script type="text/javascript" src="../js/iosonly.js"></script>
-	<!--iosEnd-->
-
-	<!--wapStart-->
+	<!--moniDataStart-->
 	<script deletecur type="text/javascript" src="../js/data/detail-n.js"></script>
 	<script deletecur>
 		$(function(){
-			window.$wap = true;
+			window.$wap = false;
 			var cont = dataDetailNews.data;
 			var comm = commData.data;
 			var related = relatedNews.data;
@@ -409,8 +413,11 @@
 			})*/
 		});
 	</script>
-	<!--wapEnd-->
+	<!--moniDataEnd-->
 
+	<!--iosStart-->
+	<script type="text/javascript" src="../js/iosonly.js"></script>
+	<!--iosEnd-->
 
 </body>
 </html>

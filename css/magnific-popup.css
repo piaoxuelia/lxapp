@@ -157,12 +157,13 @@ button::-moz-focus-inner {
   width: 100%; }
 
 .mfp-counter {
-  position: absolute;
-  top: 0;
-  right: 0;
-  color: #cccccc;
-  font-size: 12px;
-  line-height: 18px; }
+  position: fixed;
+  bottom: 60px;
+  right: 16px;
+  color: #fff;
+  font-size: 1em;
+  line-height: 18px; 
+}
 
 .mfp-arrow {
   position: absolute;

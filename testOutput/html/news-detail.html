@@ -1,22 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-	<meta charset="utf-8">
-	<title>新闻详情页</title>
-	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-	<link href="../css/common.css" type="text/css" rel="stylesheet"/>
-	<link href="../css/newslist.css" type="text/css" rel="stylesheet"/>
-	<style type="text/css"></style>
-	<script type="text/javascript" src="../js/libs/zepto.js"></script>
-	<script type="text/javascript" src="../js/libs/fastclick.js"></script>
-	<script type="text/javascript" src="../js/libs/fx.js"></script>
-	<script type="text/javascript" src="../js/libs/slidefx.js"></script>
-	<script type="text/javascript" src="../js/libs/touch.js"></script>
-	<script type="text/javascript" src="../js/libs/selector.js"></script>
-	<script type="text/javascript" src="../js/utils.js"></script>
-	<script type="text/javascript" src="../js/libs/ejs.js"></script>
-	<script id="grayBar-tmpl" type="text/html">
-		<div class="grayBar">
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>新闻详情页</title><meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1"><link href="../css/common.css" type="text/css" rel="stylesheet"><script type="text/javascript" src="../js/libs/zepto.js"></script><script type="text/javascript" src="../js/libs/fastclick.js"></script><script type="text/javascript" src="../js/libs/fx.js"></script><script type="text/javascript" src="../js/libs/slidefx.js"></script><script type="text/javascript" src="../js/libs/touch.js"></script><script type="text/javascript" src="../js/libs/selector.js"></script><script type="text/javascript" src="../js/utils.js"></script><script type="text/javascript" src="../js/libs/ejs.js"></script><script wap type="text/javascript" src="../js/wap/rng.js"></script><script wap type="text/javascript" src="../js/wap/md5.js"></script><script id="grayBar-tmpl" type="text/html"><div class="grayBar">
 			{%tagData.forEach(function(item){%}
 				<span class="grayBar-tag">{%=item.name%}</span>
 			{%})%}
@@ -24,11 +6,7 @@
 			{%if(transmit_num){%}
 			<a class="grayBar-rt native-call" data-native="news.recommend" href="javascript:;"><span>已被{%=transmit_num%}个自频道转推</span><span class="banner-arr-rt"></span></a>
 			{%}%}
-		</div>
-	</script>
-	
-	<script id="article-tmpl" type="text/html">
-		<section class="article part" data-name="正文">
+		</div></script><script id="article-tmpl" type="text/html"><section class="article part" data-name="正文">
 			{% if(typeof title != 'undefined'){ %}
 				<h1>{%=title%}</h1>
 			{% } %}
@@ -52,12 +30,12 @@
 					</div>
 				{% } %}
 			{% } %}
-
+			<div id="video"></div>
 			{% //正文内容 %}
 			{% var contentLen = content.length, openTag = false; %}
 			{% content.forEach(function(d, i){ %}
 
-				{% /* 2014-12-04 看点2.0.1，对于文本和图片实现自动分块处理 */ %}
+				{% /* 对于文本和图片实现自动分块处理 */ %}
 				{% if (openTag && d.type != 'txt' && d.type != 'img') { %}
 					{% openTag = false; %}
 					</div>
@@ -95,17 +73,12 @@
 				{% } %}
 			{% }); -%}
 
-		</section>
-	</script>
-
-	<!-- 图集 -->
-	<script id="mod-gallery-tmpl" type="text/html">
-		<div class="gallery mod">
+		</section></script><script id="mod-gallery-tmpl" type="text/html"><div class="gallery mod">
 			{% items.forEach(function(item){ %}
 			<div class="gallery-wrap">
 				<div class="cont gallery relative" data-itemperpage="{%=item.itemPerPage%}" data-trans-url="{%=item.transUrl%}" data-allqimg="{%=item.allqimg%}">
 						{% item.items.forEach(function(url, i){ %}
-							{%if (i==0) { %}
+							
 								<a href="javascript:;" 
 								{% if(!window.$wap){ %}
 									class="native-call relative block" 
@@ -115,12 +88,14 @@
 								{% } else { %}
 									class="relative block" 
 								{% } %}
+								{%if (i!=0) { %}style="display:none"{% } %}
+
 								data-mfp-src="{%=item.originalPhotos[i]%}">
 									<img class="lazy" data-src="{%=url%}" width="100%" height=""/>
 									<span class="pages">{%=item.allqimg%}/P</span>
 									<span class="galleryflag"><span>
 								</a>
-							{% } %}
+							
 						{% }); %}
 				</div>
 				{% if(item.title) { %}
@@ -128,21 +103,15 @@
 				{% } %}
 			</div>
 			{% }); %}
-		</div>
-	</script>
-
-	<!-- 视频 -->
-	<script id="mod-video-tmpl" type="text/html">
-		<div class="video mod">
+		</div></script><script id="mod-video-tmpl" type="text/html"><div class="video mod">
 			{% items.forEach(function(item){ %}
-				<div class="photo" height="{%=h%}" width="{%=w%}">
+				<div class="photo" width="100%">
 					<a href="javascript:;"
 						class="native-call"
-						style="position:relative;display:block;" 
 						data-native="video.play" 
 						data-param1="{%=item.url%}">
-						<img class="snapshot lazy" data-src="{%=item.imgurl%}" width="{%=w%}" height="{%=h%}"/>
-						<img class="play" src="../images/icon-video-play.png" />
+						<img class="snapshot lazy" data-src="{%=item.imgurl%}" width="100%" height=""/>
+						<span class="play" ></span>
 					</a>
 				</div>
 
@@ -151,15 +120,11 @@
 				{% } %}
 
 			{% }); %}
-		</div>
-	</script>
-
-	<!-- 相关阅读 -->
-	<script id="recommend-articles-tmpl" type="text/html">
-		<section class="recommend-articles part" data-name="推荐" >
+		</div></script><script id="recommend-articles-tmpl" type="text/html"><section class="recommend-articles part" data-name="推荐" >
 
 			<h2 class="title">相关阅读</h2>
 			<ul class="articles-list">
+
 				{% related.forEach(function(item,i){ %}
 				{% if(i % 2 == 0 && i != 0){%}
 					</ul>
@@ -182,18 +147,13 @@
 						{% } %}
 					</div>
 				</li>
-				
 				{% }); %}
 
 				{% if(related.length%2 == 1){ %}
 					<li></li>
 				{% } %}
 			</ul>
-		</section>
-	</script>
-
-	<script id="hot-articles-tmpl" type="text/html">
-		<section class="hot-articles part" data-name="热门推荐"%}>
+		</section></script><script id="hot-articles-tmpl" type="text/html"><section class="hot-articles part" data-name="热门推荐"%}>
 			<h2 class="title">热门推荐</h2>
 			<ul class="articles-list">
 				{% hotNewsList.forEach(function(item,i){ %}
@@ -216,10 +176,7 @@
 					</li>
 				{% }); %}
 			</ul>
-		</section>
-	</script>
-	<script id="share-buttons-tmpl" type="text/html" >
-		<section class="share-buttons-wrap part" data-name="分享模块">
+		</section></script><script id="share-buttons-tmpl" type="text/html"><section class="share-buttons-wrap part" data-name="分享模块">
 			<div class="share-buttons">
 				<h2 class="title">分享</h2>
 				<ul>
@@ -243,12 +200,7 @@
 					</li>
 					
 				</ul>
-			</div>
-
-	</script>
-
-	<script id="comments-tmpl" type="text/html" >
-		<section class="comments part {% if(typeof more != 'undefined' && !window.$wap) { %} has-more {% } %}" data-name="评论">
+			</div></script><script id="comments-tmpl" type="text/html"><section class="comments part {% if(typeof more != 'undefined' && !window.$wap) { %} has-more {% } %}" data-name="评论">
 			{% if(typeof title != 'undefined'){ %}
 			<h2 class="title">{%=title%}</h2>
 			{% } else { %}
@@ -277,7 +229,6 @@
 								<a class="thumbup-active" style="display:none;" href="javascript:;">
 									<img src="../images/icon-thumbup-active.png" />
 								</a>
-								
 								<span class="username">{%=item.username%}</span>
 							</div>
 							<div class="text">
@@ -307,24 +258,67 @@
 				data-native="news.showComments"
 				href="javascript:;">{%=more%}</a>
 			{% } %}
-		</section>
-	</script>
-</head>
-<body>
-	<div class="wrapper">
-		<div id="sx-graybar"></div>
-		<div id="sx-article"></div>
-		<div id="sx-recommond"></div>
-		<div id="sx-hot"></div>
-		<div id="sx-comments"></div>
-	</div>
-	<script type="text/javascript" src="../js/nativeApi.js"></script>
-	<script type="text/javascript" src="../js/contentRender.js"></script>
-	<script type="text/javascript">
-	$(function(){
-		window.$wap = false;
-	})
-		
-	</script>
-</body>
-</html>
+		</section></script></head><body><div class="wrapper"><div id="sx-graybar"></div><div id="sx-article"></div><div id="sx-recommond"></div><div id="sx-hot"></div><div id="sx-comments"></div></div><div class="pop"></div><style type="text/css">.pop-fixed{
+			position: fixed;
+			width: 100%;
+			height: 100%;
+			z-index: 1200;
+			background: rgba(0,0,0,.8);
+			top: 0;
+			left: 0;
+		}
+
+		/* download bar in wap */
+		.sx-download-bar{
+			height: 40px;
+			border-top: 1px solid #e5e5e5;
+			background: #fff url(http://p7.qhimg.com/d/inn/032c38a5/download-bar-h5.png) no-repeat 15px 50%;
+			background-size: 115px auto;
+			position: fixed;
+			bottom: 0;
+			width: 100%;
+			z-index: 1999;
+		}
+		.sx-btn-download{
+			display: block;
+			color: #fff;
+			font-size: 16px;
+			background-color: #ec4346;
+			line-height: 30px;
+			height: 30px;
+			padding:0 15px;
+			border-radius: 3px;
+			position: absolute;
+			right: 15px;
+			top: 5px
+
+		}</style><div wap class="sx-download-bar"><a href="#" class="sx-btn-download">下载</a></div><script type="text/javascript" src="../js/nativeApi.js"></script><script type="text/javascript" src="../js/contentRender.js"></script><script deletecur type="text/javascript" src="../js/data/detail-n.js"></script><script deletecur>$(function(){
+			window.$wap = false;
+			var cont = dataDetailNews.data;
+			var comm = commData.data;
+			var related = relatedNews.data;
+
+
+			var hotNewsData = hotNews.data;
+			$ContentRender.renderGrayBar(cont);
+			$ContentRender.renderArticle(cont);
+			/*相关阅读*/
+			$ContentRender.renderRecommendArtices(related);
+			/*热门推荐*/
+			$ContentRender.renderhotArtices(hotNewsData);
+			$ContentRender.renderShareButtons({});
+			
+			$ContentRender.renderComments(comm);
+			$ContentRender.lazyLoadImage();
+			$ContentRender.done();
+			/*$.ajax({
+				url:"http://zm.kandian.360.cn/index.php?c=index&a=trans&from=h5&m=3fe50e8cb21355700f042010505ea2985d532773&id=1665613463555970&fmt=json&url=http://news.sohu.com/20151124/n427839277.shtml",
+				data:'',
+				type:"get",
+				dataType: "jsonp",
+				success:function(data){
+					console.log("ajax")
+					console.log(data);
+				}
+			})*/
+		});</script><script type="text/javascript" src="../js/iosonly.js"></script></body></html>
