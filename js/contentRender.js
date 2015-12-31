@@ -676,12 +676,13 @@
 		if (g.$debug === true) console.log('$ContentRender.renderComments(' + JSON.stringify(data) + ');');
 		return render.call(this, '#comments-tmpl', data, clearExistContent, function(data) {
 			var title;
-			// 兼容老客户端，1. 直接丢弃老数据 2. 做兼容逻辑  这里选择直接丢弃
+
 			if (data.hot_comments && data.hot_comments.length > 0) {
 				// 热门评论，显示3条
 				title = "热门评论";
 				data._comments = data.hot_comments;
 				data.more = "查看更多评论";
+				
 			} else if (data.comments && data.comments.length > 0) {
 				title = "最新评论";
 				data._comments = data.comments;
@@ -697,6 +698,7 @@
 			}
 			if (data._comments && data._comments.length > 3) {
 				data._comments.length = 3;
+				data._comments = data._comments.splice(0,3);
 			}
 			data._comments.forEach(function(item) {
 				item.text = decodeURIComponent(item.comment);
@@ -729,6 +731,8 @@
 		}
 	};
 
+	
+
 	/**
 	 * $ContentRender.prependComment(data)
 	 * 在评论列表增加一条评论
@@ -745,6 +749,15 @@
 		html = this.renderComments(fake, false, true);
 		dom = $(html).find('li');
 		list.prepend(dom);
+		var newList = section.find('.comment-list li').length;
+		if(newList >= 3){
+			section.find('.more-comments').css('display','block');
+		}
+		if(newList>3){
+			section.find('.comment-list li:last').remove();
+		}
+
+		
 	};
 
 	/**
@@ -835,6 +848,8 @@
 		// $winHeight = $win.height(); // 有些手机(小米3)上需要在这里重新计算一下
 		console.log('//渲染完成,总耗时' + $totalRenderTime + 'ms!');
 
+
+
 	};
 
 	/**
@@ -871,6 +886,11 @@
 
 		var images = null; //images to be lazy load
 
+		function isAndroid(){
+			var na = navigator.userAgent;
+			var re = /android/i; 
+			return re.test(na);
+		}
 		function loadImage(el, fn) {
 			var img = new Image(),
 				src = el.getAttribute('data-src');
@@ -888,7 +908,9 @@
 					el.src = src;
 					$(el).removeClass('lazy');
 				}
-				//$nativeApi.news.articleImgLoaded(el.src);
+				if(!!isAndroid()){ // 如果是安卓app 则load完一张img时，输出log
+					$nativeApi.news.articleImgLoaded(el.src);
+				}
 				fn && fn();
 			};
 			img.onerror = function() {

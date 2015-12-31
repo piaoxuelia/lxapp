@@ -1,5 +1,15 @@
 module.exports = function(grunt) {
 
+	/*
+	 * 说明：
+	 * 将代码分别处理到几个文件夹：
+	 * android： 放入安卓app的文件，无图集的弹框交互  目前只有new-detail
+	 * dev: 放入测试环境，安卓app中测试时使用的文件 new-detail.html new-detail-nodata.html  
+	 * iso: 放入iosapp的文件， 目前只有new-detail，js多一个iosonly.js
+	 * share: 分享后的wap页，生成inn.io中直接将静态文件打包上传的目录结构
+	 * wapPageMoni:分享后的wap页有模拟数据的效果，为了直接看效果
+	*/
+
 	// Project configuration.
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -294,10 +304,22 @@ module.exports = function(grunt) {
 					from:/\<\!--iosStart--\>((?!iosEnd)[\s\S])*\<\!--iosEnd--\>/gi,
 					to: ''
 				}]
+			},
+			regexReplaceDev2: {
+				src: ['../output/dev/html/news-detail.html'],
+				overwrite: true, 
+				replacements: [{
+					from:/\<\!--wapStart--\>((?!wapEnd)[\s\S])*\<\!--wapEnd--\>/gi,
+					to: ''
+				},
+				{
+					from:/\<\!--iosStart--\>((?!iosEnd)[\s\S])*\<\!--iosEnd--\>/gi,
+					to: ''
+				}]
 			}
 		},
 		watch: {
-			files: ['css/*','html/*','js/*','js/**/','images/*'],
+			files: ['css/*','html/*','js/*','js/**/*','images/*'],
 			tasks: ['default'],
 			options: {
 				livereload: true,
@@ -310,8 +332,10 @@ module.exports = function(grunt) {
 					{expand: true, src: ['images/*'], dest: '../output/wapPageMoni/'},
 					{expand: true, src: ['images/*'], dest: '../output/dev/'},
 					{expand: true, src: ['images/*'], dest: '../output/ios/'},
-					{expand: true, src: ['images/*'], dest: '../lianxian_app_ios/LIANXIAN/Resources/h5/'}
-				],
+					{expand: true, src: ['images/*'], dest: '../lianxian_app_ios/LIANXIAN/Resources/h5/'},
+					{expand: true, src: ['font/*'], dest: '../output/android/'},
+					{expand: true, src: ['font/*'], dest: '../output/ios/'},
+					{expand: true, src: ['font/*'], dest: '../output/dev/'}],
 			},
 			copyToDev: {
 				expand: true,

@@ -583,7 +583,7 @@ var commData = {
 	"msg": "ok",
 	"data": {
 		"key": "http%3A%2F%2Fpolitics.people.com.cn%2Fn%2F2015%2F1105%2Fc1001-27779358.html",
-		"comment_num": 3,
+		"comment_num": 0,
 		"hot_comments": [{
 			"comment_id": 1315006,
 			"comment": "%E6%98%A8%E5%A4%A9%E4%B8%8D%E5%B0%B1%E5%BC%80%E5%A7%8B%E4%BA%86%E5%90%97",
@@ -596,19 +596,19 @@ var commData = {
 			"uname": "%E7%94%A8%E6%88%B75749135938",
 			"uavatar": "http%3A%2F%2Ftp3.sinaimg.cn%2F5749135938%2F180%2F0%2F1",
 			"chain": []
-		},
-		{	"comment_id": 1566986,
-					"comment": "中央这么重视民族工作，这么重视脱贫工作，就是要更好维护民族地区团结稳定，更好加快民族地区发展，更好凝聚各民族智慧和力量，各民族一起来实现中华民族伟大复兴的中国梦",
-					"layer": 4,
-					"create_time": "2015-11-06 11:16:30",
-					"support": 0,
-					"against": 0,
-					"uid": "5749135938",
-					"uid_type": "weibo",
-					"uname": "%E7%94%A8%E6%88%B75749135938",
-					"uavatar": "http%3A%2F%2Ftp3.sinaimg.cn%2F5749135938%2F180%2F0%2F1",
-					"chain": []
-				}],
+		},{
+            "comment_id": 1315006,
+            "comment": "%E6%98%A8%E5%A4%A9%E4%B8%8D%E5%B0%B1%E5%BC%80%E5%A7%8B%E4%BA%86%E5%90%97",
+            "layer": 4,
+            "create_time": "2015-11-06 11:16:30",
+            "support": 4,
+            "against": 0,
+            "uid": "5749135938",
+            "uid_type": "weibo",
+            "uname": "%E7%94%A8%E6%88%B75749135938",
+            "uavatar": "http%3A%2F%2Ftp3.sinaimg.cn%2F5749135938%2F180%2F0%2F1",
+            "chain": []
+        }],
 		"comments": [{
 			"comment_id": 1315006,
 			"comment": "%E6%98%A8%E5%A4%A9%E4%B8%8D%E5%B0%B1%E5%BC%80%E5%A7%8B%E4%BA%86%E5%90%97",
@@ -624,7 +624,7 @@ var commData = {
 		}, {
 			"comment_id": 1314741,
 			"comment": "%E5%A5%BD",
-			"layer": 3,
+			"layer": 3,  
 			"create_time": "2015-11-06 09:21:52",
 			"support": 0,
 			"against": 0,
@@ -645,7 +645,19 @@ var commData = {
 			"uname": "%E9%A6%99%E9%9B%AA%E5%84%BF",
 			"uavatar": "http%3A%2F%2Fwx.qlogo.cn%2Fmmopen%2FGKXE3SqWUylB9YCks08hIrUvV5YDdWiaSNmUiaZQ4ITiaOv8xLHIBicW5E0AaYp7mtIndlO9YUxU86wOR0rCaHUos5bctpibCx1Fl%2F0",
 			"chain": []
-		}],
+		}, {
+            "comment_id": 1314417,
+            "comment": "%E5%A5%BD%E4%B8%BB%E5%B8%AD",
+            "layer": 2,
+            "create_time": "2015-11-06 06:26:21",
+            "support": 0,
+            "against": 0,
+            "uid": "ovflHtxZvOP5vRBFwJ574oZdVnqo",
+            "uid_type": "weixin",
+            "uname": "%E9%A6%99%E9%9B%AA%E5%84%BF",
+            "uavatar": "http%3A%2F%2Fwx.qlogo.cn%2Fmmopen%2FGKXE3SqWUylB9YCks08hIrUvV5YDdWiaSNmUiaZQ4ITiaOv8xLHIBicW5E0AaYp7mtIndlO9YUxU86wOR0rCaHUos5bctpibCx1Fl%2F0",
+            "chain": []
+        }],
 		"chain_message": []
 	}
 }
