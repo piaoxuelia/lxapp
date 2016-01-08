@@ -79,11 +79,22 @@
     	<a href="#" class="sx-btn-download">下载</a>
     </div>
 
-	<script wap type="text/javascript" src="../js/wap/gallery.js"></script>
-	<script type="text/javascript" src="../js/data/detail-n.js"></script>
-    <script wap>
+	<script type="text/javascript" src="../js/wap/gallery.js"></script>
+    <!--moniDataStart-->
+    <script type="text/javascript" src="../js/data/detail-n.js"></script>
+    <script>
     	console.log(galleryData)
         $ContentRender.renderArticle(galleryData.data);
     </script>
+    <!--moniDataEnd-->
+    <!--wapStart-->
+    <script>
+        var gallData = JSON.stringify(<?php echo json_encode($return['article']);?>);
+        gallData = JSON.parse(gallData);
+        if(gallData){
+             $ContentRender.renderArticle(gallData);
+        }
+    </script>
+    <!--wapEnd-->
 </body>
 </html>

@@ -37,24 +37,18 @@ var iosOnly = (function () {
 	   
 		
 		// 多图模式
-		$('.article-img-list img').click(function (e) {
+		$('.gallery-wrap a').click(function (e) {
 			e.stopPropagation();
 			e.preventDefault();
 
-			var image_group_wrapper = $(this).parents('.scroller-wrap');
+			var image_group_wrapper = $(this).parent('.cont');
 			var srcs = [];
-			var transurl = image_group_wrapper.data('transurl');
-			image_group_wrapper.find('img').each(function (index, item) {
-				srcs.push($(item).data('src'));
-			});
+			var transurl = image_group_wrapper.data('trans-url');
+			
 			sendMessageToApp({
 				handle: 'image',
 				type: '1002',
-				data: {
-					srcs: srcs,
-					index: 0,
-					transurl: transurl
-				}
+				data: transurl
 			});
 		});
 	};
@@ -91,6 +85,13 @@ var iosOnly = (function () {
 				handle: 'link',
 				type: '5001',   
 				data: data
+			});
+		});
+
+		body.on('click','.grayBar-rt',function () {
+			sendMessageToApp({
+				handle: 'click',
+				type: '3004'
 			});
 		});
 	};
@@ -169,9 +170,10 @@ connectWebViewJavascriptBridge(function(bridge) {
 
   bridge.registerHandler('JavascriptRelatedHandler', function(data, responseCallback) {
    if(data){
-		(data.transmit_data || data.transmit_num) && $ContentRender.renderGrayBar(data);
-		data.related && $ContentRender.renderRecommendArtices(data);
-		data.hotNewsList && $ContentRender.renderhotArtices(data);
+		((data.transmit_data && data.transmit_data.length) || data.transmit_num) && $ContentRender.renderGrayBar(data);
+		data.related && data.related.length && $ContentRender.renderRecommendArtices(data);
+		
+		data.hotNewsList && data.hotNewsList.length && $ContentRender.renderhotArtices(data);
 	}
 	$ContentRender.lazyLoadImage();
 	iosOnly.bineReatedEventHandler();

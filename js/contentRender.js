@@ -9,8 +9,6 @@
 	$.noop = function(){};
 	g.$pageHPadding = 16; //正文水平左右padding
 	g.$isWeixin = navigator.userAgent.toLowerCase().indexOf('micromessenger') > 0;
-	g.$is360Browser = navigator.userAgent.indexOf("360") >= 0;
-	g.$isShixianInstalled = location.search.indexOf('isappinstalled') > 0;
 	g.$datum = {
 		mod: {}
 	};
@@ -26,55 +24,6 @@
 			window.scrollTo(0, $win.scrollTop() - 1);
 		}, n);
 	}
-
-	var $defaultMagnificPopupCreateOpts = {
-		delegate: 'a[data-mfp-src]',
-		type: 'image',
-		closeOnContentClick: false,
-		closeBtnInside: false,
-		mainClass: 'mfp-with-zoom mfp-img-mobile',
-		image: {
-			verticalFit: false
-		},
-		gallery: {
-			enabled: true
-		},
-		zoom: {
-			enabled: true,
-			duration: 300, // don't foget to change the duration also in CSS
-			opener: function(element) {
-				return element.find ? element.find('img') : $(element.img[0]);
-			}
-		},
-		callbacks: {
-			open: function(e) {
-				//强制360极速浏览器(7.5.3.312,30.0.1599.101)渲染body滚动条
-				document.body.scrollTop+=1;
-				document.body.scrollTop-=1;
-			}
-		}
-	};
-
-	function useMagnificPopup(callback) {
-		var scriptId = 'magnificPopupScript',
-			script = $('#' + scriptId);
-		if (script.length > 0) {
-			callback();
-		} else {
-			$('<link>').attr({
-				'type': 'text/css',
-				'rel': 'stylesheet',
-				'href': 'http://s0.qhimg.com/!51b589d0/magnific-popup.css'
-			}).appendTo('head');
-			$('<script>').attr({
-				'id': scriptId,
-				'src': 'http://s9.qhimg.com/!1a5e34b7/jquery.magnific-popup.js'
-			}).on('load', callback).appendTo('body');
-		}
-	}
-
-
-
 	/**
 	 * render
 	 * 核心渲染函数
@@ -91,7 +40,7 @@
 			feeds = typeof preprocess == 'function' ? preprocess(data) : data,
 			html = '',
 			dom, errmsg;
-		console.log(feeds)
+
 		wrapper = wrapper || $('.wrapper').last();
 
 		if (feeds == null) return html;
@@ -194,8 +143,6 @@
 	 * mod与part相比更独立，有鲜明的边界
 	 */
 	var supportedArticleParts = {
-		'dajiasou': 'mod',
-		'shixian': 'mod',
 		'wiki': 'mod',
 		'weibo': 'mod',
 		'music': 'mod',
@@ -263,19 +210,9 @@
 				feeds.origin = data.wapurl;
 			}
 
-			// 与手机助手合作，提供文章 id， 并且兼容
-			// 看点自定义新闻的静态页，转码页，以及后续普通新闻的转码页
-			if(data.nid) {
-				feeds.nid = data.nid;
-			}
-
 			if (data.title) {
 				feeds.title = $utils.unescape(data.title);
 				document.title = feeds.title;
-				//准备微信分享数据
-				// if (g.$key && g.$key.indexOf('shixian.so.com') >= 0) {
-				// 	$ContentRender.weixinShareData.title = sharedDocTitle + feeds.title.replace(sharedDocTitle, '');
-				// }
 			}
 
 			if (data.newtags && data.newtags.length > 0) {
@@ -313,14 +250,6 @@
 					}
 					dat.value = $utils.dmfd(dat.value, dat.width, dat.height, true);
 
-					//将正文第一张图片设置为分享图片
-					// if (!$ContentRender.weixinShareData._found_img_url && match && match.length == 3) {
-					// 	//准备微信分享数据
-					// 	$ContentRender.weixinShareData.img_url = dat.value;
-					// 	$ContentRender.weixinShareData.img_width = dat.width;
-					// 	$ContentRender.weixinShareData.img_height = dat.height;
-					// 	$ContentRender.weixinShareData._found_img_url = true;
-					// }
 				} else if (dat.type == 'txt') {
 					if (dat.subtype == 'img_title') {
 						dat.cssClass = 'caption';
@@ -332,7 +261,6 @@
 							dat.value = null;
 						}
 					}
-					//老数据是没有p标签的，新数据有
 					//没有p标签的要在模板中用p标签括起来
 					if (dat.value && dat.value.match(/^\s*<p/)) {
 						dat.noPTag = true; // 不需要包裹 p 标签
@@ -341,10 +269,6 @@
 					}
 					if (dat.value) dat.value = $utils.unescape(dat.value);
 
-					// if (!$ContentRender.weixinShareData._found_first_text) {
-					// 	$ContentRender.weixinShareData.desc = $utils.trunc(dat.value, 100, '...', true);
-					// 	$ContentRender.weixinShareData._found_first_text = true;
-					// }
 				} else if (typeof supportedArticleParts[dat.type] != 'undefined') {
 					var json = extractArticlePartsData(dat.type, contentWidth, dat.value, dat),
 						typename = supportedArticleParts[dat.type];
@@ -397,53 +321,10 @@
 			wrapper.find('.article').prepend(headImgHtml);
 		}
 
-		//正文内可横向的滚动图集
-	
-		if(window.$wap){
-			initGalleryMagnificPopup($('.mod .gallery'));
-		}
-	
-
 		return result;
 	};
 
-	function initGalleryMagnificPopup($el) {
-		useMagnificPopup(function() {
-			var url = $el.attr('data-trans-url');
-			if ($el.attr('data-allqimg') > 8 && url) {
-				$.ajax({
-					url: url,
-					dataType: 'jsonp',
-					success: function(response) {
-						if (response && response.data && response.data.content) {
-							var opts = $.extend({}, $defaultMagnificPopupCreateOpts);
-							opts.index = 7;
-							opts.items = $el.find('a[data-mfp-src]').toArray();
-							var count = 0;
-							$.each(response.data.content, function(i, item) {
-								if (item.type == 'img') {
-									count++;
-									if (count > 8) {
-										opts.items.push({
-											src: item.value
-										});
-									}
-								}
-							});
-							$el.magnificPopup(opts);
-						} else {
-							$el.magnificPopup($defaultMagnificPopupCreateOpts);
-						}
-					},
-					error: function() {
-						if (g.$debug === true) console.log('initGalleryMagnificPopup error');
-					}
-				});
-			} else {
-				$el.magnificPopup($defaultMagnificPopupCreateOpts);
-			}
-		});
-	}
+	
 
 	function initScroller(containerSelector) {
 		var ctn = $(containerSelector),
@@ -454,6 +335,7 @@
 		scroller.width(ctn.width() * scroller.children().length + 'px');
 	}
 
+	
 	function extractArticlePartsData(type, contentWidth, value, rawData) {
 		var s = value.replace(/<p[\s\S]*?>([\s\S]*?)<\/p>/g, "$1").replace(/\}<br\/>/, '}'),
 			data = {},
@@ -610,7 +492,7 @@
 	 * 渲染推荐新闻列表
 	 */
 	$cr.renderRecommendArtices = function(data, clearExistContent) {
-		 window.detListData = data;
+		window.detListData = data;
 		if (g.$debug === true) console.log('$ContentRender.renderRecommendArtices(' + JSON.stringify(data) + ');');
 		var wrapper = $('.wrapper'),
 			contentWidth = wrapper.width() - 2 * $pageHPadding;
@@ -619,11 +501,12 @@
 				data.related.forEach(function(item, index) {
 					if (item.pdate) item.elapse = $utils.elapse(item.pdate);
 					item.source = item.src;
+					item.title =$utils.unescape(item.title);
 					if (item.album_pic) {
 						item.imgurl = item.album_pic.split('|')[0];
 						item.width = Math.floor((contentWidth-15)/2);
-						item.height = contentWidth / 3;
-						item.img = $utils.dmfd(item.imgurl, item.width, item.height);
+						item.height = item.width*0.6;
+						item.img = $utils.dmfd(item.imgurl, item.width, item.height,true);
 
 					} else {
 						item.img = item.imgurl;
@@ -642,7 +525,7 @@
 	 */
 
 	 $cr.renderhotArtices = function(data, clearExistContent) {
-	 	window.detListData = data;
+		window.detListData = data;
 	 	if (g.$debug === true) console.log('$ContentRender.renderhotArtices(' + JSON.stringify(data) + ');');
 	 	var wrapper = $('.wrapper'),
 	 		contentWidth = wrapper.width() - 2 * $pageHPadding;
@@ -650,12 +533,13 @@
 	 		if (data.hotNewsList && data.hotNewsList.length > 0) {
 	 			data.hotNewsList.forEach(function(item, index) {
 	 				if (item.pdate) item.elapse = $utils.elapse(item.pdate);
+	 				item.title =$utils.unescape(item.title);
 	 				item.source = item.src;
 	 				if (item.album_pic) {
 	 					item.imgurl = item.album_pic.split('|')[0];
 	 					item.width =110;
-	 					item.height = 82;
-	 					item.img = $utils.dmfd(item.imgurl, item.width, item.height);
+	 					item.height = 62;
+	 					item.img = $utils.dmfd(item.imgurl, item.width, item.height,true);
 
 	 				} else {
 	 					item.img = item.imgurl;
@@ -760,23 +644,6 @@
 		
 	};
 
-	/**
-	 * $ContentRender.playMusic()
-	 * 播放音乐
-	 */
-	$cr.playMusic = function() {
-		
-	};
-
-	/**
-	 * $ContentRender.StopMusic()
-	 * 停止播放音乐, 客户端加载失败，或者音乐播放完，调用
-	 */
-	$cr.stopMusic = function() {
-		$('.wrapper').find('.music .play-button.playing')
-					 .removeClass('playing').addClass('stop');
-	};
-
 
 	/**
 	 * $ContentRender.renderShareButtons(data, hasPageButton, clearExistContent)
@@ -833,6 +700,11 @@
 	 */
 	$cr.renderCommentsCompose = $.noop;
 
+	function isAndroid(){
+		var na = navigator.userAgent;
+		var re = /android/i; 
+		return re.test(na);
+	}
 	/**
 	 * 灌入数据完毕
 	 */
@@ -841,7 +713,10 @@
 		var wrapper = $('.wrapper');
 
 		//安卓dom加载完成要绑定一些打点信息，在domdDone后执行
-		wrapper.trigger('domDone');
+		if(!window.$wap && !!isAndroid()){
+			wrapper.trigger('domDone');
+		}
+		wrapper.trigger('done');
 
 		wrapper.data('done', true);
 		// TODO: 在小米 3 上测试，右侧导航已经移除， $winHeight 在 右侧导航的逻辑里声明
@@ -886,14 +761,11 @@
 
 		var images = null; //images to be lazy load
 
-		function isAndroid(){
-			var na = navigator.userAgent;
-			var re = /android/i; 
-			return re.test(na);
-		}
+		
 		function loadImage(el, fn) {
 			var img = new Image(),
 				src = el.getAttribute('data-src');
+
 			img.onload = function() {
 				var e = $(el);
 				e.removeClass('lazy error loading');
@@ -928,7 +800,6 @@
 			if (g.$debug) console.log('//加载' + src);
 			img.src = src;
 		}
-
 		function elementInViewport(e, index) {
 			var rect = e.ele.getBoundingClientRect(),
 				winHeight = $win.height(),
@@ -1019,9 +890,8 @@
 		$('.wrapper').attr('class', 'wrapper').addClass(s);
 		shake();
 	};
-
-	// $($cr.lazyLoadImage);
 	g.$ContentRender = $cr;
+
 
 
 

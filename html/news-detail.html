@@ -4,14 +4,24 @@
 	<meta charset="utf-8">
 	<title>新闻详情页</title>
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-
 	<link href="../css/common.css" type="text/css" rel="stylesheet"/>
+	<!--
+		说明：
+		1. wapStart 和 wapEnd 之间是分享页专有的内容，最终页在output/share下
+		2. andrStart 和 andrEnd 之间是安卓的内容，最终页在output/android 或 output/dev下
+		3. iosStart 和 iosEnd 之间是ios专有内容  最终页在output/ios下
+		4. moniDataStart 和 moniDataEnd之间是用的模拟数据 
+		   最终页在output/wapPageMoni  或  output/dev
+		5. wapDataStart 和 wapDataEnd 之间是真实的php中的数据，用以生成分享页 output/share下
+		6. output中生成的所有代码都是压缩过的
+	-->
 	<script type="text/javascript" src="../js/libs/zepto.js"></script>
 
 	<script type="text/javascript" src="../js/libs/fastclick.js"></script>
+	<!--
 	<script type="text/javascript" src="../js/libs/fx.js"></script>
 	<script type="text/javascript" src="../js/libs/slidefx.js"></script>
-
+	-->
 	<script type="text/javascript" src="../js/libs/touch.js"></script>
 	<script type="text/javascript" src="../js/libs/selector.js"></script>
 
@@ -109,7 +119,7 @@
 		<div class="gallery mod">
 			{% items.forEach(function(item){ %}
 			<div class="gallery-wrap">
-				<div class="cont gallery relative" data-itemperpage="{%=item.itemPerPage%}" data-trans-url="{%=item.transUrl%}" data-allqimg="{%=item.allqimg%}">
+				<div class="cont gallery relative" data-itemperpage="{%=item.itemPerPage%}" data-trans-url="{%=item.zm%}" data-allqimg="{%=item.allqimg%}">
 
 					{%if (!window.$wap){ %}
 						{% item.items.forEach(function(url, i){ %}
@@ -120,7 +130,6 @@
 									data-param2="{%=item.data%}"
 									data-native="photo.showFullImage"
 									{%if (i!=0) { %}style="display:none"{% } %}
-
 									data-mfp-src="{%=item.originalPhotos[i]%}">
 										<img class="lazy" data-src="{%=url%}" width="100%" height=""/>
 										<span class="pages">{%=item.allqimg%}/P</span>
@@ -134,12 +143,12 @@
 					{% }else{ %}
 						{% item.items.forEach(function(url, i){ %}
 								
-								<a href="javascript:;" 
+								<a href="javascript:;" title = "{%=item.title%}"
 									class="relative block" 
 								{%if (i!=0) { %}style="display:none"{% } %}
 
 								data-mfp-src="{%=item.originalPhotos[i]%}">
-									<img class="lazy" data-src="{%=url%}" width="100%" height=""/>
+									<img class="lazy"  data-src="{%=url%}" width="100%" height=""/>
 									<span class="pages">{%=item.allqimg%}/P</span>
 									<span class="galleryflag"><span>
 								</a>
@@ -189,17 +198,23 @@
 					</ul>
 					<ul class="articles-list">
 				{% } %}
-				<li class="native-call" data-native="related.viewRelatedArticel" data-param1="{%=item.url%}">
-					
-					{% if(item.img){ %}
-					<img class="photo lazy" data-src="{%=item.img%}" width="{%=item.width%}" height="{%=item.height%}" />
-					{% } else if(item.summary){ %}
-					<p>{%=item.summary%}</p>
+				<li class="native-call" data-native="related.viewRelatedArticel" data-param1="{%=item.url%}" data-index="{%=i%}">
+
+					{% if(window.$wap) { %}
+						<a href="{%=item.url%}">
+						<img class="photo lazy" data-src="{%=item.img%}" width="{%=item.width%}" height="{%=item.height%}" />
+						</a>
+						<a class="title-link" href="{%=item.url%}">
+							<div class="row2">{%=item.title%}</div>
+						</a>
+					{% } else { %}
+						
+						<img class="photo lazy" data-src="{%=item.img%}" width="{%=item.width%}" height="{%=item.height%}" />
+						
+						<a class="title-link" href="javascript:;" >
+							<div class="row2">{%=item.title%}</div>
+						</a>
 					{% } %}
-					
-					<a class="title-link" href="javascript:;" data-href="{%=item.url%}">
-						<div class="row3">{%=item.title%}</div>
-					</a>
 					<div class="time-tips">
 						{% if (typeof item.elapse == 'string') { %}
 							 <i>{%=item.elapse%}</i>
@@ -221,7 +236,13 @@
 			<ul class="articles-list">
 				{% hotNewsList.forEach(function(item,i){ %}
 					<li class="native-call flex" data-native="related.viewHotArticel" data-param1="{%=item.url%}">
-						<a class="flex-item txts" href="javascript:;" data-href="{%=item.url%}">
+						<a class="flex-item txts" 
+						{% if(window.$wap) { %}
+						href="{%=item.url%}"
+						{% } else { %}
+						href="javascript:;" 
+						{% } %}
+						>
 							<div class="title-link row2" >{%=item.title%}</div>
 							<p>
 								{% if (typeof item.elapse == 'string') { %}
@@ -230,17 +251,22 @@
 							</p>
 						</a>
 						<div class="hot-img">
-						{% if(item.img){ %}
-							<img class="photo lazy" data-src="{%=item.img%}" width="{%=item.width%}" height="{%=item.height%}" />
-						{% } else if(item.summary){ %}
-							<p>{%=item.summary%}</p>
-						{% } %}
+							<a 
+							{% if(window.$wap) { %} 
+							href="{%=item.url%}"
+							{% } else { %} 
+							href="javascript:;"
+							{% } %}
+							>
+								<img class="photo lazy" data-src="{%=item.img%}" width="{%=item.width%}" height="{%=item.height%}" />
+							</a>
 						</div>
 					</li>
 				{% }); %}
 			</ul>
 		</section>
 	</script>
+	<!-- 暂时去掉，安卓 ios和分享页都没有
 	<script id="share-buttons-tmpl" type="text/html" >
 		<section class="share-buttons-wrap part" data-name="分享模块">
 			<div class="share-buttons">
@@ -269,13 +295,15 @@
 			</div>
 
 	</script>
-
+	-->
 	<script id="comments-tmpl" type="text/html" >
 		<section class="comments part {% if(typeof more != 'undefined' && !window.$wap) { %} has-more {% } %}" data-name="评论">
-			{% if(typeof title != 'undefined'){ %}
-			<h2 class="title">{%=title%}</h2>
-			{% } else { %}
-			<h2 class="title">热门评论</h2>
+			{% if(!window.$wap || _comments.length > 0) { //app都有title，分享页无评论时所有都不显示 %}
+				{% if(typeof title != 'undefined'){ %}
+				<h2 class="title">{%=title%}</h2>
+				{% } else { %}
+				<h2 class="title">热门评论</h2>
+				{% } %}
 			{% } %}
 
 			{% if(_comments.length > 0){ //有评论%}
@@ -288,18 +316,19 @@
 							{% if(item.avatarUrl) {%}
 							<img class="avatar" src="{%=item.avatarUrl%}" />
 							{% } else { %}
-							<img class="avatar" src="../images/icon-default-avatar.png" />
+							<span class="avatar"><span>
 							{% } %}
 						</a>
 						<div class="info-text">
 							<div class="info">
-								<span class="liked">{%=item.liked%}</span>
+								
 								<a class="thumbup native-call" href="javascript:;" data-native="news.likeThisComment" data-param1="{%=item.cid%}">
-									<img src="../images/icon-thumbup.png" />
+									<i></i>
 								</a>
 								<a class="thumbup-active" style="display:none;" href="javascript:;">
-									<img src="../images/icon-thumbup-active.png" />
+									<i></i>
 								</a>
+								<span class="liked">{%=item.liked%}</span>
 								<span class="username">{%=item.username%}</span>
 							</div>
 							<div class="text">
@@ -316,13 +345,11 @@
 			{% } else { //没有评论%}
 				<ul class="comment-list" style="display:none;"></ul>
 
-				<div class="no-comments native-call" data-native="news.comment">
-					{% if(window.$wap) { %}
-						还没评论呢...
-					{% } else { %}
-						还没评论呢，你来吧
-					{% } %}
-				</div>
+				{% if(!window.$wap) { %}
+					<div class="no-comments native-call" data-native="news.comment">
+							还没评论呢，你来吧
+					</div>
+				{% } %} 
 			{% } %}
 
 			{% if(typeof more != 'undefined' && !window.$wap){ %}
@@ -333,7 +360,7 @@
 				<a class="more-comments native-call" 
 				style="display:none" 
 				data-native="news.showComments"
-				href="javascript:;">查看更多评论</a>
+				href="javascript:;">查看更多评论,请下载视线客户端...</a>
 			{% } %}
 		</section>
 	</script>
@@ -390,9 +417,9 @@
     </div>
     <!--wapEnd-->
 
-	<!--iosNotStart-->
+	<!--andrStart-->
 	<script type="text/javascript" src="../js/nativeApi.js"></script>
-	<!--iosNotEnd-->
+	<!--andrEnd-->
 
 	<script type="text/javascript" src="../js/contentRender.js"></script>
 
@@ -402,8 +429,8 @@
 	
 
 	<!--moniDataStart-->
-	<script deletecur type="text/javascript" src="../js/data/detail-n.js"></script>
-	<script deletecur>
+	<script type="text/javascript" src="../js/data/detail-n.js"></script>
+	<script>
 		$(function(){
 			var cont = dataDetailNews.data;
 			var comm = commData.data;
@@ -416,7 +443,7 @@
 			$ContentRender.renderRecommendArtices(related);
 			/*热门推荐*/
 			$ContentRender.renderhotArtices(hotNewsData);
-			$ContentRender.renderShareButtons({});
+			// $ContentRender.renderShareButtons({});
 			
 			$ContentRender.renderComments(comm);
 			$ContentRender.lazyLoadImage();
@@ -434,6 +461,41 @@
 		});
 	</script>
 	<!--moniDataEnd-->
+
+	<!--wapDataStart-->
+	<script>
+		<?php
+            if(isset($share_url)) {
+                echo sprintf("\$url = '%s';\n",$share_url);
+            } else {
+                echo "\$url = location.href;\n";
+            }
+
+            if(isset($url)) {
+                echo "\$key = '".$url."';\n";
+            } else {
+                echo "\$key = location.href;\n";
+            }
+
+            if(!isset($console)) {
+                echo "if(!console) console = {};console.log = console.error = console.warn = function(){};\n";
+            }
+        ?>
+    	var listData = JSON.stringify(<?php echo !empty($return['extra']) ? json_encode($return['extra']):'';?>);
+
+        $ContentRender.renderArticle(<?php echo json_encode($return['article']);?>, false);
+        if(listData){
+        	listData =JSON.parse(listData);
+        	console.log(listData)
+        	$ContentRender.renderRecommendArtices(listData);
+			$ContentRender.renderhotArtices(listData);
+        }
+        $ContentRender.renderComments({});
+		$ContentRender.lazyLoadImage();
+        $ContentRender.done();
+  
+    </script>
+	<!--wapDataEnd-->
 
 	<!--iosStart-->
 	<script type="text/javascript" src="../js/iosonly.js"></script>

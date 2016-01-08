@@ -54,7 +54,7 @@ module.exports = function(grunt) {
 				files: [{
 						expand:true,
 						cwd:'js',
-						src:['**/*.js','!**/iosonly.js'],
+						src:['**/*.js','!**/iosonly.js','!data/*.js'],
 						dest: '../output/share/static/js'
 					}]
 			},
@@ -77,7 +77,7 @@ module.exports = function(grunt) {
 				files: [{
 						expand:true,
 						cwd:'css',
-						src:'**/*.css',
+						src:'common.css',
 						dest: '../output/android/css'
 					}]
 			},
@@ -85,7 +85,7 @@ module.exports = function(grunt) {
 				files: [{
 						expand:true,
 						cwd:'css',
-						src:'**/*.css',
+						src:'common.css',
 						dest: '../output/dev/css'
 					}]
 			},
@@ -120,8 +120,10 @@ module.exports = function(grunt) {
 				files: [{
 						expand:true,
 						cwd:'css',
-						src:['**/*.css'],
+						src: ['*.css', '!common.css','!common-wap.css'],
 						dest: '../output/wapPageMoni/css'
+					},{
+						'../output/wapPageMoni/css/common.css': 'css/common-wap.css'
 					}]
 			}
 		},
@@ -131,7 +133,7 @@ module.exports = function(grunt) {
 				options: {
 					removeComments: false,
 					collapseWhitespace: true,
-					minifyJS:true //html中压缩js
+					minifyJS:true
 				},
 				files: {
 					'../output/android/html/news-detail.html': 'html/news-detail.html'
@@ -141,7 +143,7 @@ module.exports = function(grunt) {
 				options: {
 					removeComments: false,
 					collapseWhitespace: true,
-					minifyJS:true //html中压缩js
+					minifyJS:true
 				},
 				files: [{
 					'../output/dev/html/news-detail.html': 'html/news-detail.html'
@@ -154,7 +156,7 @@ module.exports = function(grunt) {
 				options: {
 					removeComments: false,
 					collapseWhitespace: true,
-					minifyJS:true //html中压缩js
+					minifyJS:true
 				},
 				files: [{
 					'../output/ios/html/news-detail.html': 'html/news-detail.html'
@@ -164,7 +166,7 @@ module.exports = function(grunt) {
 				options: {
 					removeComments: false,
 					collapseWhitespace: true,
-					minifyJS:true //html中压缩js
+					minifyJS:true
 				},
 				files: [{
 					'../lianxian_app_ios/LIANXIAN/Resources/h5/html/news-detail.html': 'html/news-detail.html'
@@ -174,7 +176,7 @@ module.exports = function(grunt) {
 				options: {
 					removeComments: false,
 					collapseWhitespace: true,
-					minifyJS:true //html中压缩js
+					minifyJS:true
 				},
 				files: [
 				{'../output/share/news-detail.html': 'html/news-detail.html'},
@@ -184,8 +186,9 @@ module.exports = function(grunt) {
 			},
 			distwapPageMoni: {
 				options: {
-					removeComments: true,
-					collapseWhitespace: true
+					removeComments: false,
+					collapseWhitespace: true,
+					minifyJS:true
 				},
 				files: [
 						{'../output/wapPageMoni/html/news-detail.html': 'html/news-detail.html'},
@@ -211,21 +214,30 @@ module.exports = function(grunt) {
 		},
 		replace: {
 			regexReplaceShare: {
-				src: [
-					'../output/share/news-detail.html',
+				src: ['../output/share/news-detail.html',
 					'../output/share/gallary-detail.html',
-					'../output/share/video-detail.html'
-				],
+					'../output/share/video-detail.html'],
 				overwrite: true, 
 				replacements: [{
-					from:/\.\.\//ig,//去掉带有deletecur的script标签
-					to: 'static/'
-				},{
-					from:/\<\!--iosStart--\>((?!iosEnd)[\s\S])*\<\!--iosEnd--\>/gi,
-					to: ''
+						from:/\.\.\//ig,
+						to: 'static/'
+					},{
+						from:/\<\!--iosStart--\>((?!iosEnd)[\s\S])*\<\!--iosEnd--\>/gi,
+						to: ''
+					},{
+						from:/\<\!--andrStart--\>((?!andrEnd)[\s\S])*\<\!--andrEnd--\>/gi,
+						to: ''
+					},
+					{
+						from:/\<\!--moniDataStart--\>((?!moniDataEnd)[\s\S])*\<\!--moniDataEnd--\>/gi,
+						to: ''
+					},
+					{
+						from:/\<\!--((?!--\>)[\s\S])*--\>/gi,
+						to: ''
 				}]
 			},
-			regexReplaceWapTest: {
+			regexReplaceWapMoni: {
 				src: [
 					'../output/wapPageMoni/html/news-detail.html',
 					'../output/wapPageMoni/html/gallary-detail.html',
@@ -233,8 +245,20 @@ module.exports = function(grunt) {
 				],
 				overwrite: true, 
 				replacements: [{
-					from:/\<\!--iosStart--\>((?!iosEnd)[\s\S])*\<\!--iosEnd--\>/gi,
-					to: ''
+						from:/\<\!--iosStart--\>((?!iosEnd)[\s\S])*\<\!--iosEnd--\>/gi,
+						to: ''
+					},
+					{
+						from:/\<\!--andrStart--\>((?!andrEnd)[\s\S])*\<\!--andrEnd--\>/gi,
+						to: ''
+					},
+					{
+						from:/\<\!--wapDataStart--\>((?!wapDataEnd)[\s\S])*\<\!--wapDataEnd--\>/gi,
+						to: ''
+					},
+					{
+						from:/\<\!--((?!--\>)[\s\S])*--\>/gi,
+						to: ''
 				}]
 			},
 			regexReplaceIOS: {
@@ -243,12 +267,20 @@ module.exports = function(grunt) {
 				],
 				overwrite: true, 
 				replacements: [{
-					from:/\<\!--wapStart--\>((?!wapEnd)[\s\S])*\<\!--wapEnd--\>/gi,
-					to: ''
-				},
-				{
-					from:/\<\!--iosNotStart--\>((?!iosNotEnd)[\s\S])*\<\!--iosNotEnd--\>/gi,
-					to: ''
+						from:/\<\!--wapStart--\>((?!wapEnd)[\s\S])*\<\!--wapEnd--\>/gi,
+						to: ''
+					},
+					{
+						from:/\<\!--andrStart--\>((?!andrEnd)[\s\S])*\<\!--andrEnd--\>/gi,
+						to: ''
+					},
+					{
+						from:/\<\!--wapDataStart--\>((?!wapDataEnd)[\s\S])*\<\!--wapDataEnd--\>/gi,
+						to: ''
+					},
+					{
+						from:/\<\!--((?!--\>)[\s\S])*--\>/gi,
+						to: ''
 				}]
 			},
 			regexReplaceIOSPro: {
@@ -257,16 +289,24 @@ module.exports = function(grunt) {
 				],
 				overwrite: true, 
 				replacements: [{
-					from:/\<\!--wapStart--\>((?!wapEnd)[\s\S])*\<\!--wapEnd--\>/gi,
-					to: ''
-				},
-				{
-					from:/\<\!--iosNotStart--\>((?!iosNotEnd)[\s\S])*\<\!--iosNotEnd--\>/gi,
-					to: ''
-				},
-				{
-					from:/\<\!--moniDataStart--\>((?!moniDataEnd)[\s\S])*\<\!--moniDataEnd--\>/gi,
-					to: ''
+						from:/\<\!--wapStart--\>((?!wapEnd)[\s\S])*\<\!--wapEnd--\>/gi,
+						to: ''
+					},
+					{
+						from:/\<\!--andrStart--\>((?!andrEnd)[\s\S])*\<\!--andrEnd--\>/gi,
+						to: ''
+					},
+					{
+						from:/\<\!--moniDataStart--\>((?!moniDataEnd)[\s\S])*\<\!--moniDataEnd--\>/gi,
+						to: ''
+					},
+					{
+						from:/\<\!--wapDataStart--\>((?!wapDataEnd)[\s\S])*\<\!--wapDataEnd--\>/gi,
+						to: ''
+					},
+					{
+						from:/\<\!--((?!--\>)[\s\S])*--\>/gi,
+						to: ''
 				}]
 			},
 			regexReplaceShare1: {
@@ -278,31 +318,51 @@ module.exports = function(grunt) {
 				}]
 			},
 			regexReplaceAndroid: {
-			src: ['../output/android/html/news-detail.html'],
+				src: ['../output/android/html/news-detail.html'],
 				overwrite: true, 
 				replacements: [{
-					from:/\<\!--wapStart--\>((?!wapEnd)[\s\S])*\<\!--wapEnd--\>/gi,
-					to: ''
-				},
-				{
-					from:/\<\!--moniDataStart--\>((?!moniDataEnd)[\s\S])*\<\!--moniDataEnd--\>/gi,
-					to: ''
+						from:/\<\!--wapStart--\>((?!wapEnd)[\s\S])*\<\!--wapEnd--\>/gi,
+						to: ''
+					},
+					{
+						from:/\<\!--moniDataStart--\>((?!moniDataEnd)[\s\S])*\<\!--moniDataEnd--\>/gi,
+						to: ''
+					},
+					{
+						from:/\<\!--iosStart--\>((?!iosEnd)[\s\S])*\<\!--iosEnd--\>/gi,
+						to: ''
+					},
+					{
+						from:/\<\!--wapDataStart--\>((?!wapDataEnd)[\s\S])*\<\!--wapDataEnd--\>/gi,
+						to: ''
+					},
+					{
+						from:/\<\!--((?!--\>)[\s\S])*--\>/gi,
+						to: ''
 				}]
 			},
 			regexReplaceDev: {
 				src: ['../output/dev/html/news-detail-nodata.html'],
 				overwrite: true, 
 				replacements: [{
-					from:/\<\!--wapStart--\>((?!wapEnd)[\s\S])*\<\!--wapEnd--\>/gi,
-					to: ''
-				},
-				{
-					from:/\<\!--moniDataStart--\>((?!moniDataEnd)[\s\S])*\<\!--moniDataEnd--\>/gi,
-					to: ''
-				},
-				{
-					from:/\<\!--iosStart--\>((?!iosEnd)[\s\S])*\<\!--iosEnd--\>/gi,
-					to: ''
+						from:/\<\!--wapStart--\>((?!wapEnd)[\s\S])*\<\!--wapEnd--\>/gi,
+						to: ''
+					},
+					{
+						from:/\<\!--moniDataStart--\>((?!moniDataEnd)[\s\S])*\<\!--moniDataEnd--\>/gi,
+						to: ''
+					},
+					{
+						from:/\<\!--iosStart--\>((?!iosEnd)[\s\S])*\<\!--iosEnd--\>/gi,
+						to: ''
+					},
+					{
+						from:/\<\!--wapDataStart--\>((?!wapDataEnd)[\s\S])*\<\!--wapDataEnd--\>/gi,
+						to: ''
+					},
+					{
+						from:/\<\!--((?!--\>)[\s\S])*--\>/gi,
+						to: ''
 				}]
 			},
 			regexReplaceDev2: {
@@ -315,15 +375,46 @@ module.exports = function(grunt) {
 				{
 					from:/\<\!--iosStart--\>((?!iosEnd)[\s\S])*\<\!--iosEnd--\>/gi,
 					to: ''
+				},
+				{
+					from:/\<\!--wapDataStart--\>((?!wapDataEnd)[\s\S])*\<\!--wapDataEnd--\>/gi,
+					to: ''
+				},
+				{
+					from:/\<\!--((?!--\>)[\s\S])*--\>/gi,
+					to: ''
 				}]
 			}
 		},
 		watch: {
-			files: ['css/*','html/*','js/*','js/**/*','images/*'],
-			tasks: ['default'],
-			options: {
-				livereload: true,
+			scripts: {
+			    files: ['js/*','js/**/*'],
+			    tasks: ['js'],
+			    options: {
+			      livereload:true
+			    }
 			},
+			css:{
+				files: ['css/*'],
+				tasks: ['css'],
+				options: {
+					livereload: true,
+				}
+			},
+			img:{
+				files: ['images/*'],
+				tasks: ['img'],
+				options: {
+					livereload: true,
+				}
+			},
+			html:{
+				files: ['html/*'],
+				tasks: ['html'],
+				options: {
+					livereload: true,
+				}
+			}
 		},
 		copy:{ // 图片拷贝
 			main:{
@@ -337,7 +428,7 @@ module.exports = function(grunt) {
 					{expand: true, src: ['font/*'], dest: '../output/ios/'},
 					{expand: true, src: ['font/*'], dest: '../output/dev/'}],
 			},
-			copyToDev: {
+			copyToDev: { // share下的目录不同，单独处理
 				expand: true,
 				cwd: 'images/',
 				src: '**',
@@ -352,7 +443,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-htmlmin');
-	grunt.loadNpmTasks('grunt-text-replace');
+	grunt.loadNpmTasks('grunt-text-replace'); 	
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	
@@ -360,4 +451,8 @@ module.exports = function(grunt) {
 	// Default task(s)
 	grunt.registerTask('default', ['uglify','cssmin','htmlmin','copy','replace']);
 	grunt.registerTask('wc', ['watch']);
+	grunt.registerTask('html', ['htmlmin','replace']);
+	grunt.registerTask('css', ['cssmin','replace:regexReplaceShare1']);
+	grunt.registerTask('js', ['uglify']);
+	grunt.registerTask('img', ['copy']);
 };

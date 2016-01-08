@@ -177,7 +177,7 @@
 		var defaults = {
 			width: 200,
 			height: 100,
-			quality: '',
+			quality: 70,
 			type: 'dmfd',
 			useRatio: false
 		}, options = {};
@@ -196,6 +196,7 @@
 				options.quality = temp[2];
 				return '';
 			});
+		
 		}
 		if((opts && opts.type && types.indexOf(opts.type) === -1) || (opts && !opts.type)) {
 			delete opts.type;
@@ -207,12 +208,13 @@
 			opts.useRatio && (opts.useRatio = false);
 		}
 		if(opts.useRatio) {
-			var ratio = window.devicePixelRatio || 1;
+			var ratio = window.devicePixelRatio;
+			ratio>=2 ? ratio = 2 :ratio = 1;
 			opts.width && (opts.width *= ratio);
 			opts.height && (opts.height *= ratio);
 		}
 
-		var zoom_out = utils.getParam('zoom_out', url);
+		var zoom_out = utils.getParam('zoom_out', url)|| 70;// 默认缩放比例70%
 
 		if(zoom_out) {
 			opts.width && (opts.width *= zoom_out / 100);
@@ -223,6 +225,7 @@
 		opts.height = opts.height ? Math.round(opts.height) : opts.height;
 
 		var partUrl = [opts.type,[opts.width,opts.height,opts.quality].join('_')].join('/');
+		
 		return url.replace(/((?:http:\/\/|https:\/\?)?[A-Za-z0-9\.]+)\/(.*)/,function(a,b,c){
 			return [b,partUrl,c].join('/');
 		});

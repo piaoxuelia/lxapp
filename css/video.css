@@ -90,7 +90,7 @@ section:last-child{
 
 .block{
 	display: block;
-}
+}	
 /* 通栏按钮 */
 
 .flex{
@@ -208,16 +208,19 @@ section:last-child{
 	width: 1.25em;
 	height: 1.25em;
 	line-height: 1.25em;
+	background: url(../images/icon-default-avatar.png) no-repeat;
+	display: inline-block;
+	background-size: contain
 }
 .comments.part .comment-list li .info-text{
 	font-size: 0.875em;
-	color: rgba(0, 0, 0, 0.87);
+	color: #333;
 	margin-left: 2.28571em;
 }
 .comments.part .comment-list li .text{
 	padding: 1.14286em;
 	margin: 0.71429em 0em 0em 0em;
-	background: #eee;
+	background: #fafafa;
 }
 .comments.part .comment-list li .time{
 	font-size: 0.75em;
@@ -235,13 +238,19 @@ section:last-child{
 	float: right;
 }
 .comments.part .comment-list li .info .thumbup, .comments.part .comment-list li .info .thumbup-active{
-	padding: 0em 0em 0em 0.66667em;
+	padding: 0em 0em 0em 0.5em;
 }
-.comments.part .comment-list li .info .thumbup img, .comments.part .comment-list li .info .thumbup-active img{
+.comments.part .comment-list li .info .thumbup i, .comments.part .comment-list li .info .thumbup-active i{
 	width: 1em;
 	height: 1em;
 	position: relative;
 	top: 1px;
+	background: url(../images/icon-thumbup.png) no-repeat;
+	background-size: contain;
+	display: inline-block;
+}
+.comments.part .comment-list li .info .thumbup-active i{
+	background-image: url(../images/icon-thumbup-active.png);
 }
 .comments.part .comment-list li:not(:last-child){
 	margin-bottom: 1em;
@@ -249,20 +258,30 @@ section:last-child{
 .comments.part .more-comments{
 	display: block;
 	font-size: 0.875em;
-	color: #df2b26;
+	color: #5888b9;
 	margin-top: 1.14286em;
 	padding: 1.14286em 0em;
 	text-align: center;
 }
 @media (-webkit-min-device-pixel-ratio: 2){
-	.comments.part .more-comments{
-	border-top: none;
-	background-image: -webkit-linear-gradient(-90deg, transparent 0%, transparent 50%, #e1e1e1 50%);
-	background-image: linear-gradient(180deg, transparent 0%, transparent 50%, #e1e1e1 50%);
-	background-size: 100% 1px;
-	background-repeat: no-repeat;
+	.comments.part .more-comments,.part h2.title{
+		border-top: none;
+		background-image: -webkit-linear-gradient(-90deg, transparent 0%, transparent 50%, #e1e1e1 50%);
+		background-image: linear-gradient(180deg, transparent 0%, transparent 50%, #e1e1e1 50%);
+		background-size: 100% 1px;
+		background-repeat: no-repeat;
 		background-position: top;
 	}
+	.grayBar{
+		border-bottom: none;
+		background-image: -webkit-linear-gradient(-90deg, transparent 0%, transparent 50%, #e1e1e1 50%);
+		background-image: linear-gradient(180deg, transparent 0%, transparent 50%, #e1e1e1 50%);
+		background-size: 100% 1px;
+		background-repeat: no-repeat;
+		background-position: top;
+		background-position: 0 bottom;
+	}
+	
 }
 @media (-webkit-max-device-pixel-ratio: 1.99){
 	.comments.part .more-comments{
@@ -298,7 +317,6 @@ section:last-child{
 .comments-compose.part:before{
 	display: none;
 }
-
 
 
 .top-button.part{

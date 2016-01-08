@@ -37,8 +37,6 @@
 			obj: prev,
 			prop: t
 		};
-
-		/*{obj:g.$nativeApi["news"],prop:g.$nativeApi.news["likeThisComment"]}*/
 	}
 
 	function navigateToUrl(url) {
@@ -85,8 +83,7 @@
 			g.showTip = open;
 			return open;
 		})();
-		//点击查看原文, 查看原文的接口移除 v3.0.1
-		g.$nativeSimulator.$_news.OnClickText = navigateToUrl;
+	
 		g.$nativeSimulator.$_news.onArticleRendered = function() {
 			return true;
 		};
@@ -94,29 +91,6 @@
 			return true;
 		};
 	}
-
-	if (!g.$_baike) {
-		g.$nativeSimulator.$_baike.OnClickBaike = navigateToUrl;
-	}
-
-	/*if (!g.$_video) {
-		g.$nativeSimulator.$_video.OnClickVideo = function(videoUrl) {
-			location.href = $utils.extractVideoUrl(videoUrl);
-		};
-	}*/
-
-	if (!g.$_timeline) {
-		g.$nativeSimulator.$_timeline.showFullText = navigateToUrl;
-	}
-
-	if (!g.$_related) {
-		g.$nativeSimulator.$_related.OnClickRelated = navigateToUrl;
-		g.$nativeSimulator.$_related.OnClickEditorArticle = navigateToUrl;
-		// g.$nativeSimulator.$_related.OnClickEditorArticleComment = function(newsUrl) {
-			// 这个移除，小编的相关文章的评论没有点击事件
-		// };
-	}
-
 	/**
 	 * 生成native接口调用函数
 	 * @param  {String} path   [native接口,比如$_object.method]
@@ -182,7 +156,7 @@
 	$_news.recommend = __('$_news.OnClickRecommend()');
 
 	$_news.comment = __('$_news.comment()');
-	//点击查看原文, 查看原文的接口移除 v3.0.1
+	//点击查看原文
 	$_news.showFullText = __('$_news.OnClickText()');
 	//点击查看图片
 	$_news.showFullImage = __('$_news.OnClickImg(imgUrl,allImgs)');
@@ -198,19 +172,7 @@
 		span.text(parseInt(span.text(), 10) + 1);
 		return true;
 	});
-	//踩新闻
-	$_news.bury = __('$_news.OnClickBury()', function() {
-		var span = this.find('span'),
-			img;
-		if (this.hasClass('tapped')) return true;
-		this.find('img').attr('src', {
-			stc: 'images/icon-thumbdown-active.png'
-		}.stc);
-		this.addClass('selected');
-		this.closest('.vote-simple').find('.thumb').addClass('tapped');
-		span.text(parseInt(span.text(), 10) + 1);
-		return true;
-	});
+
 	//点击查看更多评论
 	$_news.seeMore = __('$_news.OnClickCmtMore()');
 
@@ -223,19 +185,11 @@
 
 
 	$_news.searchTag = __('$_news.OnSearchTag()');
-
-	//下一篇
-	$_news.next = __('$_news.OnClickNextNews()');
-
-	$_news.prev = __('$_news.OnClickPrevNews()');
+	
 
 	// 性能日志，文章主题渲染完毕
 	$_news.articleRendered = __('$_news.onArticleRendered()');
 	$_news.articleImgLoaded = __('$_news.onArticleImgLoaded(String imgUrl)');
-
-	// 点击广告
-	$_news.clickAd = __('$_news.OnClickAd(String id)');
-	$_news.showAd = __('$_news.OnShowAd(String id)');
 
 	//顶评论
 	$_news.likeThisComment = __('$_news.OnClickCmtLike(String cid)', function() {
@@ -345,24 +299,38 @@
 		$_dingyue.showSubscribe();
 	});
 
-	
+	var clickTimeLagFlag = false,
+		clickTimer = null;
+
 
 	var wrapper = $('.wrapper');
 	wrapper.delegate('.native-call', 'click', function(e) {
 		e.preventDefault();
 		e.stopPropagation();
 		e.stopImmediatePropagation();
+		// 如果两次点击的时间在500毫秒以内，则让第二次点击无效
+		if(clickTimeLagFlag == false){
+			clickTimeLagFlag = true;
+			clickTimer = setTimeout(function(){
+				clickTimeLagFlag =false
+			},1000);
+		}else{
+			// 如果连续一直点按，则还是只有第一次有效
+			clearTimeout(clickTimer);
+			clickTimer = setTimeout(function(){
+				clickTimeLagFlag =false
+			},1000);
+			return false;
+		}
 		var self = $(this);
 		if (self.attr('disabled')) return;
 
-		var fname = self.attr('data-native'),/* news.likeThisComment */
-			args = prepareParams(self, fname, e),/*["news", "likeThisComment"]*/
-			x = tryget(api, fname),/*tryget("g.$nativeApi", "news.likeThisComment")*/
+		var fname = self.attr('data-native'),
+			args = prepareParams(self, fname, e),
+			x = tryget(api, fname),
 			isCallNative = true,
 			isCallAfter,
 			tmp;
-
-			/*x={obj:g.$nativeApi["news"],prop:g.$nativeApi.news["likeThisComment"]}*/
 		
 		if (x.prop && x.prop.before) {
 			isCallNative = x.prop.before.call(self);
@@ -409,14 +377,16 @@
 		}
 
 		if(fname == 'related.viewRelatedArticel' || fname == 'related.viewHotArticel'){
-
+			//如果是相关和热门，则返回当前点击的坐标，以及当前项的数据
 			var pixelRatio = devicePixelRatio||webkitDevicePixelRatio||mozDevicePixelRatio||1;
 
 			var screenX = e.clientX,
 				screenY = e.clientY,
 				rtObj = {},
 				curIndex = node.index();
-
+				if(fname == 'related.viewRelatedArticel'){
+					curIndex = node.data('index');
+				}
 			if (pixelRatio != 1) {
 	            screenX = screenX * pixelRatio ;
 	            screenY = screenY * pixelRatio ;
@@ -442,46 +412,7 @@
 			api.news.articleRendered();
 		}
 
-		// 广告渲染完毕，添加展示打点逻辑
-		if(which == '#news-detail-ad-tmpl') {
-			var adItems = $('.news-detail-ad.part .ad-item-inner').toArray();
-			if(!adItems.length) {
-				return;
-			}
-			var	len = adItems.length, // 实际广告条数
-				showedNum, //  已经展示的广告数
-				$win = $(window),
-				elementInViewport = function(el) {
-					var rect = el.getBoundingClientRect(),
-						winHeight = $win.height(),
-						curTop = rect.top,
-						curBottom = curTop + rect.height,
-						triggerHeight = Math.min(rect.height / 2, winHeight / 3);
-
-					return !(curTop > (winHeight - triggerHeight) || curBottom < triggerHeight);
-				},
-				showAd = function() {
-					// 如果所有的广告都展示打点完毕
-					// 那么移除 scroll 监听
-					if(len == 0) {
-						$win.off('scroll.showAd');
-					}
-					for(var i = 0; i < len; i++) {
-						if(elementInViewport(adItems[i])) {
-							$_news.showAd($(adItems[i]).data('param1'));
-							adItems.splice(i,1);
-							i--;
-							len--;
-						}
-					}
-				};
-			$win.on('scroll.showAd', showAd);
-			showAd();
-		}
 	});
-
-
-	
 
 	// 滚动停止时将用户操作信息传递打点
 
