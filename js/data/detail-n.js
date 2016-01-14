@@ -1,3 +1,31 @@
+var videoDet= {
+    "errno": 0,
+    "errmsg": "",
+    "data": {
+        "video": "0",
+        "content": [{
+            "type": "html",
+            "value": "<div content_type=\"qh_weixin\" class=\"q1 q2 q3\"><div class=\"qg qa\"><p class=\"q3 qc qd q8 q7\"><span><\/span><strong class=\"q8 q9 q5 q7\"><span class=\"qi q9 q5 q7\"><strong class=\"qb\">\u770b\u5b8c<\/strong><\/span><\/strong><strong class=\"q8 q9 q5 q7\"><span class=\"q5 qh q6 q7\">\u70b9\u51fb<\/span><span class=\"q8 q5 q6 q7\"><span class=\"q4 q5 q6 q7\">\u4e0a\u65b9\u84dd\u5b57<\/span><\/span><span class=\"qb\"><strong class=\"qb\"><img src=\"http:\/\/p7.qhimg.com\/t01b7b0c159dadefe30.jpg\" class=\"qj qk ql qm qn qo qp qq qr qs qt qu q9 qh\"> \u56de\u590d<span class=\"q5 qh qf q7\">\u201c<span class=\"qe q5 qf q7\">\u798f\u5229<\/span>\u201d\u6709\u60ca\u559c<\/span><\/strong><\/span><\/strong><\/p><p class=\"q3 qc qd q8 q7\"><div class=\"qa\">\n<div class=\"qa\"><div class=\"qa\"><div><iframe height=\"225\" width=\"300\" src=\"http:\/\/v.qq.com\/iframe\/player.html?vid=u1302bhb98c&width=670&height=502.5&auto=0\" class=\"qv qw\"><\/iframe><\/div><\/div><\/div>\n<\/div><br><span><\/span><\/p><section><section><section><section><br><\/section><\/section><\/section><\/section><\/div><div class=\"q3\"><\/div><\/div>",
+            "css": ".q1{padding-top: 10px}.q3{clear: both}.q2{margin: 5px}.qc{font: normal 400 16px\/25px 'Helvetica Neue'}.qn{text-indent: 0px}.qo{text-align: start}.qg{overflow: hidden}.qd{display: block}.q8{color: #3e3e3e!important}.qp{border-top-width: 0px}.qq{padding: 0px}.qr{border-top-left-radius: 0px}.qs{border-top-right-radius: 0px}.qt{border-bottom-left-radius: 0px}.qu{border-bottom-right-radius: 0px}.q9{font: normal bold 16px\/25px 'Helvetica Neue'}.q5{display: inline}.qi{color: #e36c09!important}.qh{color: #f00!important}.q6{font: normal bold 14px\/27px 'Helvetica Neue'}.q4{color: #00b0f0!important}.qj{width: 30px}.qk{vertical-align: middle}.ql{display: inline-block}.qm{margin: 0px auto}.qf{font: normal bold 14px\/25px 'Helvetica Neue'}.qe{color: #7030a0!important}.qv{max-width: 90%!important}.qw{max-height: 90%!important}.qa{font: normal 400 16px\/25px 'Helvetica Neue'; text-indent: 0px; text-align: start; vertical-align: baseline; display: block; color: #3e3e3e!important; border-top-width: 0px; margin: 0px; padding: 0px; border-top-left-radius: 0px; border-top-right-radius: 0px; border-bottom-left-radius: 0px; border-bottom-right-radius: 0px}.qb{text-indent: 0px; text-align: start; vertical-align: baseline; border-top-width: 0px; margin: 0px; padding: 0px; border-top-left-radius: 0px; border-top-right-radius: 0px; border-bottom-left-radius: 0px; border-bottom-right-radius: 0px; font: normal bold 16px\/25px 'Helvetica Neue'; display: inline; color: #f00!important}.q7{text-indent: 0px; text-align: start; vertical-align: baseline; border-top-width: 0px; margin: 0px; padding: 0px; border-top-left-radius: 0px; border-top-right-radius: 0px; border-bottom-left-radius: 0px; border-bottom-right-radius: 0px}::-webkit-scrollbar {-webkit-appearance: none; height:5px;}::-webkit-scrollbar-thumb {-webkit-border-radius: 5px; border-radius: 5px; background: rgba(0,0,0,0.4);}"
+        }],
+        "title": "\u8fd9\u5c0f\u5b69\u7edd\u5bf9\u662f\u5c0f\u5b9d\u4eb2\u751f\u7684\uff01\u7b11\u62bd\uff01",
+        "img": 1,
+        "allqimg": 1,
+        "time": 1451985284,
+        "summary": "",
+        "news_type": 1,
+        "source": "\u7cd7\u4e8b\u7b11\u8bdd\u699c",
+        "n_t": 1000,
+        "errno": 0,
+        "transmit_num": 0,
+        "transmit_data": [],
+        "shorturl": "http:\/\/t.m.so.com\/t\/N_RcMpv",
+        "wapurl": "http:\/\/cms.kandian.360.cn\/testvideo.html",
+        "news_from": "2"
+    }
+}
+
+
 var galleryData = {
     "errno": 0,
     "errmsg": "get data succeed",

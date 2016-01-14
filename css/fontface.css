@@ -1,0 +1,6 @@
+@charset "UTF-8";
+@font-face{
+	font-family: "fzLantingHei";
+	src: url(../font/FZLTHJW.TTF) format('truetype');
+	font-weight: 300
+}

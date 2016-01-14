@@ -1,0 +1,26 @@
+
+/* download bar in wap */
+.sx-download-bar{
+	height: 40px;
+	border-top: 1px solid #e5e5e5;
+	background: #fff url(http://p7.qhimg.com/d/inn/032c38a5/download-bar-h5.png) no-repeat 15px 50%;
+	background-size: 115px auto;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	z-index: 1999;
+}
+.sx-btn-download{
+	display: block;
+	color: #fff;
+	font-size: 16px;
+	background-color: #ec4346;
+	line-height: 30px;
+	height: 30px;
+	padding:0 15px;
+	border-radius: 3px;
+	position: absolute;
+	right: 15px;
+	top: 5px
+
+}

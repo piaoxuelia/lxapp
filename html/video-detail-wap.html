@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title>视频详情页</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta content="telephone=no" name="format-detection">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+
+	<link href="../css/video.css" type="text/css" rel="stylesheet"/>
+	<style type="text/css"></style>
+	<script type="text/javascript" src="../js/libs/zepto.js"></script>
+	<script type="text/javascript" src="../js/libs/touch.js"></script>
+	<script type="text/javascript" src="../js/utils.js"></script>
+	<script type="text/javascript" src="../js/libs/ejs.js"></script>
+	<script type="text/javascript" src="../js/video/build.js"></script>
+
+	<!-- 视频 -->
+	<script id="mod-video-tmpl" type="text/html">
+		<div class="video mod">
+			{% items.forEach(function(item){ %}
+				<div class="photo" height="{%=h%}" width="{%=w%}">
+					<a href="javascript:;"
+						class="native-call"
+						style="position:relative;display:block;" 
+						data-native="video.play" 
+						data-param1="{%=item.url%}">
+						<img class="snapshot lazy" data-src="{%=item.imgurl%}" width="{%=w%}" height="{%=h%}"/>
+						<img class="play" src="../images/icon-video-play.png" />
+					</a>
+				</div>
+
+				{% if(item.title) { %}
+					<h4>视频：{%=item.title%}</h4>
+				{% } %}
+
+			{% }); %}
+		</div>
+	</script>
+
+	<script id="hot-articles-tmpl" type="text/html">
+		<section class="hot-articles part" data-name="热门推荐"%}>
+			<h2 class="title">更多精彩内容</h2>
+			<ul class="articles-list">
+				{% hotNewsList.forEach(function(item,i){ %}
+					<li class="native-call flex" data-native="related.viewHotArticel" data-param1="{%=item.url%}">
+						<a class="flex-item txts" href="javascript:;" data-href="{%=item.url%}">
+							<div class="title-link row2" >{%=item.title%}</div>
+							<p>
+								{% if (typeof item.elapse == 'string') { %}
+									 <i>{%=item.elapse%}</i>
+								{% } %}
+							</p>
+						</a>
+						<div class="hot-img">
+						{% if(item.img){ %}
+							<img class="photo lazy" data-src="{%=item.img%}" width="{%=item.width%}" height="{%=item.height%}" />
+						{% } else if(item.summary){ %}
+							<p>{%=item.summary%}</p>
+						{% } %}
+						</div>
+					</li>
+				{% }); %}
+			</ul>
+		</section>
+	</script>
+
+	<script id="comments-tmpl" type="text/html" >
+		<section class="comments part {% if(typeof more != 'undefined' && !window.$wap) { %} has-more {% } %}" data-name="评论">
+			{% if(!window.$wap || _comments.length > 0) { //app都有title，分享页无评论时所有都不显示 %}
+				{% if(typeof title != 'undefined'){ %}
+				<h2 class="title">{%=title%}</h2>
+				{% } else { %}
+				<h2 class="title">热门评论</h2>
+				{% } %}
+			{% } %}
+
+			{% if(_comments.length > 0){ //有评论%}
+				<!-- comment-items-begin -->
+				<ul class="comment-list">
+					{% _comments.forEach(function(item){ %}
+						{% if(!item.text || item.text.length == 0) return; %}
+					<li>
+						<a class="native-call" href="javascript:;" data-native="news.commUser" data-param1="{%=item.cid%}">
+							{% if(item.avatarUrl) {%}
+							<img class="avatar" src="{%=item.avatarUrl%}" />
+							{% } else { %}
+							<span class="avatar"><span>
+							{% } %}
+						</a>
+						<div class="info-text">
+							<div class="info">
+								
+								<a class="thumbup native-call" href="javascript:;" data-native="news.likeThisComment" data-param1="{%=item.cid%}">
+									<i></i>
+								</a>
+								<a class="thumbup-active" style="display:none;" href="javascript:;">
+									<i></i>
+								</a>
+								<span class="liked">{%=item.liked%}</span>
+								<span class="username">{%=item.username%}</span>
+							</div>
+							<div class="text">
+								{%=item.text%}
+							</div>
+							<div class="time">
+								{%=item.time%}
+							</div>
+						</div>
+					</li>
+					{% }); %}
+				</ul>
+				<!-- comment-items-end -->
+			{% } else { //没有评论%}
+				<ul class="comment-list" style="display:none;"></ul>
+
+				{% if(!window.$wap) { %}
+					<div class="no-comments native-call" data-native="news.comment">
+							还没评论呢，你来吧
+					</div>
+				{% } %} 
+			{% } %}
+
+			{% if(typeof more != 'undefined' && !window.$wap){ %}
+				<a class="more-comments native-call" 
+				data-native="news.showComments"
+				href="javascript:;">{%=more%}</a>
+			{% } else if(typeof more == 'undefined') { // 如果无评论，将查看更多隐藏%}
+				<a class="more-comments native-call" 
+				style="display:none" 
+				data-native="news.showComments"
+				href="javascript:;">查看更多评论,请下载视线客户端...</a>
+			{% } %}
+		</section>
+	</script>
+	<script id="video-user-tmpl" type="text/html">
+		<ul class="flex">
+			{% if(img) { %}
+				<li class="usr-tx" style="background-image:url({%=img%})"></li>
+			{% } %}
+
+			<li class="flex-item">
+				{% if(nick) { %}
+					<p>{%=nick%}</p>
+				{% } %}
+				{% if(title) { %}
+				<div>{%=title%}</div>
+				{% } %}
+			</li>
+		</ul>
+	</script>
+</head>
+<body>
+	<div class="wrapper">
+		<div id="sx-usr">
+			</div>
+		<section class="video part fullColumn" data-name="视频">
+		</section>
+		<div id="sx-comments"></div>
+	</div>
+		<style type="text/css">
+			#sx-usr .usr-tx{
+				display: block;
+				width: 40px;
+				height: 40px;
+				border-radius: 50%;
+				background-color: #eee;
+				margin-right: 10px;
+				background-size: cover;
+			}
+			#sx-usr ul{
+				padding:  20px 0
+			}
+			#sx-usr .flex-item p{
+				font-size: 14px;
+				color: #999;
+				line-height: 1.5;
+				margin:0;
+				padding:0;
+			}
+			#sx-usr .flex-item div{
+				font-size: 16px;
+				color: #333;
+				line-height: 1;
+				overflow: hidden;
+				white-space:nowrap;
+				text-overflow: ellipsis;
+
+			}
+			/* download bar in wap */
+			.sx-download-bar{
+				height: 40px;
+				border-top: 1px solid #e5e5e5;
+				background: #fff url(http://p7.qhimg.com/d/inn/032c38a5/download-bar-h5.png) no-repeat 15px 50%;
+				background-size: 115px auto;
+				position: fixed;
+				bottom: 0;
+				width: 100%;
+				z-index: 1999;
+			}
+			.sx-btn-download{
+				display: block;
+				color: #fff;
+				font-size: 16px;
+				background-color: #ec4346;
+				line-height: 30px;
+				height: 30px;
+				padding:0 15px;
+				border-radius: 3px;
+				position: absolute;
+				right: 15px;
+				top: 5px
+
+			}
+		</style>
+		<div class="sx-download-bar">
+	    	<a href="#" class="sx-btn-download">下载</a>
+	    </div>
+	<script type="text/javascript" src="../js/contentRender.js"></script>
+	<script type="text/javascript" src="../js/wap/md5.js"></script>
+	<script type="text/javascript" src="../js/wap/rng.js"></script>
+	<script type="text/javascript" src="../js/wap/waponly.js"></script>
+	<!--moniDataStart-->
+	<script type="text/javascript" src="../js/data/detail-n.js"></script>
+	<script>
+		$(function(){
+			window.$wap = true;
+			var comm = commData.data;
+			
+			$ContentRender.renderComments(comm);
+			$ContentRender.lazyLoadImage();
+			$ContentRender.done();
+
+			var videoData={
+			    "id": "1", 
+			    "video_channel_name": "BTV1", 
+			    "video_source_type": "1", 
+			    "video_name": "BTV北京卫视高清", 
+			    "video_column_name": "人生相对论", 
+			    "video_desc": "BTV北京卫视高清", 
+			    "video_icon": "http://p1.qhimg.com/t0111f629f9f65a7618.png?size=76x76", 
+			    "video_img": "http://p0.qhimg.com/t01ce967727122c109c.jpg?size=640x480", 
+			    "video_islive": "1", 
+			    "video_relate_id": "0", 
+			    "video_key": "lianxian_video_1", 
+			    "tag": "BTV1", 
+			    "video_name":"\u536b\u89c6",
+			    "author":
+					{
+						"author_uid":"",
+						"author_nickname":"BTV\u5317\u4eac\u536b\u89c6\u9ad8\u6e05",
+						"author_img":"http:\/\/p1.qhimg.com\/t0111f629f9f65a7618.png?size=76x76"
+					},
+
+			    "video_stream": [
+			        {
+			            "stream_vbt": "标清", 
+			            "stream_type": 5, 
+			            "stream_url": "http://video.kandian.360.cn/approve/live?channel=BTV1&type=iphone"
+			        }, 
+			        {
+			            "stream_vbt": "高清", 
+			            "stream_type": 5, 
+			            "stream_url": "http://video.kandian.360.cn/approve/live?channel=BTV1&type=ipad"
+			        }, 
+			        {
+			            "stream_vbt": "超高清", 
+			            "stream_type": 5, 
+			            "stream_url": "http://video.kandian.360.cn/approve/live?channel=BTV1&type=iptv"
+			        }
+			    ]
+			}
+			if(videoData && videoData.video_stream){
+				function renderUserInfo(data){
+
+					var item = {};
+					data.author.author_img ? item.img = data.author.author_img : item.img = '';
+					
+					data.author.author_nickname ? item.nick = data.author.author_nickname : item.nick ='';
+					
+					data.video_name ? item.title = data.video_name : item.title = '' ;
+					
+					var html = $('#video-user-tmpl').html();
+					
+					if(!$.isEmptyObject(item)){
+						var str = ejs.render(html, item);
+						$('#sx-usr').html(str);
+
+					}
+				}
+				renderUserInfo(videoData);
+				function getVideoMid(){
+					if(localStorage.videoMid){
+						return localStorage.videoMid;
+					}else{
+						localStorage.videoMid = getRondom(10);
+					}
+				}
+				function getRondom(sum){
+						var character = "";
+						for(var i = 0; i <= sum; i++){
+							character += String.fromCharCode(Math.floor( Math.random() * 26) + "A".charCodeAt(0));
+						}
+						return character;
+				}
+			
+				var _data_1 = {
+					bid:"news",
+					channel:"live_news", //必填 用来区分那个渠道
+					sn:videoData.video_stream[0].stream_url,//必填 用来获取视频地址
+					sid:new Date().getTime()	+	Math.random(), //每次会话生成一个唯一的sid
+					mid:getVideoMid(),//播放器的载体机器是什么
+					vtype:"replay", //liveplay 直播， replay点播
+					controls:true //控制条 true 有  false 无
+				}
+			}
+
+			window._new_video_1 = new	H5_video(_data_1,$(".video"));
+			
+			$(_new_video_1).bind("backUrlError",function(evt){
+				console.log("backUrlError");
+			});
+			$(_new_video_1).bind("urlError",function(evt){
+				console.log("urlError");
+			});
+			$(_new_video_1).bind("connectSuccess",function(evt){
+				console.log("connectSuccess");
+			});
+
+			$(_new_video_1).bind("play",function(evt){
+				console.log("play");
+			});
+			$(_new_video_1).bind("timeupdate",function(evt){
+				console.log(_new_video_1.get_attributes("current_time"));
+			});
+			$(_new_video_1).bind("canplaythrough",function(evt){
+				console.log(_new_video_1.get_attributes("currentTime"));
+				console.log(_new_video_1.get_attributes("duration"));
+			});
+		});
+	</script>
+	<!--moniDataEnd-->
+
+	<script>
+		<?php
+            if(isset($share_url)) {
+                echo sprintf("\$url = '%s';\n",$share_url);
+            } else {
+                echo "\$url = location.href;\n";
+            }
+
+            if(isset($url)) {
+                echo "\$key = '".$url."';\n";
+            } else {
+                echo "\$key = location.href;\n";
+            }
+
+            if(!isset($console)) {
+                echo "if(!console) console = {};console.log = console.error = console.warn = function(){};\n";
+            }
+        ?>
+        
+		$(function(){
+
+			var videoData=JSON.stringify(<?php echo json_encode($return);?>);
+			
+			if(videoData){
+				videoData =JSON.parse(videoData);
+
+				function renderUserInfo(data){
+
+					var item = {};
+					data.author.author_img ? item.img = data.author.author_img : item.img = '';
+					
+					data.author.author_nickname ? item.nick = data.author.author_nickname : item.nick ='';
+					
+					data.video_name ? item.title = data.video_name : item.title = '' ;
+					
+					var html = $('#video-user-tmpl').html();
+					
+					if(!$.isEmptyObject(item)){
+						var str = ejs.render(html, item);
+						$('#sx-usr').html(str);
+
+					}
+				}
+				renderUserInfo(videoData);
+
+				function getVideoMid(){
+					if(localStorage.videoMid){
+						return localStorage.videoMid;
+					}else{
+						localStorage.videoMid = getRondom(10);
+					}
+				}
+				function getRondom(sum){
+						var character = "";
+						for(var i = 0; i <= sum; i++){
+							character += String.fromCharCode(Math.floor( Math.random() * 26) + "A".charCodeAt(0));
+						}
+						return character;
+				}
+
+				var vtypeVal = 'replay';
+				function getVtype(){
+					if(videoData.video_islive == '1'){
+						vtypeVal = 'liveplay';
+					}else{
+						vtypeVal = 'replay';
+					}
+					return vtypeVal;
+				}
+			
+				var _data_1 = {
+					bid:"news",
+					channel:"live_news", //必填 用来区分那个渠道
+					sn:videoData.video_stream[0].stream_url,//必填 用来获取视频地址
+					sid:new Date().getTime()	+	Math.random(), //每次会话生成一个唯一的sid
+					mid:getVideoMid(),//播放器的载体机器是什么
+					vtype:getVtype(), //liveplay 直播， replay点播
+					controls:true //控制条 true 有  false 无
+				}
+				window._new_video_1 = new	H5_video(_data_1,$(".video"));
+				
+				$(_new_video_1).bind("backUrlError",function(evt){
+					console.log("backUrlError");
+				});
+				$(_new_video_1).bind("urlError",function(evt){
+					console.log("urlError");
+				});
+				$(_new_video_1).bind("connectSuccess",function(evt){
+					console.log("connectSuccess");
+				});
+
+				$(_new_video_1).bind("play",function(evt){
+					console.log("play");
+				});
+				$(_new_video_1).bind("timeupdate",function(evt){
+					console.log(_new_video_1.get_attributes("current_time"));
+				});
+				$(_new_video_1).bind("canplaythrough",function(evt){
+					console.log(_new_video_1.get_attributes("currentTime"));
+					console.log(_new_video_1.get_attributes("duration"));
+				})
+
+				$ContentRender.renderComments({});
+				$ContentRender.lazyLoadImage();
+				$ContentRender.done();
+			}
+			
+		});
+	
+	</script>
+
+
+</body>
+</html>

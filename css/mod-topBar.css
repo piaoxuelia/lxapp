@@ -1,0 +1,70 @@
+.grayBar{
+	height: 43px;
+	border-bottom: 1px solid #e1e1e1;
+	padding:0 16px;
+	margin:0 -16px;
+	font-size: 12px;
+	color: #666;
+	position: relative;
+	background-color: #f7f7f7;
+}
+a.grayBar-rt span,
+a.grayBar-rt:hover span,
+a.grayBar-rt:active span,
+a.grayBar-rt:visited span{
+	color: #666;
+}
+.grayBar-tag{
+	display: inline-block;
+	border-radius: 12px;
+	border: 1px solid #d6d6d6;
+	padding: 5px 10px;
+	line-height: 1;
+	margin-top: 10px;
+	margin-right: 5px;
+}
+.grayBar-rt *{
+	vertical-align: middle;
+}
+.grayBar-rt{
+	position: absolute;
+	top: 13px;
+	right: 16px;
+	vertical-align: middle;
+}
+.banner-arr-rt{
+	display: inline-block;
+	width: 14px;
+	height: 14px;
+	border:1px solid #d6d6d6;
+	border-radius: 50%;
+	vertical-align:middle;
+	margin-left: 5px;
+	position: relative;
+} 
+.banner-arr-rt:before{
+	content: '';
+	display: inline-block;
+	height: 3px;
+	width: 3px;
+	border-bottom: 2px solid #ccc;
+	border-right: 2px solid #ccc;
+	-webkit-transform-origin: right bottom;
+	-ms-transform-origin: right bottom;
+	transform-origin: right bottom;
+	-webkit-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+	position: absolute;
+	top: 2px;
+	left: 6px;
+}
+.banner-arr-rt::after {
+	content: '';
+	display: inline-block;
+	height: 2px;
+	width: 4px;
+	background: #ccc;
+	position: absolute;
+	top: 6px;
+	left: 4px;
+}

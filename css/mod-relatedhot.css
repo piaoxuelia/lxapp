@@ -1,0 +1,150 @@
+/* 相关推荐 和 热门 */
+
+.recommend-articles.part{
+}
+.recommend-articles.part .more{
+	font-size: 14px;
+	color: #484747;
+	text-align: center;
+	display: block;
+	text-decoration: none;
+	margin: 3em auto;
+	position: relative;
+}
+.recommend-articles.part .more:before{
+	content: "";
+	display: block;
+	height: 1px;
+	border-bottom: 1px solid #e6e6e6;
+	-webkit-transform: translate3d(0, 6px, 0) scaleY(0.5);
+}
+.recommend-articles.part .more:after{
+	content: "";
+	display: block;
+	height: 1em;
+	background: #fff;
+	-webkit-transform: translate3d(0, 0px, 0);
+	margin: 0 auto;
+	width: 13em;
+}
+.recommend-articles.part .more span{
+	z-index: 1;
+	position: absolute;
+	left: 50%;
+	top: -14px;
+	width: 180px;
+	margin-left: -90px;
+	line-height: 26px;
+}
+.recommend-articles.part .more img{
+	width: 26px;
+	height: 26px;
+	position: relative;
+	bottom: -8px;
+	left: -4px;
+	margin: 0 6px;
+}
+.recommend-articles.part ul{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: top;
+	-webkit-align-items: top;
+	align-items: top;
+}
+.recommend-articles.part li{
+	-webkit-box-flex:1;
+	-webkit-flex:1;
+	flex:1;
+	width: 1px;
+	margin-bottom: 6px;
+	position: relative;
+	padding-bottom: 28px;
+}
+.recommend-articles.part ul li:first-child{
+	margin-right: 15px
+}
+.recommend-articles.part li .time-tips{
+	font-size: 12px;
+	color: #9c9c9c;
+	padding:6px 0;
+	position: absolute;
+	left: 0;
+	bottom: 0
+}
+.recommend-articles.part li a{
+	text-decoration: none;
+	color: #333;
+	display: block;
+}
+.recommend-articles.part li b{
+	font-weight: normal;
+}
+.recommend-articles.part li b:before{
+	content: "";
+	
+	background-size: 9px 9px;
+	width: 9px;
+	height: 9px;
+	margin: auto 10px;
+	display: inline-block;
+}
+.recommend-articles.part li i{
+	font-style: normal;
+}
+.recommend-articles.part li s{
+	text-decoration: none;
+}
+.recommend-articles.part li p{
+	font-size: 14px;
+	text-indent: 0;
+}
+.recommend-articles.part .articles-list .column-name{
+	color: #41c249;
+	font-size: 11px;
+}
+.recommend-articles.part .articles-list .title{
+	font-size: 15px;
+}
+#sx-recommond ul:last-child {
+    margin-bottom: -10px;
+}
+
+.hot-articles.part .articles-list li{
+	height: 62px;
+	background:#fafafa;
+	padding:10px;
+	margin-bottom: 10px;
+}
+.hot-articles.part .articles-list .txts{
+	 margin-top: -3px;
+	 padding-right: 10px;
+}
+.hot-articles.part .articles-list p{
+	line-height: 1.2;
+	padding:0;
+	margin:0;
+	font-size: 12px;
+	color:#999;
+	margin-top: 5px;
+}
+.hot-articles.part .articles-list .title-link{
+	color: #333
+}
+
+.row2{
+	-webkit-box-orient: vertical;
+	display: -webkit-box;
+	overflow: hidden;
+	white-space: normal;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+}
+.row3{
+	-webkit-box-orient: vertical;
+	display: -webkit-box;
+	overflow: hidden;
+	white-space: normal;
+	-webkit-line-clamp: 3;
+	line-clamp: 3;
+}

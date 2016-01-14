@@ -145,7 +145,7 @@
 			$('<link>').attr({
 				'type': 'text/css',
 				'rel': 'stylesheet',
-				'href': 'http://s0.qhimg.com/!51b589d0/magnific-popup.css'
+				'href': 'http://s3.qhimg.com/!44db5e31/magnific-popup.css'
 			}).appendTo('head');
 			$('<script>').attr({
 				'id': scriptId,

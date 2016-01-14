@@ -10,6 +10,30 @@ module.exports = function(grunt) {
 	 * wapPageMoni:分享后的wap页有模拟数据的效果，为了直接看效果
 	*/
 
+	var sxAppCss = ['css/fontface.css', /*引入字体*/
+					'css/common.css', /*通用*/
+					'css/mod-topBar.css', /*头部灰色bar*/
+					'css/mod-article.css', /*文章模块*/
+					'css/mod-relatedhot.css', /*相关和热门模块*/
+					'css/mod-comment.css' /*评论模块*/
+				],
+		shareCss = [
+					'css/common.css', /*通用*/
+					'css/mod-article.css', /*文章模块*/
+					'css/mod-relatedhot.css', /*相关和热门模块*/
+					'css/mod-comment.css', /*评论模块*/
+					'css/mod-download.css' /*下载模块*/
+				],
+		detailHtml = [
+					'css/detHtml.css', /*引入代码块的css*/
+					'css/mod-topBar.css', /*头部灰色bar*/
+					'css/mod-article.css', /*文章模块*/
+					'css/mod-relatedhot.css', /*相关和热门模块*/
+					'css/mod-comment.css', /*评论模块*/
+					'css/mod-download.css' /*下载模块*/
+				];
+
+
 	// Project configuration.
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -71,72 +95,59 @@ module.exports = function(grunt) {
 		/* css-compress */
 		cssmin: {
 			options: {
-				banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+				banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
+				shorthandCompacting: false,
+				roundingPrecision: -1
 			},
 			build:{
-				files: [{
-						expand:true,
-						cwd:'css',
-						src:'common.css',
-						dest: '../output/android/css'
-					}]
+				files: {
+				  '../output/android/css/common.css': sxAppCss,
+				  '../output/android/css/commonHtml.css':detailHtml }			
 			},
 			buildToDev:{
-				files: [{
-						expand:true,
-						cwd:'css',
-						src:'common.css',
-						dest: '../output/dev/css'
-					}]
+				files: {'../output/dev/css/common.css': sxAppCss,
+						 '../output/dev/css/commonHtml.css': detailHtml}
 			},
 			buildToIOS:{
-				files: [{
-						expand:true,
-						cwd:'css',
-						src:'common.css',
-						dest: '../output/ios/css'
-					}]
+				files: { '../output/ios/css/common.css':sxAppCss,
+						 '../output/ios/css/commonHtml.css':detailHtml}
 			},
 			buildToIOSPro:{
-				files: [{
-						expand:true,
-						cwd:'css',
-						src:'common.css',
-						dest: '../lianxian_app_ios/LIANXIAN/Resources/h5/css'
-					}]
+				files: {
+				  '../lianxian_app_ios/LIANXIAN/Resources/h5/css/common.css': sxAppCss,
+				  '../lianxian_app_ios/LIANXIAN/Resources/h5/css/commonHtml.css': detailHtml
+
+				   }
 			},
 			buildToShare:{
-				files: [{
-						expand:true,
-						cwd:'css',
-						src: ['*.css', '!common.css','!common-wap.css'],
-						dest: '../output/share/static/css'
-					},{
-						'../output/share/static/css/common.css': 'css/common-wap.css'
-					}
-					]
+				files: {
+				  '../output/share/static/css/common.css': shareCss,
+				  '../output/share/static/css/commonHtml.css': detailHtml,
+
+				  '../output/share/static/css/photoswipe.css':'css/photoswipe.css',
+				  '../output/share/static/css/video.css':['css/video.css','css/mod-comment.css'],
+				}
 			},
 			buildwapPageMoni:{ //看wap页有模拟数据的效果 
-				files: [{
-						expand:true,
-						cwd:'css',
-						src: ['*.css', '!common.css','!common-wap.css'],
-						dest: '../output/wapPageMoni/css'
-					},{
-						'../output/wapPageMoni/css/common.css': 'css/common-wap.css'
-					}]
+				files: {
+				  '../output/wapPageMoni/css/common.css':  shareCss,
+				  '../output/wapPageMoni/css/commonHtml.css':  detailHtml,
+				  '../output/wapPageMoni/css/photoswipe.css':'css/photoswipe.css',
+				  '../output/wapPageMoni/css/video.css':['css/video.css','css/mod-comment.css']
+				}
 			}
 		},
 		/* html-compress */
 		htmlmin:{
-			dist: {
+			distToAndroid: {
 				options: {
 					removeComments: false,
 					collapseWhitespace: true,
 					minifyJS:true
 				},
 				files: {
-					'../output/android/html/news-detail.html': 'html/news-detail.html'
+					'../output/android/html/news-detail.html': 'html/news-detail.html',
+					'../output/android/html/news-detail-html.html': 'html/news-detail-html.html'
 				}
 			},
 			distToDev:{
@@ -145,12 +156,12 @@ module.exports = function(grunt) {
 					collapseWhitespace: true,
 					minifyJS:true
 				},
-				files: [{
-					'../output/dev/html/news-detail.html': 'html/news-detail.html'
-				},
-					{'../output/dev/html/news-detail-nodata.html': 'html/news-detail.html'
-
-				}]
+				files: {
+					'../output/dev/html/news-detail.html': 'html/news-detail.html',
+					'../output/dev/html/news-detail-nodata.html': 'html/news-detail.html',
+					'../output/dev/html/news-detail-html.html': 'html/news-detail-html.html',
+					'../output/dev/html/news-detail-html-nodata.html': 'html/news-detail-html.html',
+				}
 			},
 			distToIOS:{
 				options: {
@@ -158,9 +169,11 @@ module.exports = function(grunt) {
 					collapseWhitespace: true,
 					minifyJS:true
 				},
-				files: [{
-					'../output/ios/html/news-detail.html': 'html/news-detail.html'
-				}]
+				files: {
+					'../output/ios/html/news-detail.html': 'html/news-detail.html',
+					'../output/ios/html/news-detail-html.html': 'html/news-detail-html.html'
+
+				}
 			},
 			distToIOSPro:{
 				options: {
@@ -168,9 +181,10 @@ module.exports = function(grunt) {
 					collapseWhitespace: true,
 					minifyJS:true
 				},
-				files: [{
-					'../lianxian_app_ios/LIANXIAN/Resources/h5/html/news-detail.html': 'html/news-detail.html'
-				}]
+				files: {
+					'../lianxian_app_ios/LIANXIAN/Resources/h5/html/news-detail.html': 'html/news-detail.html',
+					'../lianxian_app_ios/LIANXIAN/Resources/h5/html/news-detail-html.html': 'html/news-detail-html.html',
+				}
 			},
 			distToShare:{
 				options: {
@@ -180,8 +194,9 @@ module.exports = function(grunt) {
 				},
 				files: [
 				{'../output/share/news-detail.html': 'html/news-detail.html'},
-				{'../output/share/gallary-detail.html': 'html/gallary-detail.html'},
-				{'../output/share/video-detail.html': 'html/video-detail.html'}
+				{'../output/share/news-detail-html.html': 'html/news-detail-html.html'},
+				{'../output/share/gallary-detail.html': 'html/gallary-detail-wap.html'},
+				{'../output/share/video-detail.html': 'html/video-detail-wap.html'}
 					]
 			},
 			distwapPageMoni: {
@@ -192,6 +207,7 @@ module.exports = function(grunt) {
 				},
 				files: [
 						{'../output/wapPageMoni/html/news-detail.html': 'html/news-detail.html'},
+						{'../output/wapPageMoni/html/news-detail-html.html': 'html/news-detail-html.html'},
 						{'../output/wapPageMoni/html/gallary-detail.html': 'html/gallary-detail.html'},
 						{'../output/wapPageMoni/html/video-detail.html': 'html/video-detail.html'}
 					]
@@ -215,6 +231,7 @@ module.exports = function(grunt) {
 		replace: {
 			regexReplaceShare: {
 				src: ['../output/share/news-detail.html',
+					'../output/share/news-detail-html.html',
 					'../output/share/gallary-detail.html',
 					'../output/share/video-detail.html'],
 				overwrite: true, 
@@ -240,6 +257,7 @@ module.exports = function(grunt) {
 			regexReplaceWapMoni: {
 				src: [
 					'../output/wapPageMoni/html/news-detail.html',
+					'../output/wapPageMoni/html/news-detail-html.html',
 					'../output/wapPageMoni/html/gallary-detail.html',
 					'../output/wapPageMoni/html/video-detail.html'
 				],
@@ -263,7 +281,8 @@ module.exports = function(grunt) {
 			},
 			regexReplaceIOS: {
 				src: [
-					'../output/ios/html/news-detail.html'
+					'../output/ios/html/news-detail.html',
+					'../output/ios/html/news-detail-html.html'
 				],
 				overwrite: true, 
 				replacements: [{
@@ -285,7 +304,8 @@ module.exports = function(grunt) {
 			},
 			regexReplaceIOSPro: {
 				src: [
-					'../lianxian_app_ios/LIANXIAN/Resources/h5/html/news-detail.html'
+					'../lianxian_app_ios/LIANXIAN/Resources/h5/html/news-detail.html',
+					'../lianxian_app_ios/LIANXIAN/Resources/h5/html/news-detail-html.html'
 				],
 				overwrite: true, 
 				replacements: [{
@@ -318,7 +338,7 @@ module.exports = function(grunt) {
 				}]
 			},
 			regexReplaceAndroid: {
-				src: ['../output/android/html/news-detail.html'],
+				src: ['../output/android/html/news-detail.html','../output/android/html/news-detail-html.html'],
 				overwrite: true, 
 				replacements: [{
 						from:/\<\!--wapStart--\>((?!wapEnd)[\s\S])*\<\!--wapEnd--\>/gi,
@@ -342,7 +362,7 @@ module.exports = function(grunt) {
 				}]
 			},
 			regexReplaceDev: {
-				src: ['../output/dev/html/news-detail-nodata.html'],
+				src: ['../output/dev/html/news-detail-nodata.html','../output/dev/html/news-detail-html-nodata.html'],
 				overwrite: true, 
 				replacements: [{
 						from:/\<\!--wapStart--\>((?!wapEnd)[\s\S])*\<\!--wapEnd--\>/gi,
@@ -366,7 +386,7 @@ module.exports = function(grunt) {
 				}]
 			},
 			regexReplaceDev2: {
-				src: ['../output/dev/html/news-detail.html'],
+				src: ['../output/dev/html/news-detail.html','../output/dev/html/news-detail-html.html'],
 				overwrite: true, 
 				replacements: [{
 					from:/\<\!--wapStart--\>((?!wapEnd)[\s\S])*\<\!--wapEnd--\>/gi,
@@ -388,11 +408,11 @@ module.exports = function(grunt) {
 		},
 		watch: {
 			scripts: {
-			    files: ['js/*','js/**/*'],
-			    tasks: ['js'],
-			    options: {
-			      livereload:true
-			    }
+				files: ['js/*','js/**/*'],
+				tasks: ['js'],
+				options: {
+				  livereload:true
+				}
 			},
 			css:{
 				files: ['css/*'],

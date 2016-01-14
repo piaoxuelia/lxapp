@@ -102,6 +102,7 @@
 						{% } %}
 					</div>
 				{%  } else if(d.type == 'html'){  -%}
+					<style>{%=d.css%}</style>
 					{%-d.value%}
 				{%  } -%}
 				
@@ -375,43 +376,7 @@
 	</div>
 	<!--wapStart-->
 	<div class="pop"></div>
-	<style type="text/css">
-		.pop-fixed{
-			position: fixed;
-			width: 100%;
-			height: 100%;
-			z-index: 1200;
-			background: rgba(0,0,0,.8);
-			top: 0;
-			left: 0;
-		}
 
-		/* download bar in wap */
-		.sx-download-bar{
-			height: 40px;
-			border-top: 1px solid #e5e5e5;
-			background: #fff url(http://p7.qhimg.com/d/inn/032c38a5/download-bar-h5.png) no-repeat 15px 50%;
-			background-size: 115px auto;
-			position: fixed;
-			bottom: 0;
-			width: 100%;
-			z-index: 1999;
-		}
-		.sx-btn-download{
-			display: block;
-			color: #fff;
-			font-size: 16px;
-			background-color: #ec4346;
-			line-height: 30px;
-			height: 30px;
-			padding:0 15px;
-			border-radius: 3px;
-			position: absolute;
-			right: 15px;
-			top: 5px
-
-		}
-	</style>
 	<div wap class="sx-download-bar">
     	<a href="#" class="sx-btn-download">下载</a>
     </div>
@@ -438,7 +403,7 @@
 
 			var hotNewsData = hotNews.data;
 			$ContentRender.renderGrayBar(cont);
-			$ContentRender.renderArticle(cont);
+			
 			/*相关阅读*/
 			$ContentRender.renderRecommendArtices(related);
 			/*热门推荐*/
@@ -448,16 +413,16 @@
 			$ContentRender.renderComments(comm);
 			$ContentRender.lazyLoadImage();
 			$ContentRender.done();
-			/*$.ajax({
-				url:"http://zm.kandian.360.cn/index.php?c=index&a=trans&from=h5&m=3fe50e8cb21355700f042010505ea2985d532773&id=1665613463555970&fmt=json&url=http://news.sohu.com/20151124/n427839277.shtml",
+
+			$.ajax({
+				url:"http://cmsapi.kandian.360.cn//trans?m=84a7a0b770dea8f736c4b3fd5dc5da50185ae824&id=1170579269323980&fmt=json&news_from=2&url=http://cms.kandian.360.cn/test.html",
 				data:'',
 				type:"get",
 				dataType: "jsonp",
 				success:function(data){
-					console.log("ajax")
-					console.log(data);
+					$ContentRender.renderArticle(videoDet.data);
 				}
-			})*/
+			})
 		});
 	</script>
 	<!--moniDataEnd-->

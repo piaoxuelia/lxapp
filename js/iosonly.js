@@ -168,6 +168,11 @@ connectWebViewJavascriptBridge(function(bridge) {
 	iosOnly.initialize(bridge);
   });
 
+  bridge.registerHandler('JavascriptHtmlHandler', function(data, responseCallback) {
+	$ContentRender.renderArticleTitle(data);
+	$ContentRender.renderArticleHtml(data);
+  });
+
   bridge.registerHandler('JavascriptRelatedHandler', function(data, responseCallback) {
    if(data){
 		((data.transmit_data && data.transmit_data.length) || data.transmit_num) && $ContentRender.renderGrayBar(data);

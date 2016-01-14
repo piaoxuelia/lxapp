@@ -126,6 +126,48 @@
 		return html;
 	}
 
+
+	$cr.renderArticleTitle = function(data, clearExistContent) {
+		if (g.$debug === true) console.log('$ContentRender.renderArticle(' + JSON.stringify(data) + ');');
+
+		var wrapper = $('.wrapper');
+		var result = render.call(this, '#article-title-tmpl', data, clearExistContent, function(data) {
+			var feeds = {
+					// 避免污染源数据
+					content: $.extend(true, [], data.content)
+				};
+
+			if (data.time && (isNaN(data.time) || data.time > 0)) {
+				feeds.time = $utils.formatDate(data.time);
+			} else {
+				feeds.time = '';
+			}
+			if (data.title) {
+				feeds.title = $utils.unescape(data.title);
+				document.title = feeds.title;
+			}
+			if(data.source){
+				feeds.source = data.source;
+			}
+			return feeds;
+		}, '', $('#sx-article-tit'));
+		return result;
+	}
+
+	/*将代码片段插入*/
+	$cr.renderArticleHtml = function(data){
+		if(data.content[0]){
+			var dataItem = data.content[0],
+				dataCss = dataItem.css || '',
+				dataHtml = dataItem.value || '';
+
+			$('#sx-style').html(dataCss);
+			$('#sx-article').html(dataHtml);
+		}
+	}
+
+
+
 	/**
 	 * 返回一个无需处理数据的render函数
 	 * @param  {string} tmplId 模板id
@@ -227,7 +269,6 @@
 			// 处理正文内容
 			for (i = 0; feeds.content && i < feeds.content.length; ++i) {
 				dat = feeds.content[i];
-
 				if (dat.type == 'img') {
 					/**
 					 * 计算图片的宽高
@@ -269,7 +310,7 @@
 					}
 					if (dat.value) dat.value = $utils.unescape(dat.value);
 
-				} else if (typeof supportedArticleParts[dat.type] != 'undefined') {
+				} else if (typeof supportedArticleParts[dat.type] != 'undefined') {alert(0)
 					var json = extractArticlePartsData(dat.type, contentWidth, dat.value, dat),
 						typename = supportedArticleParts[dat.type];
 
@@ -324,24 +365,12 @@
 		return result;
 	};
 
-	
-
-	function initScroller(containerSelector) {
-		var ctn = $(containerSelector),
-			scroller = ctn.find('.scroller');
-		scroller.children().each(function(i, e) {
-			$(e).width(ctn.width() + 'px');
-		});
-		scroller.width(ctn.width() * scroller.children().length + 'px');
-	}
 
 	
 	function extractArticlePartsData(type, contentWidth, value, rawData) {
 		var s = value.replace(/<p[\s\S]*?>([\s\S]*?)<\/p>/g, "$1").replace(/\}<br\/>/, '}'),
 			data = {},
 			tmp,
-
-			// TODO 2014-12-04 这块没有明白，计算这个宽度有什么用？
 			// w = contentWidth - 24; //两边边距2x12
 			w = contentWidth - 20;
 
