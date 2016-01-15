@@ -1,0 +1,14 @@
+/*可以在这里添加你自己的css*/
+body,html{
+	height: 100%;
+	margin:0;
+	padding:0;
+}
+body{
+	margin:0 16px;
+}
+hr{
+    border: none;
+    border-bottom:1px solid #eee;
+    margin:20px 0;
+}
